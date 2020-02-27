@@ -4,13 +4,9 @@
 /* SysTick is a 24 bit down counter that resets to the preloaded value
    in the SYST_RVR register.
    
-   We pretend it is an upcounter counter.  */
-
-/** The maximum overrun (in ticks).  */
-#define PIT_OVERRUN_TICKS_MAX 4000000
-
-
-#define PIT_PERIOD_TICKS_MAX (uint32_t)(F_CPU / 1000)
+   We trigger an IRQ whenever the timer reaches 0, and then increment
+   a counter on each interrupt, giving us a 1ms counter
+   */
 
 volatile uint32_t pit_ticks = 0;
 
@@ -74,7 +70,7 @@ int
 pit_init (void)
 {
     /* Set maximum period.  */
-    pit_period_set (PIT_PERIOD_TICKS_MAX);
+    pit_period_set (PIT_RATE);
     pit_start ();
     return 1;
 }
