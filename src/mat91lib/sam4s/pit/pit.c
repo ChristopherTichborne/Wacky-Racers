@@ -10,17 +10,18 @@
 #define PIT_OVERRUN_TICKS_MAX 4000000
 
 
-#define PIT_PERIOD_TICKS_MAX 0x00ffffffu
+#define PIT_PERIOD_TICKS_MAX (uint32_t)(F_CPU / 1000)
 
+volatile uint32_t pit_ticks = 0;
 
-/** The maximum delay (in ticks).  */
-#define PIT_DELAY_TICKS_MAX (PIT_PERIOD_TICKS_MAX - PIT_OVERRUN_TICKS_MAX + 1)
-
+void _systick_handler (void) {
+    pit_ticks++;
+}
 
 void
 pit_start (void)
 {
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; 
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk; 
 }
 
 
@@ -41,8 +42,7 @@ static uint32_t pit_period_set (uint32_t period)
 
 pit_tick_t pit_get (void)
 {
-    /* Pretend the counter counts up.  */
-    return SysTick->LOAD - SysTick->VAL;
+    return pit_ticks;
 }
 
 
@@ -51,18 +51,11 @@ pit_tick_t pit_get (void)
     @return current time.  */
 pit_tick_t pit_wait_until (pit_tick_t when)
 {
-    when <<= 8;
-
     while (1)
     {
-        pit_tick_t diff;
-        pit_tick_t now;
-        
-        now = pit_get () << 8;
-        
-        diff = now - when;
-
-        if (diff < (PIT_OVERRUN_TICKS_MAX << 8))
+        pit_tick_t now = pit_get();
+        int32_t diff = (when - now);
+        if (diff < 0)
             return now;
     }
 }
