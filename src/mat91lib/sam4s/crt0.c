@@ -30,6 +30,8 @@ void reset (void)
 
 void _reset_handler (void);
 
+void _systick_handler (void);
+
 void _unexpected_handler (void);
 
 
@@ -99,7 +101,7 @@ irq_handler_t exception_table[] =
     _unexpected_handler,
     0,                 /* Reserved  */
     _unexpected_handler,
-    _unexpected_handler,
+    _systick_handler,
     
     /* Configurable interrupts  */
     _unexpected_handler,    /* 0  Supply Controller */
