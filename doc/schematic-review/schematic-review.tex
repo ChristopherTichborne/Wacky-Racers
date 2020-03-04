@@ -21,8 +21,6 @@
 
 \item Battery fusing (this is mandatory)
 
-\item Can be powered from USB
-
 \item Use serial wire debug interface for programming
 
 \item 3.3\,V MCU regulator can be back driven
@@ -35,15 +33,17 @@
 
 \item LEDs for debugging
 
-\item Jumpers for mode configuration
+\item Jumpers for mode configuration (radio channel select)
 
-\item Pullup resistors on TWI bus
+\item Pullup resistors on TWI (I2C) bus
 
 \item Test points
 
 \item Ground test points
 
-\item USB has series termination resistors
+\item USB signals are not swapped
+  
+\item USB has series termination resistors (27 ohm)
 
 \item VBUS detection through voltage divider to PIO pin.  This is
   needed so that the MCU can tell when USB is plugged in or removed.
@@ -55,6 +55,10 @@
 
 \item The radio needs to be connected to SPI pins (MISO/PA12,
   MOSI/PA13, SCK/PA14)
+
+\item Radio IRQ connected to MCU PIO pin
+
+\item Radio uses SPI clock (SCK) not the TWI clock (TWCK)
 
 \item TWI uses TWCK0/PA4 and TWD0/PA3 or TWCK1/PB5 and TWD1/PB4.
 
@@ -88,15 +92,16 @@
 
 \item Drive circuit for piezo tweeter
 
+\item IMU nCS pin connected high to enable I2C operation
 
+\item IMU AUX pins not connected  
+  
 \end{enumerate}
 
 \section{Racer board}
 
 
 \begin{enumerate}
-\item Fall-back option to drive motors via servo interface using PWM
-  if H-bridge driver fails
 
 \item MOSFET(s) for actuator (if use p-channel MOSFET need transistor
   to provide sufficient gate voltage to turn MOSFET off)
