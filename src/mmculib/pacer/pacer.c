@@ -16,7 +16,7 @@ void pacer_init (pacer_rate_t pacer_rate)
 {
     pit_init ();
 
-    pacer_period = PIT_RATE / pacer_rate;
+    pacer_period = PIT_CLOCK_DIVISOR / pacer_rate;
     pacer_when = pit_get ();
 }
 
