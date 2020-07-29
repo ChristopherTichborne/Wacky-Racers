@@ -25,6 +25,7 @@ typedef struct {
 
 /**
  * Initialise the ICM20948 object, attached on a TWI/I2C bus
+ * NOTE: Only one of these can currently be created
  *
  * @param twi TWI bus on which the ICM20948 device exists
  * @parma slave_addre TWI address of the ICM20948 device
@@ -84,7 +85,7 @@ bool icm20948_read_mag(icm_t *icm, int16_t magdata[3]);
  * @param icm ICM20948 object pointer
  * @param temp Pointer to the integer to store the temperature,
  *             in 1/100th of a degree
- * @return true if the temperature was read successfully
+ * @return true if the temperature was read successfully, false otherwise
  */
 
 bool icm20948_read_temperature(icm_t *icm, int *temp);

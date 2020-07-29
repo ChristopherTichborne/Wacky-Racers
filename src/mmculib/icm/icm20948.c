@@ -73,10 +73,8 @@ static uint8_t icm_imu_read(icm_t *icm, const int addr)
         return 0x0;
 
     status = twi_master_addr_read(icm->twi, icm->imu_addr, ICM_REG_ID(addr), 1, &response, 1);
-    if (status != 1) {
-    	printf("icm_imu_read bad: %d\n", status);
+    if (status != 1)
         return 0x0;
-    }
 
     return response;
 }
