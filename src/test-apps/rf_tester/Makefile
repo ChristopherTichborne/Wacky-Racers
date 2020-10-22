@@ -1,4 +1,5 @@
 DRIVERS = pacer usb_serial rf button
+PERIPHERALS = adc
 
 TARGET = rf_tester.bin
 

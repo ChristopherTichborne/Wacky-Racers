@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "usb_serial.h"
 #include "nrf24.h"
+#include "adc.h"
 #include "pio.h"
 #include "pacer.h"
 #include "delay.h"
@@ -15,11 +16,13 @@
 #define RX_LED PA31_PIO
 #define TX_BTN PA6_PIO
 #define RX_BTN PA18_PIO
+#define BATTERY_VOLTAGE_ADC ADC_CHANNEL_4
 
 static usb_serial_cfg_t usb_serial_cfg = {
     .read_timeout_us = 1,
     .write_timeout_us = 1,
 };
+static adc_t battery_sensor;
 
 static void panic(void)
 {
@@ -29,6 +32,31 @@ static void panic(void)
         pio_output_toggle(RX_LED);
         delay_ms(200);
     }
+}
+
+static int battery_sensor_init(void)
+{
+    adc_cfg_t bat = {
+        .channel = BATTERY_VOLTAGE_ADC,
+        .bits = 12,
+        .trigger = ADC_TRIGGER_SW,
+        .clock_speed_kHz = F_CPU / 4000,
+    };
+    
+    battery_sensor = adc_init(&bat);
+
+    return (battery_sensor == 0) ? -1 : 0;
+}
+
+static uint16_t battery_millivolts(void)
+{
+    adc_sample_t s;
+    adc_read(battery_sensor, &s, sizeof(s));
+
+    // 33k pull down & 47k pull up gives a scale factor or
+    // 33 / (47 + 33) = 0.4125
+    // 4096 (max ADC reading) * 0.4125 ~= 1690
+    return (uint16_t)((int)s) * 3300 / 1690;
 }
 
 int main (void)
@@ -61,6 +89,9 @@ int main (void)
 #ifdef RADIO_PWR_EN
     pio_config_set(RADIO_PWR_EN, PIO_OUTPUT_HIGH);
 #endif
+
+    if (battery_sensor_init() < 0)
+        panic();
 
     // Start up the NRF24 radio
     spi = spi_init(&nrf_spi);
@@ -135,6 +166,12 @@ int main (void)
                 panic();
             pio_output_set(RX_LED, 1);
             listening = true;
+        }
+
+        // Flash the lights if we ever go to low battery state
+        while (battery_millivolts() < 5000) {
+            pio_output_toggle(TX_LED);
+            delay_ms(200);
         }
 
         fflush(stdout);
