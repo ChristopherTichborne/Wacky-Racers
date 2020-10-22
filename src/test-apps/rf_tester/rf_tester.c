@@ -1,7 +1,7 @@
 /* File:   rf_tester.c
    Author: A. Renaud
    Date:   Oct 2020
-   Descr: 
+   Descr:  Software to run on the test boxes for NRF debugging
 */
 #include <stdio.h>
 #include "usb_serial.h"
@@ -62,12 +62,15 @@ int main (void)
     pio_config_set(RADIO_PWR_EN, PIO_OUTPUT_HIGH);
 #endif
 
+    // Start up the NRF24 radio
     spi = spi_init(&nrf_spi);
     nrf = nrf24_create(spi, RADIO_CE_PIO, RADIO_IRQ_PIO);
     if (!nrf)
         panic();
     if (!nrf24_begin(nrf, 4, 0xabcdef0123456789, 32))
         panic();
+
+    // Set up the buttons
     button_cfg_t tx_cfg = {.pio = TX_BTN};
     button_cfg_t rx_cfg = {.pio = RX_BTN};
 
@@ -78,15 +81,7 @@ int main (void)
     if (!rx_btn)
         panic();
 
-    // Can't use poll, because of debounce. Button active low
-    if (!pio_input_get(RX_BTN)) {
-        if (!nrf24_listen(nrf))
-            panic();
-        listening = true;
-        pio_output_set(RX_LED, 1);
-    }
-
-#if 0 // LED/switch tester
+#if 0 // LED/switch tester for confirming hardware is ok
     while (1) {
         pio_output_set(TX_LED, pio_input_get(TX_BTN));
         pio_output_set(RX_LED, pio_input_get(RX_BTN));
@@ -101,14 +96,18 @@ int main (void)
         
         pacer_wait();
 
+        // if the tx button is pushed, stop listening & tx a packet
+        // LED will turn on while transmitting, and off when done
         if (button_poll(tx_btn) == BUTTON_STATE_DOWN) {
-            if (listening)
-                mcu_reset();
+            if (listening) {
+                nrf24_power_down(nrf);
+                pio_output_set(RX_LED, 0);
+                listening = false;
+            }
             pio_output_set(TX_LED, 1);
             sprintf (buffer, "Hello world %d", tx_count++);
 
             if (! nrf24_write(nrf, buffer, sizeof (buffer))) {
-                // No bytes were written
                 printf("TX: FAILURE\n");
             } else {
                 printf("TX: %s\n", buffer);
@@ -117,6 +116,8 @@ int main (void)
             pio_output_set(TX_LED, 0);
         }
 
+        // If we're listening, and there is data available, then 
+        // pulse the LED low and print the data to the usb port
         if (listening) {
             if (nrf24_read(nrf, buffer, sizeof(buffer))) {
                 pio_output_set(RX_LED, 0);
@@ -126,20 +127,16 @@ int main (void)
                 pio_output_set(RX_LED, 1);
             }
         }
-        if (button_poll(rx_btn) == BUTTON_STATE_DOWN) {
-            if (!listening)
-                mcu_reset();
+
+        // If we press the rx button and we're not currently listening,
+        // then start listening & turn the 'receiving' led on
+        if (button_poll(rx_btn) == BUTTON_STATE_DOWN && !listening) {
+            if (!nrf24_listen(nrf))
+                panic();
+            pio_output_set(RX_LED, 1);
+            listening = true;
         }
 
-#if 0
-        pio_output_set(LED2_PIO, 1);
-        if (nrf24_read(nrf, buffer, sizeof(buffer))) {
-            printf("RX: %s\n", buffer);
-            pio_output_set(LED2_PIO, 0);
-        } else {
-            printf("RX: nothing\n");
-        }
-#endif
         fflush(stdout);
     }
 }
