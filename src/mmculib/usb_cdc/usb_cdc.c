@@ -319,8 +319,8 @@ usb_cdc_init (const usb_cdc_cfg_t *cfg)
     usb_cdc_t dev = &usb_cdc_dev;
     char *buffer;
     
-    dev->read_timeout_us = cfg->read_timeout_us;
-    dev->write_timeout_us = cfg->write_timeout_us;
+    dev->read_timeout_us = cfg ? cfg->read_timeout_us : 1;
+    dev->write_timeout_us = cfg ? cfg->write_timeout_us : 1;
     dev->writing = 0;
     dev->connected = 0;
 
