@@ -36,7 +36,7 @@ bool nrf24_begin(nrf24_t *nrf, uint8_t channel, uint64_t address, uint8_t payloa
 
 // Switch to receiver mode and listen on configured channel
 // and address.
-void nrf24_listen(nrf24_t *nrf);
+bool nrf24_listen(nrf24_t *nrf);
 
 // Read received data (up to max of 32 bytes).  Returns number
 // of bytes read or 0 if not data available.
@@ -51,7 +51,8 @@ uint8_t nrf24_write(nrf24_t *nrf, const void *buffer, uint8_t len);
 bool nrf24_is_data_ready(nrf24_t *nrf);
 
 // Set channel number 0--127.
-void nrf24_set_channel(nrf24_t *nrf, uint8_t channel);
+// Returns false if there was a failure setting the channel
+bool nrf24_set_channel(nrf24_t *nrf, uint8_t channel);
 
 // Set address.  By default, only the 5 least significant bytes used.
 void nrf24_set_address(nrf24_t *nrf, uint64_t address);
@@ -59,9 +60,17 @@ void nrf24_set_address(nrf24_t *nrf, uint64_t address);
 // Set the address size in bytes (3--5).
 void nrf24_set_address_size(nrf24_t *nrf, uint8_t size);
 
-void nrf24_power_down(nrf24_t *nrf);
+// Powers down the NRF24.
+// Returns false if there was a problem with the power down
+bool nrf24_power_down(nrf24_t *nrf);
 
-void nrf24_power_up(nrf24_t *nrf);
+// Powers up the NRF24.
+// This is not normally needed unless the radio has been explicitly
+// powered down.
+// The radio automatically poweres up whenever nrf24_listen or
+// nrf24_write are called
+// Returns false if there was a problem with the power down
+bool nrf24_power_up(nrf24_t *nrf);
 
 // Set power amplifier level (0--3).  
 void nrf24_set_pa_level(nrf24_t *nrf, uint8_t level);

@@ -18,6 +18,8 @@
 */
 
 
+#include <string.h>
+
 #include "nrf24.h"
 #include "delay.h"
 
@@ -188,6 +190,13 @@ static uint8_t nrf24_write_register(nrf24_t *nrf, uint8_t reg, uint8_t value)
     return nrf24_write_registers(nrf, reg, &value, 1);
 }
 
+static bool nrf24_write_register_verify(nrf24_t *nrf, uint8_t reg, uint8_t value)
+{
+    nrf24_write_registers(nrf, reg, &value, 1);
+    uint8_t r = nrf24_read_register(nrf, reg);
+    return r == value;
+}
+
 static uint8_t nrf24_write_command(nrf24_t *nrf, uint8_t command)
 {
     uint8_t status;
@@ -211,15 +220,20 @@ static uint8_t nrf24_get_status(nrf24_t *nrf)
     return nrf24_write_command(nrf, NOP);
 }
 
-static void nrf24_set_tx_addr(nrf24_t *nrf, uint8_t *address_bytes)
+static bool nrf24_set_tx_addr(nrf24_t *nrf, uint8_t *address_bytes)
 {
+    uint8_t resp_addr[5] = {0};
     nrf24_write_registers(nrf, TX_ADDR, address_bytes, 5);
+    nrf24_read_registers(nrf, TX_ADDR, resp_addr, 5);
+    return (memcmp(address_bytes, resp_addr, 5) == 0);
 }
 
-static void nrf24_set_rx0_addr(nrf24_t *nrf, uint8_t *address_bytes)
+static bool nrf24_set_rx0_addr(nrf24_t *nrf, uint8_t *address_bytes)
 {
+    uint8_t resp_addr[5] = {0};
     nrf24_write_registers(nrf, RX_ADDR_P0, address_bytes, 5);
-    // TODO: errors
+    nrf24_read_registers(nrf, RX_ADDR_P0, resp_addr, 5);
+    return (memcmp(address_bytes, resp_addr, 5) == 0);
 }
 
 nrf24_t *nrf24_create(spi_t spi, pio_t ce_pio, pio_t irq_pio)
@@ -238,6 +252,7 @@ nrf24_t *nrf24_create(spi_t spi, pio_t ce_pio, pio_t irq_pio)
 
 bool nrf24_begin(nrf24_t *nrf, uint8_t channel, uint64_t address, uint8_t payload_size)
 {
+    pio_output_set(nrf->ce_pio, false);
 #ifdef RADIO_IRQ_PIO
     pio_config_set(nrf->irq_pio, PIO_INPUT);
 #endif
@@ -252,13 +267,11 @@ bool nrf24_begin(nrf24_t *nrf, uint8_t channel, uint64_t address, uint8_t payloa
 
     delay_ms (5);
 
-    nrf24_write_register(nrf, RX_PW_P0, nrf->payload_size);
+    if (!nrf24_write_register_verify(nrf, RX_PW_P0, nrf->payload_size))
+        return false;
 
-    nrf24_write_register(nrf, CONFIG, BIT (EN_CRC));
-
-    uint8_t config = nrf24_read_register(nrf, CONFIG);
-    if (config != BIT (EN_CRC))
-        false;
+    if (!nrf24_write_register_verify(nrf, CONFIG, BIT (EN_CRC)))
+        return false;
 
     // Set the maximum number of retransmissions (15).
     nrf24_set_retries(nrf, 5, 15);
@@ -285,6 +298,13 @@ bool nrf24_begin(nrf24_t *nrf, uint8_t channel, uint64_t address, uint8_t payloa
     // Flush buffers
     nrf24_flush_rx(nrf);
     nrf24_flush_tx(nrf);
+
+    if (!nrf24_set_tx_addr(nrf, nrf->address_bytes))
+        return false;
+    if (!nrf24_set_rx0_addr(nrf, nrf->address_bytes))
+        return false;
+
+    nrf24_set_auto_ack(nrf, true);
 
     return true;
 }
@@ -355,25 +375,26 @@ void nrf24_set_address(nrf24_t *nrf, uint64_t address)
     }
 }
 
-void nrf24_set_channel(nrf24_t *nrf, uint8_t channel)
+bool nrf24_set_channel(nrf24_t *nrf, uint8_t channel)
 {
     if (channel > 127)
         channel = 127;
 
-    nrf24_write_register(nrf, RF_CH, channel);
-    // TODO: errors?
+    return nrf24_write_register_verify(nrf, RF_CH, channel);
 }
 
-void nrf24_listen(nrf24_t *nrf)
+bool nrf24_listen(nrf24_t *nrf)
 {
     // TODO: allow other pipes with different signature
-    nrf24_set_rx0_addr(nrf, nrf->address_bytes);
+    if (!nrf24_set_rx0_addr(nrf, nrf->address_bytes))
+        return false;
 
     nrf24_write_register(nrf, EN_RXADDR,
                         nrf24_read_register(nrf, EN_RXADDR) | BIT (ERX_P0));
         
-    nrf24_write_register(nrf, CONFIG,
-                        nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP) | BIT (PRIM_RX));
+    if (!nrf24_write_register_verify(nrf, CONFIG,
+                        nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP) | BIT (PRIM_RX)))
+        return false;
         
     nrf24_write_register(nrf, STATUS, BIT (RX_DR) | BIT (TX_DS) | BIT (MAX_RT));
         
@@ -385,17 +406,18 @@ void nrf24_listen(nrf24_t *nrf)
 
     // Wait for the radio to come up
     delay_ms (TPD_TO_STDBY);
+
+    return true;
 }
 
-
-void nrf24_power_down(nrf24_t *nrf)
+bool nrf24_power_down(nrf24_t *nrf)
 {
-    nrf24_write_register(nrf, CONFIG, nrf24_read_register(nrf, CONFIG) & ~BIT (PWR_UP));
+    return nrf24_write_register_verify(nrf, CONFIG, nrf24_read_register(nrf, CONFIG) & ~BIT (PWR_UP));
 }
 
-void nrf24_power_up(nrf24_t *nrf)
+bool nrf24_power_up(nrf24_t *nrf)
 {
-    nrf24_write_register(nrf, CONFIG, nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP));
+    return nrf24_write_register_verify(nrf, CONFIG, nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP));
 }
 
 uint8_t nrf24_write(nrf24_t *nrf, const void *buffer, uint8_t len)
@@ -405,7 +427,6 @@ uint8_t nrf24_write(nrf24_t *nrf, const void *buffer, uint8_t len)
     uint8_t reg_address = W_TX_PAYLOAD;
     uint8_t blank_len;
     uint8_t blank_tx = 0xff;
-    const uint8_t *data = (const uint8_t *)buffer;
 
     if (nrf->listening) {
         // Switch out of listening mode.
@@ -421,8 +442,9 @@ uint8_t nrf24_write(nrf24_t *nrf, const void *buffer, uint8_t len)
     nrf24_set_rx0_addr(nrf, nrf->address_bytes);
         
     // Power up transmitter and set PRIM low.
-    nrf24_write_register(nrf, CONFIG,
-                        (nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP)) & ~BIT (PRIM_RX));
+    if (!nrf24_write_register_verify(nrf, CONFIG,
+                        (nrf24_read_register(nrf, CONFIG) | BIT (PWR_UP)) & ~BIT (PRIM_RX)))
+        return 0;
     delay_ms (TPD_TO_STDBY);
 
     if (len > nrf->payload_size)
