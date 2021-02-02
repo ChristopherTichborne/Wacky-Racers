@@ -1,4 +1,4 @@
-Wackyracers-2020
+Wacky Racers
 ===============
 
 This contains a directory structure for your assignment.
@@ -10,14 +10,22 @@ hw  -- hardware
 src -- source code
 
 
+Assignment Instructions
+-----------
+
+The [instructions](https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers/-/raw/master/doc/instructions/instructions.pdf)
+are in a PDF file stored in this repository (you'll also get a copy when you
+fork the project)
+
+
 Downloading
 -----------
 
-Your group leader should create a forked copy of the wacky-racers-2020
+Your group leader should create a forked copy of the wacky-racers
 git project and then add the other group members to the project.  This
 can be done by:
 
-1. Go to https://eng-git.canterbury.ac.nz/mph/wacky-racers-2020
+1. Go to https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers
 
 2. Click 'Fork' button.  This will create your own copy of the repository.
 
@@ -29,36 +37,34 @@ can be done by:
 5. Using bash terminal (or other useful shell), enter the command:
 
 ```
-$ git clone --recursive https://eng-git.canterbury.ac.nz/your-userid/wacky-racers.git
+$ git clone git@eng-git.canterbury.ac.nz:your-userid/wacky-racers.git
 ```
 
-If you do not want to have to enter your password for every git
-push/pull operation, you should set up ssh-keys and use:
+Note: this *requires* that you have setup SSH keys on your machine and added
+them to your account. See
+https://docs.gitlab.com/ee/ssh/#generating-a-new-ssh-key-pair for instructions
+on generating an SSH key pair.
+
+Or if you don't want to set up your SSH keys, you can clone using the HTTPS
+protocol (we recommend the above method as it allows automatic authentication
+without entering your password every single time you want to make changes):
 
 ```
-$ git clone --recursive git@eng-git.canterbury.ac.nz:your-userid/wacky-racers.git
+$ git clone https://eng-git.canterbury.ac.nz/your-userid/wacky-racers.git
 ```
 
-Note, this project uses two submodules (mmculib and mat91lib) hosted
-on github.
-
-
-Updating
---------
-
-Updating is a nuisance since each submodule needs to be pulled
-separately.  This can be achieved using:
-
+6. Add the original wacky-racers repository as upstream. This will allow you to
+   pull updates/bug fixes we make during the assignment.
 ```
-$ git pull && git submodule update
+$ cd wacky-racers
+$ git remote add upstream git@eng-git.canterbury.ac.nz:wacky-racers/wacky-racers.git
 ```
+(Or again, you can use the HTTPS URL if you haven't bothered with SSH)
 
-Note, the submodules mmculib and mat91lib have detached heads.
-
-A simpler way is to run (from the top-level directory):
-
+7. If we add more demo code or tweak the instructions, you can pull the updated
+   stuff using
 ```
-$ make update
+$ git pull upstream master
 ```
 
 Configuration
@@ -135,16 +141,6 @@ I suggest trying the following programs:
 * adc_test1 This reads from the AD5 and AD6 analogue inputs and prints the values to a computer with the USB CDC protocol.
 
 
-Wacky racer applications
-------------------------
-
-There is skeleton code for these in the wacky-apps directory.  There
-are two programs; one for the racer and hat boards.  *Note, try the
-test-apps first before trying to write these programs to ensure you
-have the correct pin definitions, etc.*
-
-Files common to each program are found in the wackylib directory.
-
 
 Troubleshooting
 ---------------
@@ -168,11 +164,11 @@ Watchdog timers
 ---------------
 
 By default, the watchdog timers are disabled.  To enable them, use:
-    
+
     #include "mcu.h"
-    
+
     mcu_watchdog_enable ();
-    
+
 To reset the watchdog, in your main loop use:
 
     mcu_watchdog_reset ();
