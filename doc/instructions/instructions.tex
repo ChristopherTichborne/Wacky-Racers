@@ -1,7 +1,7 @@
 \documentclass[11pt, a4paper]{article}
-\title{Wacky Racers 2020 Instructions}
+\title{Wacky Racers 2021 Instructions}
 \author{Michael Hayes, Ben Mitchell}
-\date{Version 3.1, \today}
+\date{Version 4.0, \today}
 
 \usepackage[margin=1in]{geometry}
 \usepackage{parskip}
@@ -53,7 +53,7 @@ marks.
   3-D printed, constructed from Perspex or wood, etc.  A standard
   chassis is available from the Automation Lab technician (Daniel
   Hopkins).  The electronics must be visible on top of the chassis.
-\item Have a standard working bump sensor (supplied).  
+\item Have a standard working bump sensor (supplied).
 \item Locomotion can only use two 6\,V DC motors (supplied).
 \item Everything must be powered from a single 5-cell NiMH battery pack (supplied).
 \item Use a single four layer printed circuit board of dimension 85\,mm$\times$64\,mm.
@@ -69,9 +69,9 @@ marks.
 \item Have a sleep button.
 \item If the battery voltage drops below 5\,V, an LED should flash and high power draw devices should be disabled.
 \item Interface to the Wacky Hat with a Nordic nRF24 SMD radio module.
-\item Have four jumper selectable radio channels.  
+\item Have four jumper selectable radio channels.
 \item Have a mounted RFID card (supplied) that can be read by the Wacky ramps.
-\item Be humorous.    
+\item Be humorous.
 \end{enumerate}
 
 
@@ -82,7 +82,7 @@ team's Wacky Racer.  However, you cannot:
 \item Damage or destroy another Wacky racer
 \item Damage the venue
 \item Injure a spectator
-\item Jam the radio signals  
+\item Jam the radio signals
 \end{itemize}
 
 
@@ -102,9 +102,9 @@ team's Wacky Racer.  However, you cannot:
 
 \begin{enumerate}
 \item Construct a Wacky Hat that contains all the electronics.
-\item Everything must be powered from a single 5-cell NiMH battery pack (supplied).  
+\item Everything must be powered from a single 5-cell NiMH battery pack (supplied).
 \item Have adequate battery fusing and reverse polarity protection.
-\item Use a single four layer printed circuit board of dimension 85\,mm$\times$64\,mm.  
+\item Use a single four layer printed circuit board of dimension 85\,mm$\times$64\,mm.
 \item Use an ARM microcontroller (Atmel SAM4S8).
 \item Regulate the nominal 6\,V battery voltage to 5\,V with a buck
   regulator IC (ADP2302ARDZ-50).
@@ -116,9 +116,9 @@ team's Wacky Racer.  However, you cannot:
 \item Have a sleep button.
 \item If the battery voltage drops below 5\,V, an LED should flash and high power draw devices should be disabled.
 \item Play sound when the bumper is hit.
-\item Interface to the Wacky Racer with a Nordic nRF24 SMD radio module.  
-\item Have four jumper selectable radio channels.    
-\item Be humorous.  
+\item Interface to the Wacky Racer with a Nordic nRF24 SMD radio module.
+\item Have four jumper selectable radio channels.
+\item Be humorous.
 \end{enumerate}
 
 %\vspace{1cm}
@@ -142,20 +142,22 @@ Lab (ESL) are:
     Week            &  Assistance  &  Assessment \\
     \hline \hline
     T1-1 & Altium tutorial 1 (schematics)  & \\
-    T1-2 & Altium help       & \\
-    T1-3 & Schematic review  &  Schematic submission for review (Mon. noon) \\
+    T1-2 & Altium help      & \\
+    T1-3 & Schematic review &  Schematic submission for review (Mon. noon) \\
     T1-4 & Altium tutorial 2 (PCB) &          \\
-    T1-5 & Altium help & PCB submission 1    \\
-    T1-6 & Altium help & PCB submission 2    \\
-    T1-7 & General     & PCB submission 3    \\ \hline
-    B-1 & (break)    &                   \\
-    B-2 & (break)    &                   \\
-    B-3 & (break)    &                   \\ \hline
-    T2-1 & General     & Blinky            \\
-    T2-2 & General     & IMU/motors      \\
-    T2-3 & General     & Radio control     \\    
-    T2-4 & General     & Functionality     \\
-    T2-5 & Competition & Competition, critique  \\
+    T1-5 & Altium help      & PCB submission 1    \\
+    T1-6 & Altium help      & PCB submission 2    \\
+    \hline
+    B-1  & (break)          &                   \\
+    B-2  & (break)          &                   \\
+    B-3  & (break)          &                   \\
+    \hline
+    T2-1 & General          &                   \\
+    T2-2 & General          & Blinky            \\
+    T2-3 & General          & IMU/motors        \\
+    T2-4 & General          & Radio control     \\
+    T2-5 & General          & Functionality     \\
+    T2-6 & Competition      & Competition, critique  \\
   \end{tabular}
 \end{flushleft}
 
@@ -182,7 +184,7 @@ The marks breakdown (max. 0x64) is:
 \begin{flushleft}
   \begin{tabular}{ll}
     PCB submission & 0--0xa marks\\
-    Blinky milestone  & 0x5 marks\\    
+    Blinky milestone  & 0x5 marks\\
     IMU/motor milestone  & 0x5 marks\\
     Radio control milestone  & 0x5 marks\\
     Functional assessment & 0--0x14 marks \\
@@ -190,7 +192,7 @@ The marks breakdown (max. 0x64) is:
     Competition & 0--0xa marks \\
     Individual critique & 0--0xf marks \\
   \end{tabular}
-  
+
 \end{flushleft}
 
 \subsection{Milestones}
@@ -207,25 +209,26 @@ stream.  If you need an exception to this, see Ben Mitchell with a
 \item [PCB submission] Submit your PCB design to Learn for
   manufacture.  To encourage early submission there is a sliding scale
   for marks depending on when the PCB is submitted, see table.  After
-  week 7, there is a 10 mark penalty per week.  \textbf{NB, a rushed
+  week 6, there is a 10 mark penalty per week.  \textbf{NB, a rushed
     PCB design will cause you more grief, more PCB rework, and a lower
     mark for the inspection.}
 
   \begin{tabular}{llll}
     Week & Submission day & Cut-off time  & Mark \\ \hline
     5    & Monday       & 10.00 am & 10 \\
-    5    & Wednesday    & 10.00 am & 9 \\
-    5    & Friday       & 10.00 am & 8 \\
-    6    & Monday       & 10.00 am & 7 \\
-    6    & Wednesday    & 10.00 am & 6 \\
-    6    & Friday       & 10.00 am & 5  \\
-    7    & Monday       & 10.00 am & 4 \\
-    7    & Wednesday    & 10.00 am & 2 \\
-    7    & Friday       & 10.00 am & 0 \\        
+    5    & Tuesday      & 10.00 am & 9 \\
+    5    & Wednesday    & 10.00 am & 8 \\
+    5    & Thursday     & 10.00 am & 7 \\
+    5    & Friday       & 10.00 am & 6 \\
+    6    & Monday       & 10.00 am & 5 \\
+    6    & Tuesday      & 10.00 am & 4 \\
+    6    & Wednesday    & 10.00 am & 3 \\
+    6    & Thursday     & 10.00 am & 2 \\
+    6    & Friday       & 10.00 am & 1  \\
   \end{tabular}
 
 \item [Blinky] Demonstrate that can blink an LED controlled by the SAM4S.
-  
+
 \item [IMU/motors] For the Wacky Hat, demonstrate output of IMU
   readings to a PC using USB CDC.  For the Wacky Racer, demonstrate
   control of the motors from a PC using USB CDC.
@@ -251,7 +254,7 @@ Functionality requirements:
     Speed control of motors        & Calculate speeds from IMU \\
     Steering control               & Joystick control \\
     Receive radio message          & Send radio message \\
-    Jumper selectable radio channel & Jumper selectable radio channel  \\    
+    Jumper selectable radio channel & Jumper selectable radio channel  \\
     Dies on bump                   & Plays sound on bump \\
     Low voltage indication         & Low voltage indication \\
   \end{tabular}
@@ -294,7 +297,7 @@ This is assessed after the competition.  The categories are:
 \begin{enumerate}
 \item Layout (component placement etc.)
 \item Construction (tidiness, rework, etc.)
-\item Testability  
+\item Testability
 \item Power supplies (routing, decoupling, etc.)
 \end{enumerate}
 
@@ -302,21 +305,20 @@ This is assessed after the competition.  The categories are:
 
 \section{Technical stuff}
 
-Read this section carefully.  There are clues as to how we mark your
-PCBs at the end of the assignment.
+Read this section carefully.  There are clues as to how we mark your PCBs at the
+end of the assignment.
 
 
 \subsection{Version control}
 
-Use version control for everything, or else!  Learning git is
-frustrating but is a skill you will not regret.
+Use version control for everything, or else!  Learning git is frustrating but is
+a skill you will not regret.
 
-Your group leader should create a forked copy of the wacky-racers-2020
-git project and then add the other group members to the project.  This
-can be done by:
+Your group leader should create a forked copy of the wacky-racers git project
+and then add the other group members to the project.  This can be done by:
 
 \begin{enumerate}
-\item Go to \url{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2020}
+\item Go to \url{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers}
 
 \item Click `Fork' button.  This will create a copy of the main repository for the project.
 
@@ -327,37 +329,37 @@ can be done by:
 
 \item Using a bash terminal (or other useful shell), enter the command:
 
-  \lstset{language=bash}
-  \lstset{basicstyle=\ttfamily\small}
-  \lstset{keywordstyle=\color{black}\ttfamily}
-  \lstset{breaklines}
-  
+\lstset{language=bash}
+\lstset{basicstyle=\ttfamily\small}
+\lstset{keywordstyle=\color{black}\ttfamily}
+\lstset{breaklines}
+
 \begin{lstlisting}
-  $ git clone https://eng-git.canterbury.ac.nz/your-userid/wacky-racers-2020.git wacky-racers
+  $ git clone https://eng-git.canterbury.ac.nz/your-userid/wacky-racers.git
 \end{lstlisting}
 
 If you do not want to have to enter your password for every git
-push/pull operation, you should set up ssh-keys and use:
+push/pull operation, you should set up ssh-keys and use the git URL instead:
 
 \begin{lstlisting}[breaklines]
-  $ git clone git@eng-git.canterbury.ac.nz:your-userid/wacky-racers-2020.git wacky-racers
+  $ git clone git@eng-git.canterbury.ac.nz:your-userid/wacky-racers.git
 \end{lstlisting}
 
 \item Add a remote URL for the main repository.
 %
 \begin{lstlisting}[breaklines]
-  $ cd wacky-racers 
-  $ git remote add upstream https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2020.git  
+  $ cd wacky-racers
+  $ git remote add upstream https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers.git
 \end{lstlisting}
 %
 Again if you do not want to manually enter your password, you can use:
 %
 \begin{lstlisting}[breaklines]
-  $ cd wacky-racers 
-  $ git remote add upstream git@eng-git.canterbury.ac.nz:wacky-racers/wacky-racers-2020.git    
+  $ cd wacky-racers
+  $ git remote add upstream git@eng-git.canterbury.ac.nz:wacky-racers/wacky-racers.git
 \end{lstlisting}
-%
-If we add more demo code or tweak the instructions in the main
+
+\item If we add more demo code or tweak the instructions in the main
 repository, you can get the updated stuff using:
 %
 \begin{lstlisting}[breaklines]
@@ -386,7 +388,7 @@ repository, you can get the updated stuff using:
 \item USB micro or mini connector for debugging
 \item 3 pin 0.1'' for LED tape (pin 1 5\,V, pin 2 signal, pin 3 ground)
 \item 2 pin 0.1'' for bumper (pin 1 switch, pin 2 ground)
-\item 10 pin IDE for serial wire debug  
+\item 10 pin IDE for serial wire debug
 \item 3 pin JR battery connector (pin 1 GND, pin 2 VBAT, pin 3 GND)
 \item motor connectors (for Racer)
 \item connectors for dastardly stuff
@@ -411,13 +413,13 @@ repository, you can get the updated stuff using:
   \textbf{Note, when debugging your PCBs, we will not help you until
     you show us your printed A3 schematic}.
 
-\item We bet that you will not have enough test points to clip an
-  oscilloscope probe to.  Do not think you can hold the probe tip
-  against an MCU pin.  Ensure you give a meaningful name to the test
-  point.  A ground test point is essential for an oscilloscope earth
-  clip. Keep this clear of other test points since the clip may short
-  against them.  You will probably require at least two ground points.
-  
+\item We bet that you will not have enough test points to clip an oscilloscope
+  probe to.  Do not think you can hold the probe tip against an MCU pin.  Ensure
+  you give a meaningful name to the test point in its comment field.  A ground
+  test point is essential for an oscilloscope earth clip. Keep this clear of
+  other test points since the clip may short against them.  You will probably
+  require at least two ground points.
+
 \item Checking the schematic is the most crucial part of the
   assignment.  If the schematic is wrong then your PCB will be wrong.
   So, schematics must be thoroughly checked by another person.
@@ -435,7 +437,7 @@ repository, you can get the updated stuff using:
 \item It would be useful to have a jumper or two connected to a PIO
   pin so that you can configure your board.  For example, if a jumper
   is in, use the joystick, otherwise use the IMU.
-  
+
 \end{enumerate}
 
 
@@ -448,9 +450,12 @@ repository, you can get the updated stuff using:
 \item It is important that you check footprints for parts they you
   create.  We will impose a 10\% penalty for each rerun of a PCB, say
   due to a footprint mistake.  Get your partner to check.
-  
+
+\item Turn of the test point designators and turn on comments instead. This lets
+  you give them human readable names to make your lives easier.
+
 \item PCB layouts must be thoroughly checked by another person.
-  
+
 \item A PCB track can blow faster than a fuse. So keep high current
   tracks fat and short.
 
@@ -461,7 +466,7 @@ repository, you can get the updated stuff using:
   required.  Follow the manufacturers' guidelines in the datasheets.
 
 \item The switching regulators can interfere with the radios.
-  
+
 \item Use a design rule check to see if any of the following
   constraints are violated:
 %
@@ -490,10 +495,10 @@ final mark.
 
 \item Components can be put through the oven on the reverse side
   although heavy components may need to be glued.
-  
+
 \item Never assume where pin 1 is on an IC; check the datasheet.
   5--10\% of groups will get this wrong.
-  
+
 \end{enumerate}
 
 
@@ -501,11 +506,13 @@ final mark.
 
 \begin{enumerate}
 \item We highly recommend using a personal laptop with Linux installed if
-possible. A virtual machine running on Windows is acceptable for this. You will
-need to check instructions on ecewiki for how to install the required toolchain.
+  possible. A virtual machine running Linux on Windows is acceptable for this.
+  You will need to check instructions on ecewiki for how to install the required
+  toolchain. We advise against using the Windows Subsystem for Linux, rather it
+  is much simpler to fix issues when you just use an actual Linux.
 
-\item We do not support embedded systems development on Windows, but
-  it is possible.
+\item Development on Windows is now possible thanks to Philipp Hoff, however,
+  neither MPH, nor Ben can help with debugging the Windows toolchain.
 
 \item If you are not using version control for this you are foolish.
 
@@ -522,7 +529,7 @@ need to check instructions on ecewiki for how to install the required toolchain.
 
 \item For the first program, do not use batteries or a USB connection.
   The ST-Link adapter will provide 3.3\,V to the MCU.
- 
+
 \item Detailed instructions can be found at
   \url{http://ecewiki.elec.canterbury.ac.nz/mediawiki/index.php/Wacky_racers_software}.
 \end{enumerate}
@@ -533,7 +540,7 @@ need to check instructions on ecewiki for how to install the required toolchain.
 \begin{enumerate}
 \item Start running small programs (such as the provided demo
   programs) to test each feature separately.
-  
+
 \item An oscilloscope is your friend.
 
 \item It is possible to use the GDB debugger but you need to know what
@@ -542,7 +549,7 @@ need to check instructions on ecewiki for how to install the required toolchain.
 \item Drawing a diagram of what you think is happening is highly recommended. A
 simple circuit diagram or timing diagram will often help you realise what you
 have missed and let you fix it without asking for help.
-  
+
 \end{enumerate}
 
 
@@ -588,10 +595,10 @@ have missed and let you fix it without asking for help.
   \href{mailto://ben.mitchell@pg.canterbury.ac.nz}{ben.mitchell@pg.canterbury.ac.nz} if you wish to keep your ideas secret.
 
 \item TAs will be available in the scheduled lab times.  Priority will
-  be given to groups assigned to the current lab session.  We will
+  be given to groups assigned to the current lab session. \textbf{We will
   only provide assistance to students who have a printed A3 schematic
   sheet in front of them and have already tried looking up the problem
-  on \url{https://ecewiki.elec.canterbury.ac.nz}.
+  on \url{https://ecewiki.elec.canterbury.ac.nz}}.
 
 \item Questions pertaining to Altium and surface mount rework will be
   answered by Scott Lloyd (SMT Lab technician) and Diego Ramirez
@@ -600,7 +607,7 @@ have missed and let you fix it without asking for help.
 \item Michael Hayes is really busy pulling all the string behind the
   scenes and so will only help with gnarly problems referred to by the
   TAs!
-  
+
 \end{itemize}
 
 \end{document}
