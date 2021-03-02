@@ -1,7 +1,7 @@
 \documentclass[11pt, a4paper]{article}
 \title{Wacky Racers 2021 Instructions}
 \author{Michael Hayes, Ben Mitchell}
-\date{Version 4.0, \today}
+\date{Version 4.1, \today}
 
 \usepackage[margin=1in]{geometry}
 \usepackage{parskip}
@@ -15,6 +15,9 @@
 \usepackage{tabularx}
 \usepackage{subcaption}
 \usepackage{listings}
+\usepackage{siunitx}
+\usepackage{circuitikz}
+\usepackage{tikz}
 \usetikzlibrary{arrows}
 
 \newcommand{\code}[1]{\texttt{#1}}
@@ -307,6 +310,126 @@ This is assessed after the competition.  The categories are:
 
 Read this section carefully.  There are clues as to how we mark your PCBs at the
 end of the assignment.
+
+
+\subsection{External components}
+
+\subsubsection{Battery}
+
+The battery we provide for the assignment is a 5-cell NiMh battery with a
+\emph{nominal} voltage of \SI{6.0}{\volt}. This battery uses a standard RC servo
+connector: 3 pin 0.1'' (pin 1 GND, pin 2 5V, pin 3 NC). We suggest connecting
+both the first and third pins to ground to allow the battery to be plugged in
+in both orientations. The 461 Altium library has a component named
+`Battery\_HEADER\_3pin' that is suitable to use.
+
+\subsubsection{Radio}
+
+The nRF24 module we provide is actually a tiny PCB with all of the high
+frequency analogue components populated for you. This module breaks out the SPI
+communication pins, the power supply pins, and two signal pins that you will
+need to connect to your microcontroller. The CE and IRQ pins can both go to
+general PIO pins while the SPI pins (MOSI, MISO, SCLK, CSN) need to be connected
+to the SAM4S SPI peripheral.
+
+As this radio is ultimately an analogue circuit and any noise on the power
+supply can affect the signal quality, we recommend using a separate 3V3
+regulator and using a low pass filter to provide the best power.
+
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}
+    \draw (-1, 0) node[left] {\SI{3.3}{\volt}} to[R=\SI{1}{\ohm}, o-] (2, 0)
+    to[C=\SI{10}{\micro\farad}, *-*] (2, -2); 
+    
+    \draw (-1, -2) node[left] {GND} to[short, o-] (2, -2); 
+    \draw (2, 0) to[short] (4, 0); 
+    \draw (2, -2) to[short] (4, -2); 
+    \draw (6, 0.5) -- (4, 0.5) -- (4, -2.5) -- (6, -2.5);
+    \node[right=0.2] at (4, 0) {VCC}; 
+    \node[right=0.2] at (4, -2) {GND}; 
+    \node at (6, -1) {nRF24};
+  \end{circuitikz}
+\end{figure}
+
+\subsubsection{LED Tape}
+
+The LED tape is a string of WS2812 LEDs connected in a line. These LEDs use a
+clever mechanism to pass the RGB data down the string. They are connected in
+series like:
+
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}
+    
+    \draw (0, 0) node[left] {\SI{5}{\volt}} to[short, o-] (13, 0);
+    \draw (0, -4) node[left] {GND} to[short, o-] (13, -4);
+
+    \draw (1, -1) rectangle (4, -3);
+    \draw (5, -1) rectangle (8, -3);
+    \draw (9, -1) rectangle (12, -3);
+
+    \draw (0, -2) node[left] {DIN} to[short, o-] (1, -2) node[right] {DIN};
+    \draw (4, -2) node[left] {DOUT} -- (5, -2) node[right] {DIN};
+    \draw (8, -2) node[left] {DOUT} -- (9, -2) node[right] {DIN};
+    \draw (12, -2) node[left] {DOUT} -- (13, -2);
+
+    \draw (2.5, 0) -- (2.5, -1) node[below] {VCC};
+    \draw (6.5, 0) -- (6.5, -1) node[below] {VCC};
+    \draw (10.5, 0) -- (10.5, -1) node[below] {VCC};
+
+    \draw (2.5, -4) -- (2.5, -3) node[above] {GND};
+    \draw (6.5, -4) -- (6.5, -3) node[above] {GND};
+    \draw (10.5, -4) -- (10.5, -3) node[above] {GND};
+
+  \end{circuitikz}
+\end{figure}
+
+This means you will need to provide a three pin header (0.1" standard header)
+with the pinout: pin 1 \SI{5}{\volt}, pin 2 signal, pin 3 ground. Each
+individual LED has a maximum supply current of \SI{60}{\milli\ampere}
+(\SI{20}{\milli\ampere} per red, green, blue channel). We will provide up to
+half a metre of LED tape to each car or hat, giving a maximum number of 30 LEDs
+to be driven.
+
+
+\subsubsection{Bumper}
+
+The provided bumper senses the contact through a simple limit switch. This
+switch is normally open and on contact will close.
+
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz}
+    
+    \draw (0, 0) to[short, o-*] (2, 0) to[switch] (2, -2) node[ground]{};
+    \draw (2, 0) to[R] (2, 2) node[vcc]{\SI{3.3}{\volt}};
+
+    \draw[blue, dashed] (1.5, -0.5) rectangle (2.5, -1.5);
+    \node[blue, right] at (2.5, -1) {limit switch};
+
+  \end{circuitikz}
+\end{figure}
+
+Note that the pullup resistor shown could simple be the internal pullup resistor
+on a PIO pin. The connector for the limit switch should be a simple 2 pin 0.1"
+header. 
+
+\subsubsection{Buzzer}
+
+The buzzers supplied are passive piezo-electric devices. Applying a voltage
+across the two terminals causes the element to deform. Applying an alternating
+current to the device generates an audible tone. The larger the applied voltage
+differential, the louder the tone becomes. There are plenty of example circuits
+for piezo buzzers available online.
+
+\subsubsection{Motors}
+
+The motors available in the provided chassis are \SI{6}{\volt} DC motors. These
+have a low DC resistance and will take as much current as the DRV8833 motor
+driver can supply. You need to add connectors for the motors, either 2 pin 0.1"
+headers or screw terminals are suggested.
+
 
 
 \subsection{Version control}
