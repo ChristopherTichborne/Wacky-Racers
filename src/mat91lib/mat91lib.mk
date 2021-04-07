@@ -17,7 +17,7 @@ RUN_MODE = ROM
 endif
 
 ifndef OPT
-OPT = -Os
+OPT = -O0
 endif
 
 ifndef TOOLCHAIN

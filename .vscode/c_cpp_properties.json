@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "hat",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-g++.exe",
+            "defines": [
+                "BOARD=hat",
+                "MCU=SAM4S8B"
+            ],
+            "includePath": [
+                "${workspaceFolder}/src/boards/hat",
+                "${workspaceFolder}/src/mat91lib/**",
+                "${workspaceFolder}/src/mmculib/**"
+            ]
+        },
+        {
+            "name": "racer",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-g++.exe",
+            "defines": [
+                "BOARD=racer",
+                "MCU=SAM4S8B"
+            ],
+            "includePath": [
+                "${workspaceFolder}/src/boards/racer",
+                "${workspaceFolder}/src/mat91lib/**",
+                "${workspaceFolder}/src/mmculib/**"
+            ]
+        }
+    ],
+    "version": 4
+}

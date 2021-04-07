@@ -5,7 +5,7 @@
 RUN_MODE = ROM
 
 ifndef OPT
-OPT = -Os
+OPT = -O0
 endif
 
 MMCULIB_DIR = ../../mmculib

@@ -1,0 +1,87 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Make",
+            "type": "shell",
+            "command": "make",
+            "options": {
+                "cwd": "${fileDirname}",
+                "env": {
+                    "BOARD": "${command:cpptools.activeConfigName}",
+                    "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                }
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Make clean",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "options": {
+                "cwd": "${fileDirname}",
+                "env": {
+                    "BOARD": "${command:cpptools.activeConfigName}",
+                    "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                }
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Make program",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "program"
+            ],
+            "options": {
+                "cwd": "${fileDirname}",
+                "env": {
+                    "BOARD": "${command:cpptools.activeConfigName}",
+                    "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                }
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Launch OpenOCD",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/open_openocd.bat",
+            "options": {
+                "cwd": "${workspaceFolder}/src/mat91lib/sam4s/scripts",
+                "env": {
+                    "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                }
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Set bootflash",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "bootflash"
+            ],
+            "options": {
+                "cwd": "${fileDirname}",
+                "env": {
+                    "BOARD": "${command:cpptools.activeConfigName}",
+                    "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                }
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+    ]
+}
