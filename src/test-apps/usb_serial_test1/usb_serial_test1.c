@@ -6,9 +6,7 @@
 #include "delay.h"
 #include <fcntl.h>`
 
-
-#define PACER_RATE 1000
-#define LED_FLASH_RATE 2
+#define HELLO_DELAY 500
 
 static usb_serial_cfg_t usb_serial_cfg =
 {
@@ -17,91 +15,28 @@ static usb_serial_cfg_t usb_serial_cfg =
 };
 
 
-static void
-prompt_command (void)
-{
-    printf ("> ");
-    fflush (stdout);    
-}
-
-
-static void
-process_command (void)
-{
-    char buffer[80];
-    char *str;
-    
-    str = fgets (buffer, sizeof (buffer), stdin);
-    if (! str)
-        return;
-
-    // printf ("<<<%s>>>\n", str);
-    
-    switch (str[0])
-    {
-    case '0':
-        pio_output_set (LED1_PIO, 0);
-        break;
-        
-    case '1':
-        pio_output_set (LED1_PIO, 1);
-        break;
-
-    case 'h':
-        printf ("Hello world!\n");
-        fflush (stdout);
-        break;
-
-    default:
-       break;
-    }
-
-    prompt_command ();
-}
-
-
 int main (void)
 {
     usb_cdc_t usb_cdc;
-    int flash_ticks = 0;
-    int i;
+    int i = 0;
 
-    pio_config_set (LED1_PIO, PIO_OUTPUT_LOW);                
-    pio_config_set (LED2_PIO, PIO_OUTPUT_LOW);                
+    pio_config_set (LED1_PIO, PIO_OUTPUT_LOW);
+    pio_config_set (LED2_PIO, PIO_OUTPUT_HIGH);
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
-    
+
     freopen ("/dev/usb_tty", "a", stdout);
-    freopen ("/dev/usb_tty", "r", stdin);    
-
-    for (i = 0; i < 100; i++)
-    {
-        printf ("Hello world %d\n", i);
-        fflush (stdout);
-        delay_ms (100);
-    }
-
-    // The Linux ttyACM device driver echoes what is sent until
-    // a program such as gtkterm disables the echo.  So we may receive
-    // much of what we sent...
-
-    prompt_command ();
-    
-    pacer_init (PACER_RATE);
+    freopen ("/dev/usb_tty", "r", stdin);
 
     while (1)
     {
-        pacer_wait ();
+        printf ("Hello world %d\n", i++);
+        fflush (stdout);
 
-	flash_ticks++;
-	if (flash_ticks >= PACER_RATE / (LED_FLASH_RATE * 2))
-	{
-	    flash_ticks = 0;
+        pio_output_toggle(LED1_PIO);
+        pio_output_toggle(LED2_PIO);
 
-	    pio_output_toggle (LED2_PIO);
-
-            process_command ();
-	}
+        delay_ms (HELLO_DELAY);
     }
 }

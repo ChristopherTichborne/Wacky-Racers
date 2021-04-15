@@ -1,7 +1,7 @@
 /** @file   target.h
     @author M. P. Hayes, UCECE
     @date   12 February 2018
-    @brief 
+    @brief
 */
 #ifndef TARGET_H
 #define TARGET_H
@@ -23,6 +23,7 @@
 
 /* TWI  */
 #define TWI_TIMEOUT_US_DEFAULT 10000
+#define MPU_ADDRESS 0x68
 
 /* USB  */
 //#define USB_VBUS_PIO PA5_PIO

@@ -1,7 +1,7 @@
 /* File:   radio_rx_test1.c
    Author: M. P. Hayes, UCECE
    Date:   24 Feb 2018
-   Descr: 
+   Descr:
 */
 #include "nrf24.h"
 #include "usb_serial.h"
@@ -18,7 +18,7 @@ static void panic(void)
 }
 
 int main (void)
-{ 
+{
     spi_cfg_t nrf_spi = {
         .channel = 0,
         .clock_speed_kHz = 1000,
@@ -32,31 +32,34 @@ int main (void)
     usb_cdc_t usb_cdc;
 
     /* Configure LED PIO as output.  */
-    pio_config_set(LED1_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LED1_PIO, PIO_OUTPUT_LOW);
     pio_config_set(LED2_PIO, PIO_OUTPUT_LOW);
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init(NULL, "/dev/usb_tty");
-    
+
     freopen("/dev/usb_tty", "a", stdout);
-    freopen("/dev/usb_tty", "r", stdin);    
+    freopen("/dev/usb_tty", "r", stdin);
 
     spi = spi_init(&nrf_spi);
     nrf = nrf24_create(spi, RADIO_CE_PIO, RADIO_IRQ_PIO);
     if (!nrf)
         panic();
-    if (!nrf24_begin(nrf, 4, 0xcccecccecc, 32))
-        panic();  
+
+    // initialize the NRF24 radio with its unique 5 byte address
+    if (!nrf24_begin(nrf, 4, 0x0123456789, 32))
+        panic();
     if (!nrf24_listen(nrf))
         panic();
-    
+
     while (1)
     {
         char buffer[32];
 
         if (nrf24_read(nrf, buffer, sizeof(buffer))) {
             printf("%s\n", buffer);
-            pio_output_set(LED1_PIO, 0);
+            pio_output_toggle(LED2_PIO);
+            pio_output_toggle(LED1_PIO);
         }
     }
 }

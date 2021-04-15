@@ -1,4 +1,4 @@
-PERIPHERALS = pwm
+PERIPHERALS = pwm pit
 
 TARGET = pwm_test2.bin
 

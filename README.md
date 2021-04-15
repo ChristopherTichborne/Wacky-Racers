@@ -57,15 +57,38 @@ $ git clone https://eng-git.canterbury.ac.nz/your-userid/wacky-racers.git
    pull updates/bug fixes we make during the assignment.
 ```
 $ cd wacky-racers
-$ git remote add upstream git@eng-git.canterbury.ac.nz:wacky-racers/wacky-racers.git
+$ git remote add upstream https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers.git
 ```
-(Or again, you can use the HTTPS URL if you haven't bothered with SSH)
 
 7. If we add more demo code or tweak the instructions, you can pull the updated
    stuff using
 ```
 $ git pull upstream master
 ```
+
+Visual Studio Code
+------------------
+
+VS Code is a modern and highly versatile text editor. With the right extensions,
+it can be used to develop code for just about anything! This project has been
+configured for VS Code on the ESL computers (but its relatively easy to modify
+it to work on a home computer, be it Windows, Linux, or Mac). For the simplest
+use, simply go `File -> Open Folder` and point it at the `wacky-racers`
+repository. This will give you access to the build tools (CTRL-SHIFT-B) that
+have been setup. These must be run from inside a program (i.e. ledflash1.c).
+Finally, opening a program and pressing F5 will launch a debugging session that
+will allow the use of breakpoints and variable inspection.
+
+When building your programs, the BOARD configuration variable must be set. In VS
+Code this is done by choosing your C++ configuration (bottom right of the
+window) which by default will be either `hat` or `racer`.
+
+As a side note, the compilation and debugging requires the installation of two
+VS Code extensions:
+* C/C++ (Microsoft)
+* Native Debug (Web Freak)
+  VS Code should automatically prompt you to install these when you open the
+  wacky-racers directory.
 
 Configuration
 -------------
@@ -126,7 +149,7 @@ Each of the makefiles has the following phony targets:
 Demo applications
 -----------------
 
-These are found in the demo-apps directory.  These are board
+These are found in the test-apps directory.  These are board
 independent and thus the specific board must be selected with the
 BOARD environment variable.  Note, when debugging hardware it is much easier
 to use a small test program rather than a large application.

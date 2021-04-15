@@ -42,7 +42,7 @@ static int battery_sensor_init(void)
         .trigger = ADC_TRIGGER_SW,
         .clock_speed_kHz = F_CPU / 4000,
     };
-    
+
     battery_sensor = adc_init(&bat);
 
     return (battery_sensor == 0) ? -1 : 0;
@@ -81,9 +81,9 @@ int main (void)
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
-    
+
     freopen ("/dev/usb_tty", "a", stdout);
-    freopen ("/dev/usb_tty", "r", stdin);    
+    freopen ("/dev/usb_tty", "r", stdin);
 
     // Start up the radio subsystem
 #ifdef RADIO_PWR_EN
@@ -98,15 +98,15 @@ int main (void)
     nrf = nrf24_create(spi, RADIO_CE_PIO, RADIO_IRQ_PIO);
     if (!nrf)
         panic();
-    if (!nrf24_begin(nrf, 4, 0xabcdef0123456789, 32))
+    if (!nrf24_begin(nrf, 4, 0x0123456789, 32))
         panic();
 
     // Set up the buttons
     button_cfg_t tx_cfg = {.pio = TX_BTN};
     button_cfg_t rx_cfg = {.pio = RX_BTN};
 
-    button_t tx_btn = button_init(&tx_cfg);   
-    button_t rx_btn = button_init(&rx_cfg);   
+    button_t tx_btn = button_init(&tx_cfg);
+    button_t rx_btn = button_init(&rx_cfg);
     if (!tx_btn)
         panic();
     if (!rx_btn)
@@ -124,7 +124,7 @@ int main (void)
     while (1)
     {
         char buffer[32];
-        
+
         pacer_wait();
 
         // if the tx button is pushed, stop listening & tx a packet
@@ -147,7 +147,7 @@ int main (void)
             pio_output_set(TX_LED, 0);
         }
 
-        // If we're listening, and there is data available, then 
+        // If we're listening, and there is data available, then
         // pulse the LED low and print the data to the usb port
         if (listening) {
             if (nrf24_read(nrf, buffer, sizeof(buffer))) {

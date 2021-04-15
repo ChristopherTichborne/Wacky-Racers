@@ -3,6 +3,7 @@
    Date:   30 Jan 2020
    Descr:  Test ledtape
 */
+
 #include <pio.h>
 #include "target.h"
 #include "pacer.h"
@@ -10,8 +11,31 @@
 
 #define NUM_LEDS 20
 
+/*
+    This test app shows how to program the WS2318B LED tape.
+    In this example the ledtape_write() function is used to send the appropriate
+    GRB color information down the LED tape. It takes care of all the tricky
+    timings, you just need to feed it an array of color values.
 
-#define LEVEL_SHIFTER_PIO PA17_PIO
+    ledtape_write(
+        pin - This is the pin you want to send the data on. Should be connected
+              to your level shifter.
+        data - This is the array of GRB data (8 bit values, 24 bits per pixel).
+        size - This is the size of the array in bytes.
+    )
+
+    You will also see use of the pacer module. This isn't really needed, but
+    makes it easier to see the data packets being sent if you put the data
+    signal on an oscilloscope.
+
+    Suggestions:
+    * Change the number of LEDs to match yours (or move the NUM_LEDS definition
+      to your target file)
+    * Change the color being set on all the LEDs.
+    * Make an interesting pattern.
+    * Make the pattern scroll down the LEDs (see ledtape-test2 for an option).
+*/
+
 
 int
 main (void)
@@ -27,13 +51,12 @@ main (void)
         leds[i * 3 + 2] = 0;
     }
 
-    // Enable level-shifter
-    pio_config_set (LEVEL_SHIFTER_PIO, PIO_OUTPUT_HIGH);
-    
-    ledtape_init ();
+    pacer_init(10);
 
     while (1)
     {
-        ledtape_write (leds, NUM_LEDS * 3);
+        pacer_wait();
+
+        ledtape_write (LEDTAPE_PIO, leds, NUM_LEDS * 3);
     }
 }
