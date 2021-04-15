@@ -10,7 +10,12 @@
             "request": "launch",
             "target": "${fileDirname}/${fileBasenameNoExtension}.bin",
             "cwd": "${fileDirname}",
-            "gdbpath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-gdb.exe",
+            "windows": {
+                "gdbpath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-gdb.exe",
+            },
+            "linux": {
+                "gdbpath": "/usr/bin/gdb-multiarch",
+            },
             "autorun": [
                 "target remote localhost:3333",
                 "symbol-file ${fileDirname}/${fileBasenameNoExtension}.bin",
