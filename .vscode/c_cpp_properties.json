@@ -6,7 +6,9 @@
             "compilerPath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-g++.exe",
             "defines": [
                 "BOARD=hat",
-                "MCU=SAM4S8B"
+                "MCU=SAM4S8B",
+                "__SAM4S8B__",
+                "__SAM4S__"
             ],
             "includePath": [
                 "${workspaceFolder}/src/boards/hat",
@@ -20,7 +22,9 @@
             "compilerPath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-g++.exe",
             "defines": [
                 "BOARD=racer",
-                "MCU=SAM4S8B"
+                "MCU=SAM4S8B",
+                "__SAM4S8B__",
+                "__SAM4S__"
             ],
             "includePath": [
                 "${workspaceFolder}/src/boards/racer",
