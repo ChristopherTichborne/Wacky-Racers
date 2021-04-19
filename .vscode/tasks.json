@@ -9,7 +9,7 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                         "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
                     }
                 }
@@ -18,9 +18,17 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 }
+            },
+            "osx": {
+                "options": {
+                    "cwd": "${fileDirname}",
+                    "env": {
+                        "BOARD": "${command:cpptools.activeConfigName}",
+                    }
+                },
             },
             "group": "build",
             "problemMatcher": [
@@ -38,8 +46,16 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                         "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                    }
+                },
+            },
+            "osx": {
+                "options": {
+                    "cwd": "${fileDirname}",
+                    "env": {
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 },
             },
@@ -47,7 +63,7 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 },
             },
@@ -65,16 +81,24 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                         "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
                     }
                 }
+            },
+            "osx": {
+                "options": {
+                    "cwd": "${fileDirname}",
+                    "env": {
+                        "BOARD": "${command:cpptools.activeConfigName}",
+                    }
+                },
             },
             "linux": {
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 },
             },
@@ -102,6 +126,13 @@
                     "cwd": "${workspaceFolder}/src/mat91lib/sam4s/scripts",
                 },
             },
+            "osx": {
+                "command": "/usr/local/bin/openocd",
+                "args": ["-f", "sam4s_stlink.cfg"],
+                "options": {
+                    "cwd": "${workspaceFolder}/src/mat91lib/sam4s/scripts",
+                },
+            },
             "group": "build",
             "problemMatcher": []
         },
@@ -116,8 +147,16 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                         "PATH": "C:/ence461/tool-chain/msys64/usr/bin;C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin;C:/ence461/tool-chain/OpenOCD-0.10.0/bin;${env:PATH}"
+                    }
+                },
+            },
+            "osx": {
+                "options": {
+                    "cwd": "${fileDirname}",
+                    "env": {
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 },
             },
@@ -125,7 +164,7 @@
                 "options": {
                     "cwd": "${fileDirname}",
                     "env": {
-                        "BOARD_LONG": "${command:cpptools.activeConfigName}",
+                        "BOARD": "${command:cpptools.activeConfigName}",
                     }
                 },
             },

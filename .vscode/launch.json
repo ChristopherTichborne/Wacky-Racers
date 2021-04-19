@@ -13,6 +13,9 @@
             "windows": {
                 "gdbpath": "C:/ence461/tool-chain/gcc-arm-none-eabi-9-2019-q4/bin/arm-none-eabi-gdb.exe",
             },
+            "osx": {
+                "gdbpath": "/usr/local/bin/arm-none-eabi-gdb"
+            },
             "linux": {
                 "gdbpath": "/usr/bin/gdb-multiarch",
             },
