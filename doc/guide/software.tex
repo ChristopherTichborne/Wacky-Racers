@@ -44,7 +44,7 @@ for an Ubuntu or Mint distribution:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{sudo}\NormalTok{ apt update }\KeywordTok{&&} \FunctionTok{sudo}\NormalTok{ apt upgrade}
+\FunctionTok{$ sudo}\NormalTok{ apt update }\KeywordTok{&&} \FunctionTok{sudo}\NormalTok{ apt upgrade}
 \end{Highlighting}
 \end{Shaded}
 
@@ -53,8 +53,8 @@ you can use the following command:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{brew}\NormalTok{ install openocd git}
-\ExtensionTok{brew}\NormalTok{ cask install gcc-arm-embedded}
+\ExtensionTok{$ brew}\NormalTok{ install openocd git}
+\ExtensionTok{$ brew}\NormalTok{ cask install gcc-arm-embedded}
 \end{Highlighting}
 \end{Shaded}
 
@@ -147,7 +147,7 @@ boards. Each configuration directory contains three files:
 
 \textbf{You will need to edit the target.h file for your board} and set
 the definitions appropriate for your hardware. Here's an excerpt from
-\texttt{target.h}:
+\texttt{target.h} for a hat board:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -198,8 +198,8 @@ SAM4S using serial wire debug (SWD). This connects to your board with a
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
-\NormalTok{$ }\ExtensionTok{openocd}\NormalTok{ -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg}
+\BuiltInTok{$ cd}\NormalTok{ wacky-racers}
+\ExtensionTok{$ openocd}\NormalTok{ -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg}
 \end{Highlighting}
 \end{Shaded}
 
@@ -290,7 +290,7 @@ can define it for the rest of your session using:
 \end{Highlighting}
 \end{Shaded}
 %
-and then just use
+and then just use:
 %
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -298,7 +298,8 @@ and then just use
 \end{Highlighting}
 \end{Shaded}
 
-Note, if you compile with the \texttt{BOARD} environment variable set incorrectly, use
+Note, if you compile with the \texttt{BOARD} environment variable set incorrectly, use:
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{$ }\FunctionTok{make clean}
@@ -343,7 +344,7 @@ When this finishes, one of your LEDs should flash. If so, congrats! If
 not, see \protect\hyperref[troubleshooting]{troubleshooting}.
 
 To reset your SAM4S, you can use:
-
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{$ }\FunctionTok{make}\NormalTok{ reset}
@@ -420,17 +421,17 @@ Apr 30 11:03:50 thing4 kernel: [52704.481357] usb 2-3.3: New USB device strings:
 Apr 30 11:03:50 thing4 kernel: [52704.482060] cdc_acm 2-3.3:1.0: ttyACM0: USB ACM device
 \end{verbatim}
 
-Ignore the errors for now (they have popped up with new Linux kernels
-and I have yet to determine why). If you see
+Ignore the errors for now\footnote{They have popped up with new Linux
+  kernels and we have yet to determine why.}. If you see
 \texttt{ttyACM0:\ USB\ ACM\ device} congrats. If not, see
 \href{USB_debugging}{USB debugging}.
 
 You can now run a \href{Serial_terminal_applications}{serial terminal
-program}. For example,
+program}. For example, on Linux:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{gtkterm}\NormalTok{ -p /dev/ttyACM0}
+\ExtensionTok{$ gtkterm}\NormalTok{ -p /dev/ttyACM0}
 \end{Highlighting}
 \end{Shaded}
 
@@ -625,7 +626,7 @@ this does not reset the peripherals as with a power-on reset.
 
 By default PB4 and PB5 are configured as \url{JTAG} pins. You can turn
 them into PIO pins or use them for TWI1 using:
-
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \PreprocessorTok{#include }\ImportTok{"mcu.h"}
@@ -642,7 +643,7 @@ them into PIO pins or use them for TWI1 using:
 
 The watchdog timer is useful for resetting the SAM4S if it hangs in a
 loop.  It is disabled by default but can be enabled using:
-
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \PreprocessorTok{#include }\ImportTok{"mcu.h"}
@@ -704,7 +705,7 @@ need to:
 
 Again if you do not want to manually enter your password (and have
 ssh-keys uploaded) you can use:
-
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers }
@@ -714,7 +715,7 @@ ssh-keys uploaded) you can use:
 
 Once you have defined the upstream source, to get the updates from the
 main repository use:
-
+%
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{$ }\FunctionTok{git}\NormalTok{ pull upstream master}
@@ -734,26 +735,26 @@ servers and delete the dodgy entry using:
 Note, \textbf{origin} refers to your group project and \textbf{upstream}
 refers to the template project that origin was forked from.
 
-\begin{itemize}
-\item
-  \emph{\url{git} does not update to the latest version of the mat91lib
-  and mmculib submodules}. We are not sure why. As a hack use:
-\end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/mat91lib}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ../mmculib}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ..}
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ demo-apps}
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ clean}
-\end{Highlighting}
-\end{Shaded}
+%% \begin{itemize}
+%% \item
+%%   \emph{\url{git} does not update to the latest version of the mat91lib
+%%   and mmculib submodules}. We are not sure why. As a hack use:
+%% \end{itemize}
+%% %
+%% \begin{Shaded}
+%% \begin{Highlighting}[]
+%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
+%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/mat91lib}
+%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
+%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
+%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ../mmculib}
+%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
+%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
+%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ..}
+%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ demo-apps}
+%% \NormalTok{$ }\FunctionTok{make}\NormalTok{ clean}
+%% \end{Highlighting}
+%% \end{Shaded}
 
 \subsection{Git merging}
 \label{git-merging}
@@ -798,9 +799,9 @@ the \texttt{.bash\_profile} file in your home directory.
 \end{Highlighting}
 \end{Shaded}
 
-By the way, to exit emacs type ctrl-x ctrl-c
+By the way, to exit emacs type ctrl-x ctrl-c, to exit vi or vim type \code{:q!}
 
-\textbf{Please do not edit the files in the mavrlib, mmculib, and
+\textbf{Please do not edit the files in the mat91lib, mmculib, and
 wackylib} directories since this can lead to merge problems in the
 future. If you find a bug or would like additional functionality let MPH
 or one of the TAs know.

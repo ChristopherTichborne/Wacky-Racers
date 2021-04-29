@@ -61,10 +61,18 @@ By default the PB4 and PB5 pins are configured for the JTAG debugger.
 These can be used for general PIO after setting an internal bit.  See
 \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.
 
+The logic levels are set by the voltage on the VDDIO pin (usually
+3.3\,V).  PA12--PA14 and PA26--PA31 can sink/source 4\,mA.  The USB
+pins (PB10--PB11) can sink/source 30\,mA.  The rest can only
+sink/source 2\,mA of current
+
+
 \subsection{USART/UART}\label{usartuart}
 
 The \url{SAM4S} has two USARTs and two UARTs. The USARTs can emulate a
-UART so use them instead.
+UART, have hardware flow control, and have a better driver so they are
+recommended if you need a UART interface.
+
 
 \subsection{PWM}\label{pwm}
 
@@ -74,19 +82,22 @@ PWMHx signals are complementary.
 
 \subsection{TWI}\label{twi}
 
-The \url{SAM4S} has a single TWI peripheral (that can act as a master
-and a slave) with dedicated TWD and TWCK pins. External pull-up
-resistors are required.
+The \url{SAM4S} has two TWI peripherals (that can act as a master and
+a slave) with dedicated TWD and TWCK pins. External pull-up resistors
+are required.  TWI1 shares pins with JTAG; you will need to disable
+JTAG in software.
 
 \subsection{SPI}\label{spi}
 
 The \url{SAM4S} has a single SPI peripheral with dedicated SCK, MISO,
-and MOSI pins. Any PIO pin can be used for the chip select.
+and MOSI pins. Any PIO pin can be used for the chip
+select\footnote{For high speed operation, you should use on of the
+  dedicated chip select pins.}.
 
 \subsection{ADC}\label{adc}
 
 The \url{SAM4S} has a single ADC with a multiplexer to select one of a
-number of analogue inputs.
+number of analogue inputs.  It can sample at 1\,MHz.
 
 \subsection{USB}\label{usb}
 
