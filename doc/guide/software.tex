@@ -1,0 +1,806 @@
+\chapter{Software}
+
+\section{Preparation}
+\label{preparation}
+
+Do not underestimate the effort required to flash your first LED. You
+require:
+
+\begin{itemize}
+\item
+  A computer with \url{git} installed and a useful shell program such as
+  \url{bash}. UC has a \href{http://ucmirror.canterbury.ac.nz/}{mirror}
+  for a variety of Linux distributions; we recommend Ubuntu or Mint.
+\item
+  A working \href{ARM_toolchain}{ARM toolchain} (arm-none-eabi-gcc/g++
+  version 4.9.3 or newer).
+\item
+  \url{OpenOCD} V0.8.0 or later.
+\item
+  An \href{ST-link_programmer}{ST-link programmer} and 10-wire ribbon
+  cable for programming. You can get the adaptor from Scott Lloyd in the
+  SMT lab. You will need to make your own cable (For a grey ribbon
+  cable, align the red stripe with the small arrow denoting pin 1 on the
+  connector. For a rainbow ribbon cable, connect the brown wire to pin
+  1.). There are two variants of the \href{ST-link_programmer}{ST-link
+  programmer} with \textbf{different pinouts} so you may need to
+  customise your programming cable.
+\item
+  Plenty of gumption.
+\end{itemize}
+
+\subsection{Toolchain}
+\label{toolchain}
+
+The required software is installed on computers in the \url{ESL} and
+\url{CAE}. It should run under both Linux and Windows. If there is a
+problem ask the technical staff.
+
+If you are working from a personal Linux computer make sure to update
+your machine to the latest software versions. This is particularly
+important for the ARM toolchain (arm-none-eabi-gcc/g++) which should be
+at version 4.9.3 or newer. You can do this with the following command
+for an Ubuntu or Mint distribution:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ apt update }\KeywordTok{&&} \FunctionTok{sudo}\NormalTok{ apt upgrade}
+\end{Highlighting}
+\end{Shaded}
+
+For MacOS machines that have \href{https://brew.sh}{homebrew} installed,
+you can use the following command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{brew}\NormalTok{ install openocd git}
+\ExtensionTok{brew}\NormalTok{ cask install gcc-arm-embedded}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Project forking}
+\label{project-forking}
+
+The example software is hosted on the eng-git \url{Git} server at
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}}.
+Your group leader should have forked this template project. This creates
+your own group copy of the project on the eng-git server that you can
+modify, add members, etc. To fork the project:
+
+\begin{enumerate}
+\item
+  Go to
+  \href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}}.
+\item
+  Click the `Fork' button. This will create a copy of the main repository
+  for the project.
+\item
+  Click on the `Settings' menu then click the `Expand' button for
+  `Sharing and permissions'. Change `Project Visibility' to `Private'.
+\item
+  Click on the `Members' menu and add group members as Developers.
+\end{enumerate}
+
+\subsection{Project cloning}
+\label{project-cloning}
+
+Once your project has been forked from the template project, each group
+member needs to clone it. This makes a local copy of your project on
+your computer. \textbf{If inside the university, you will need to
+\href{UC_internet_enabler}{enable the internet}} since two
+\href{git_submodules}{git submodules} are required.
+
+If you are using an ECE computer, it is advised that you clone the
+project on to a removable USB flash drive. This will make git operations
+and compilation a 100 times faster than using the networked file system.
+
+There are two ways to clone the project. If you are impatient and do not
+mind having to enter a username and password for every git pull and push
+operation use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers}
+\end{Highlighting}
+\end{Shaded}
+
+Otherwise, set up \url{ssh-keys} and use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone git@eng-git.canterbury.ac.nz:groupleader-userid/wacky-racers-2021.git wacky-racers}
+\end{Highlighting}
+\end{Shaded}
+
+Note, the recursive option should clone the submodules \url{mmculib} and
+\url{mat91lib} from github.com.
+
+You can several different cloned copies of your project in different
+directories. Sometimes if you feel that the world, and \url{git} in
+particular, is against you, clone a new copy, using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers-new}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Configuration}
+\label{configuration}
+
+Each board has different PIO definitions and requires its own
+configuration information. The \texttt{wacky-racers/src/boards}
+directory contains a number of configurations; one for the hat and racer
+boards. Each configuration directory contains three files:
+
+\begin{itemize}
+\item
+  \texttt{board.mk} is a makefile fragment that specifies the MCU model,
+  optimisation level, etc.
+\item
+  \texttt{target.h} is a C header file that defines the PIO pins and
+  clock speeds.
+\item
+  \texttt{config.h} is a C header file that wraps target.h. It's purpose
+  is for porting to different compilers.
+\end{itemize}
+
+\textbf{You will need to edit the target.h file for your board} and set
+the definitions appropriate for your hardware. Here's an excerpt from
+\texttt{target.h}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/* USB  */}
+\PreprocessorTok{#define USB_VBUS_PIO PA5_PIO}
+
+\CommentTok{/* ADC  */}
+\PreprocessorTok{#define ADC_BATTERY PB3_PIO}
+\PreprocessorTok{#define ADC_JOYSTICK_X PB2_PIO}
+\PreprocessorTok{#define ADC_JOYSTICK_Y PB1_PIO}
+
+\CommentTok{/* IMU  */}
+\PreprocessorTok{#define IMU_INT_PIO PA0_PIO}
+
+\CommentTok{/* LEDs  */}
+\PreprocessorTok{#define LED1_PIO PA20_PIO}
+\PreprocessorTok{#define LED2_PIO PA23_PIO}
+\end{Highlighting}
+\end{Shaded}
+
+\section{First program}
+\label{first-program}
+
+Your first program to test your board should only flash an LED (the
+hello world equivalent for embedded systems). The key to testing new
+hardware is to have many programs that only do one simple task each.
+
+\subsection{OpenOCD}
+\label{openocd}
+
+\url{OpenOCD} is used to program the SAM4S. For this assignment, we are
+using a \href{ST-link_programmer}{ST-link programmer} to connect to the
+SAM4S using serial wire debug (SWD). This connects to your board with a
+10-wire ribbon cable and an \href{IDC_connector}{IDC connector}.
+
+\begin{enumerate}
+\item
+  Before you start, disconnect the battery and other cables from your
+  PCB.
+\item
+  Connect a 10-wire ribbon cable from the
+  \href{ST-link_programmer}{ST-link programmer} to the programming
+  header on your PCB. This will provide 3.3 V to your board so your
+  green power LED should light.
+\item
+  Open a \textbf{new terminal window} and start \url{OpenOCD}.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
+\NormalTok{$ }\ExtensionTok{openocd}\NormalTok{ -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg}
+\end{Highlighting}
+\end{Shaded}
+
+All going well, the last line output from \url{OpenOCD} should be:
+
+\begin{verbatim}
+Info : sam4.cpu: hardware has 6 breakpoints, 4 watchpoints
+\end{verbatim}
+
+Congrats if you get this! It means you have correctly soldered your
+SAM4S. If not, do not despair and do not remove your SAM4S. Instead,
+see \protect\hyperref[troubleshooting]{troubleshooting}.
+
+
+\subsection{LED flash program}
+\label{led-flash-program}
+
+For your first program, use
+\texttt{wacky-racers/src/demo-apps/led\_test1/led\_test1.c}. The macros
+\texttt{LED1\_PIO} and \texttt{LED2\_PIO} need to be defined in
+\texttt{target.h} (see
+\protect\hyperref[configuration]{configuration}). If your LEDs are
+active high, replace \texttt{ActiveLow} with \texttt{ActiveHigh}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/* File:   led_test1.c}
+\CommentTok{   Author: M. P. Hayes, UCECE}
+\CommentTok{   Date:   25 Feb 2018}
+\CommentTok{   Descr: }
+\CommentTok{*/}
+\PreprocessorTok{#include }\ImportTok{"led.h"}
+\PreprocessorTok{#include }\ImportTok{"pacer.h"}
+
+\PreprocessorTok{#define PACER_RATE 10}
+
+\DataTypeTok{int}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
+\NormalTok{\{}
+\NormalTok{    led_cfg_t led1 = \{LED1_PIO, }\DecValTok{0}\NormalTok{\};}
+\NormalTok{    led_cfg_t led2 = \{LED2_PIO, }\DecValTok{0}\NormalTok{\};}
+
+\NormalTok{    pacer_init(PACER_RATE);}
+\NormalTok{    led_init(&led1);}
+\NormalTok{    led_init(&led2);}
+
+\NormalTok{    led_set (&led1, }\DecValTok{1}\NormalTok{);}
+
+    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
+\NormalTok{    \{}
+\NormalTok{        pacer_wait ();}
+\NormalTok{        led_toggle (&led2);}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Compilation}
+\label{compilation}
+
+Due to the many files required, compilation is performed using
+makefiles.
+
+The demo test programs are generic and you need to specify which board
+you are compiling them for. The board configuration file can be chosen
+dynamically by defining the environment variable \texttt{BOARD}. For
+example,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/test-apps/ledflash1}
+\NormalTok{$ }\VariableTok{BOARD=}\NormalTok{racer }\FunctionTok{make}
+\end{Highlighting}
+\end{Shaded}
+
+If all goes well, you should see at the end:
+
+\begin{verbatim}
+   text    data     bss     dec     hex filename
+  19432    2420    2732   24584    6008 led_test1.bin
+\end{verbatim}
+
+To avoid having to specify the environment variable \texttt{BOARD}, you
+can define it for the rest of your session using:
+%
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{export} \VariableTok{BOARD=}\NormalTok{racer}
+\end{Highlighting}
+\end{Shaded}
+%
+and then just use
+%
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make}
+\end{Highlighting}
+\end{Shaded}
+
+Note, if you compile with the \texttt{BOARD} environment variable set incorrectly, use
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make clean}
+\NormalTok{$ }\FunctionTok{make}  
+\end{Highlighting}
+\end{Shaded}
+%
+to delete all the object files and rebuild.
+
+
+\subsection{Booting from flash memory}
+\label{booting-from-flash-memory}
+
+By default the SAM4S runs a bootloader program stored in ROM. The SAM4S
+needs to be configured to run your application in flash memory.
+
+If \url{OpenOCD} is running you can do this with:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ bootflash}
+\end{Highlighting}
+\end{Shaded}
+
+Unless you force a complete erasure of the SAM4S flash memory by
+connecting the \texttt{ERASE} pin to 3.3 V, you will not need to repeat
+this command.
+
+\subsection{Programming}
+\label{programming}
+
+If \url{OpenOCD} is running you can store your program in the flash
+memory of the \url{SAM4S} using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ program}
+\end{Highlighting}
+\end{Shaded}
+
+When this finishes, one of your LEDs should flash. If so, congrats! If
+not, see \protect\hyperref[troubleshooting]{troubleshooting}.
+
+To reset your SAM4S, you can use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ reset}
+\end{Highlighting}
+\end{Shaded}
+
+\section{USB interfacing}
+\label{usb-interfacing}
+
+To help debug your programs, it is is wise to set up \href{USB_CDC}{USB
+CDC}. For example, here's the code for
+\texttt{wacky-racers/src/demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/* File:   usbserial_hello1.c}
+\CommentTok{   Author: M. P. Hayes, UCECE}
+\CommentTok{   Date:   22 Feb 2018}
+\CommentTok{*/}
+\PreprocessorTok{#include }\ImportTok{<stdio.h>}
+\PreprocessorTok{#include }\ImportTok{"usb_serial.h"}
+\PreprocessorTok{#include }\ImportTok{"delay.h"}
+
+\DataTypeTok{static}\NormalTok{ usb_serial_cfg_t usb_serial_cfg =}
+\NormalTok{\{}
+\NormalTok{    .read_timeout_us = }\DecValTok{1}\NormalTok{,}
+\NormalTok{    .write_timeout_us = }\DecValTok{1}\NormalTok{,}
+\NormalTok{\};}
+
+\DataTypeTok{int}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
+\NormalTok{\{}
+    \DataTypeTok{int}\NormalTok{ i;}
+
+    \CommentTok{// Create non-blocking tty device for USB CDC connection.}
+\NormalTok{    usb_serial_init (&usb_serial_cfg, }\StringTok{"/dev/usb_tty"}\NormalTok{);}
+    
+    \CommentTok{// Redirect printf to USB serial}
+\NormalTok{    freopen (}\StringTok{"/dev/usb_tty"}\NormalTok{, }\StringTok{"a"}\NormalTok{, stdout);}
+\NormalTok{    freopen (}\StringTok{"/dev/usb_tty"}\NormalTok{, }\StringTok{"r"}\NormalTok{, stdin);    }
+
+    \ControlFlowTok{for}\NormalTok{ (i = }\DecValTok{0}\NormalTok{; i < }\DecValTok{100}\NormalTok{; i++)}
+\NormalTok{    \{}
+\NormalTok{        printf (}\StringTok{"Hello world %d}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, i);}
+\NormalTok{        fflush (stdout);}
+\NormalTok{        delay_ms (}\DecValTok{100}\NormalTok{);}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+To get this to work you need to compile it and program the SAM4S using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers/src/demo-apps/usbserial_hello1}
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ program}
+\end{Highlighting}
+\end{Shaded}
+
+You then need to connect your computer to the USB connector on your PCB.
+If you are running Linux, run
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{dmesg}
+\end{Highlighting}
+\end{Shaded}
+
+This should say something like:
+
+\begin{verbatim}
+Apr 30 11:03:50 thing4 kernel: [52704.481352] usb 2-3.3: New USB device found, idVendor=03eb, idProduct=6202
+Apr 30 11:03:50 thing4 kernel: [52704.481357] usb 2-3.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 30 11:03:50 thing4 kernel: [52704.482060] cdc_acm 2-3.3:1.0: ttyACM0: USB ACM device
+\end{verbatim}
+
+Ignore the errors for now (they have popped up with new Linux kernels
+and I have yet to determine why). If you see
+\texttt{ttyACM0:\ USB\ ACM\ device} congrats. If not, see
+\href{USB_debugging}{USB debugging}.
+
+You can now run a \href{Serial_terminal_applications}{serial terminal
+program}. For example,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{gtkterm}\NormalTok{ -p /dev/ttyACM0}
+\end{Highlighting}
+\end{Shaded}
+
+All going well, this will repeatedly print 'Hello world'.
+
+If you get an error 'device is busy', it is likely that the ModemManager
+program has automatically connected to your device on the sly. This
+program should be disabled on the ECE computers. For more about this and
+using other operating systems, search for USB CDC on ecewiki.
+
+\section{Test programs}
+\label{test-programs}
+
+There are a number of test programs in the directory
+\texttt{wacky-racers/demo-apps}. Where possible these are written to be
+independent of the target board using configuration files (see
+\protect\hyperref[configuration]{configuration}).
+
+\subsection{PWM test}
+\label{pwm-test}
+
+The program
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\texttt{src/test-apps/pwm\_test2/pwm\_test2.c}}
+provides an example of driving PWM signals. Notes:
+%
+\begin{enumerate}
+\item
+  This is for a different H-bridge module that requires two PWM signals
+  and forward/reverse signals. You will need to generate four PWM
+  signals or be clever with two PWM signals.
+\item
+  The \texttt{pwm\_cfg\_t} structure configures the frequency, duty
+  cycle and alignment of the output PWM.
+\end{enumerate}
+
+The most likely problem is that you have not used a PIO pin that can be
+driven as a PWM output. The SAM4S can generate four independent hardware
+PWM signals. See
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\texttt{src/mat91lib/pwm/pwm.c}}
+for a list of supported PIO pins. Note, PA16, PA30, and PB13 are
+different options for PWM2.
+
+To drive the motors you will need to use a
+\href{bench_power_supply}{bench power supply}. Start with the current
+limit set at 100\,mA maximum in case there are any board shorts.
+When all is well, you can increase the current limit.
+
+\subsection{IMU test}
+\label{imu-test}
+
+The program
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\texttt{wacky-racers/src/demo-apps/imu\_test1/imu\_test1.c}}
+provides an example of using the MPU9250 IMU. All going well, this
+prints three 16-bit acceleration values per line to USB CDC. Tip your
+board over, and the the third (z-axis) value should go negative since
+this measures the effect of gravity on a little mass inside the IMU
+pulling on a spring.
+
+If you get 'Cannot detect IMU' the main reasons are:
+
+\begin{enumerate}
+\item
+  You have specified the incorrect address. Use \texttt{MPU\_0} if the
+  AD0 pin is connected to ground otherwise use \texttt{MPU\_1}.
+\item
+  You are using TWI1. The PB4 and PB5 pins used by TWI1 default to JTAG
+  pins. See \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.
+\item
+  You do not have TWI/I2C pull-up resistors connected to 3V3 or the
+  wrong resistor values. Use a scope to look at the signals TWCK/SCLK
+  and TWD/SDA.
+\item
+  Check that the auxiliary \url{I2C} bus signals are not connected
+  (otherwise the magnetometer will not respond).  
+\item
+  You have a soldering problem. Try pressing on a side of the IMU with a
+  fingernail to see if it starts working.
+\end{enumerate}
+
+If you reset the \url{SAM4S} in the middle of a transaction with the
+IMU, the IMU gets confused and holds the SDA/TWD line low. This requires
+recycling of the power or sending out some dummy clocks on the SCL/TWCK
+signal.
+
+
+\subsection{Radio test}
+\label{radio-test}
+
+The program
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\texttt{wacky-racers/src/demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
+provides an example of using the radio as a transmitter.
+
+The companion program
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\texttt{wacky-racers/src/demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
+provides an example of using the radio as a receiver.
+
+Notes:
+%
+\begin{enumerate}
+\item
+  Both programs must use the same RF channel and the same address. Some
+  RF channels are better than others since some overlap with \url{WiFi}
+  and \url{Bluetooth}. The address is used to distinguish devices
+  operating on the same channel. Note, the transmitter expects an
+  acknowledge from a receiver on the same address and channel.
+\item
+  The radio `write` method blocks waiting for an auto-acknowledgement
+  from the receiver device. This acknowledgement is performed in
+  hardware. If no acknowledgement is received, it retries for up to 15
+  times. The auto-acknowledgement and number of retries can be
+  configured in software.
+\end{enumerate}
+
+If you cannot communicate between your hat and racer boards, try
+communicating with the radio test modules Scott Lloyd has in the SMT
+lab.
+
+\section{Your hat/racer program}
+\label{your-hatracer-program}
+
+There is skeleton code, see
+\texttt{wacky-racers/src/wacky-apps/hat/hat.c} and
+\texttt{wacky-racers/src/wacky-apps/racer/racer.c}. We recommend that
+build your programs incrementally and that you poll your devices with a
+paced loop and not use interrupts. It is a good idea to disable the
+watchdog timer until you have robust code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{#include }\ImportTok{<stdio.h>}
+\PreprocessorTok{#include }\ImportTok{<math.h>}
+\PreprocessorTok{#include }\ImportTok{"mcu.h"}
+\PreprocessorTok{#include }\ImportTok{"pacer.h"}
+
+\CommentTok{// Set to the desired polling rate.}
+\PreprocessorTok{#define PACER_RATE 1000}
+
+\DataTypeTok{int}
+\NormalTok{main (}\DataTypeTok{void}\NormalTok{)}
+\NormalTok{\{}
+    \CommentTok{// If you are using PB4 or PB5 (say for TWI1) uncomment the next line.}
+    \CommentTok{// mcu_jtag_disable ();    }
+
+\NormalTok{    pacer_init (PACER_RATE);    }
+    
+\NormalTok{    mcu_watchdog_enable ();}
+
+    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
+\NormalTok{    \{}
+\NormalTok{        pacer_wait ();}
+
+\NormalTok{        mcu_watchdog_reset ();}
+
+        \CommentTok{/* Do your stuff here...  */}
+        
+\NormalTok{    \}}
+    
+    \ControlFlowTok{return} \DecValTok{0}\NormalTok{;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Debugging}
+\label{debugging}
+
+If \url{OpenOCD} is running, a running program can be debugged using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ debug}
+\end{Highlighting}
+\end{Shaded}
+
+This starts \url{GDB} and attaches to the target MCU. \url{GDB} is a
+command line debugger but there are many GUI programs that will control
+it, for example, \url{vscode} and \url{geany} have plugins.
+
+\url{GDB} allows you to inspect the CPU registers, memory, set
+breakpoints, set watchpoints, and much more. The only gnarly thing is
+that when compiling with optimisation, the compiler may reorder
+statements or even remove them. Debugging embedded systems is also made
+difficult by the asynchronous nature of I/O.
+
+You can reset your program using the GDB `jump reset` command. However,
+this does not reset the peripherals as with a power-on reset.
+
+\section{Howtos}
+\label{howtos}
+
+\subsection{Disabling JTAG pins}
+\label{disabling-jtag-pins}
+
+By default PB4 and PB5 are configured as \url{JTAG} pins. You can turn
+them into PIO pins or use them for TWI1 using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{#include }\ImportTok{"mcu.h"}
+
+\DataTypeTok{void}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
+\NormalTok{\{}
+\NormalTok{    mcu_jtag_disable ();}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Watchdog timer}
+\label{watchdog-timer}
+
+The watchdog timer is useful for resetting the SAM4S if it hangs in a
+loop.  It is disabled by default but can be enabled using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{#include }\ImportTok{"mcu.h"}
+
+\DataTypeTok{void}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
+\NormalTok{\{}
+\NormalTok{    mcu_watchdog_enable ();}
+   
+    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
+\NormalTok{    \{}
+         \CommentTok{/* Do your stuff here.  */}
+
+\NormalTok{         mcu_watchdog_reset ();}
+\NormalTok{    \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Under the bonnet}
+\label{under-the-bonnet}
+
+wackylib is a library of C files that tries to hide some of the
+complexity of the underlying software.
+
+mmculib is a library of C drivers, mostly for performing high-level I/O.
+It is written to be microcontroller neutral.
+
+mat91lib is a library of C drivers specifically for interfacing with the
+peripherals of Atmel AT91 microcontrollers such as the
+\href{Atmel_SAM4S}{Atmel SAM4S}. It provides the hardware abstraction
+layer.
+
+The building is controlled by \texttt{mat91lib/mat91lib.mk}. This is a
+makefile fragment loaded by \texttt{mmculib/mmculib.mk}.
+\texttt{mat91lib/mat91lib.mk} loads other makefile fragments for each
+peripheral or driver required. It also automatically generates
+dependency files for the gazillions of other files that are required to
+make things work.
+
+\section{Git}
+\label{git}
+
+To properly use git you should commit and push often. The smaller the
+changes and the more often you make per commit, the smaller the chance
+of the dreaded merge conflict.
+
+\subsection{Git pulling from upstream}
+\label{git-pulling-from-upstream}
+
+To be able to get updates if the template project is modified you will
+need to:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers }
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote add upstream https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021.git  }
+\end{Highlighting}
+\end{Shaded}
+
+Again if you do not want to manually enter your password (and have
+ssh-keys uploaded) you can use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers }
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote add upstream git@eng-git.canterbury.ac.nz:mph/wacky-racers-2021.git    }
+\end{Highlighting}
+\end{Shaded}
+
+Once you have defined the upstream source, to get the updates from the
+main repository use:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull upstream master}
+\end{Highlighting}
+\end{Shaded}
+
+If you enter the wrong URL make a mistake, you can list the remote
+servers and delete the dodgy entry using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote -v}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote rm upstream}
+\end{Highlighting}
+\end{Shaded}
+
+Note, \textbf{origin} refers to your group project and \textbf{upstream}
+refers to the template project that origin was forked from.
+
+\begin{itemize}
+\item
+  \emph{\url{git} does not update to the latest version of the mat91lib
+  and mmculib submodules}. We are not sure why. As a hack use:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/mat91lib}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ../mmculib}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ..}
+\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ demo-apps}
+\NormalTok{$ }\FunctionTok{make}\NormalTok{ clean}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Git merging}
+\label{git-merging}
+
+The bane of all version control programs is dealing with a merge
+conflict. You can reduce the chance of this happening by committing and
+pushing faster than other people in your group.
+
+If you get a message such as:
+
+\begin{verbatim}
+From https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021
+ * branch            master     -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+    src/demo-apps/imu_test1/imu_test1.c
+Please, commit your changes or stash them before you can merge.
+\end{verbatim}
+
+what you should so is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ stash}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ stash pop}
+\CommentTok{# You may now have a merge error.  You will now have to edit the offending file, in this case imu_test1.c}
+\CommentTok{# Once the file has been fixed}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ add src/demo-apps/imu_test1/imu_test1.c}
+\NormalTok{$ }\FunctionTok{git}\NormalTok{ commit -m }\StringTok{"Fix merge"}
+\end{Highlighting}
+\end{Shaded}
+
+Sometimes when you do a git pull you will be thrown into a text editor
+to type a merge comment. The choice of editor is controlled by an
+environment variable \texttt{EDITOR}. On the ECE computers this defaults
+to emacs. You can changed this by adding a line such as the following to
+the \texttt{.bash\_profile} file in your home directory.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{export} \VariableTok{EDITOR=}\NormalTok{geany}
+\end{Highlighting}
+\end{Shaded}
+
+By the way, to exit emacs type ctrl-x ctrl-c
+
+\textbf{Please do not edit the files in the mavrlib, mmculib, and
+wackylib} directories since this can lead to merge problems in the
+future. If you find a bug or would like additional functionality let MPH
+or one of the TAs know.
