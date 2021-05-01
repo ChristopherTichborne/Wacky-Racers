@@ -4,7 +4,7 @@
 #include "sys.h"
 #include "pacer.h"
 #include "delay.h"
-#include <fcntl.h>`
+#include <fcntl.h>
 
 #define HELLO_DELAY 500
 
