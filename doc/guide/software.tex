@@ -42,21 +42,17 @@ important for the ARM toolchain (arm-none-eabi-gcc/g++) which should be
 at version 4.9.3 or newer. You can do this with the following command
 for an Ubuntu or Mint distribution:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{$ sudo}\NormalTok{ apt update }\KeywordTok{&&} \FunctionTok{sudo}\NormalTok{ apt upgrade}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ sudo apt update && sudo apt upgrade}
+\end{minted}
 
 For MacOS machines that have \href{https://brew.sh}{homebrew} installed,
 you can use the following command:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{$ brew}\NormalTok{ install openocd git}
-\ExtensionTok{$ brew}\NormalTok{ cask install gcc-arm-embedded}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ brew install openocd git}
+$ brew cask install gcc-arm-embedded}
+\end{minted}
 
 \subsection{Project forking}
 \label{project-forking}
@@ -97,20 +93,16 @@ and compilation a 100 times faster than using the networked file system.
 There are two ways to clone the project. If you are impatient and do not
 mind having to enter a username and password for every git pull and push
 operation use:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers}
-\end{Highlighting}
-\end{Shaded}
+%
+\begin{minted}{bash}
+$ git clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers
+\end{minted}
 
 Otherwise, set up \url{ssh-keys} and use:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone git@eng-git.canterbury.ac.nz:groupleader-userid/wacky-racers-2021.git wacky-racers}
-\end{Highlighting}
-\end{Shaded}
+%
+\begin{minted}{bash}
+$ git clone git@eng-git.canterbury.ac.nz:groupleader-userid/wacky-racers-2021.git wacky-racers
+\end{minted}
 
 Note, the recursive option should clone the submodules \url{mmculib} and
 \url{mat91lib} from github.com.
@@ -119,11 +111,10 @@ You can several different cloned copies of your project in different
 directories. Sometimes if you feel that the world, and \url{git} in
 particular, is against you, clone a new copy, using:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers-new}
-\end{Highlighting}
-\end{Shaded}
+
+\begin{minted}{bash}
+$ git clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers-new
+\end{minted}
 
 \subsection{Configuration}
 \label{configuration}
@@ -149,24 +140,22 @@ boards. Each configuration directory contains three files:
 the definitions appropriate for your hardware. Here's an excerpt from
 \texttt{target.h} for a hat board:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{/* USB  */}
-\PreprocessorTok{#define USB_VBUS_PIO PA5_PIO}
+\begin{minted}{C}
+/* USB  */
+#define USB_VBUS_PIO PA5_PIO
 
-\CommentTok{/* ADC  */}
-\PreprocessorTok{#define ADC_BATTERY PB3_PIO}
-\PreprocessorTok{#define ADC_JOYSTICK_X PB2_PIO}
-\PreprocessorTok{#define ADC_JOYSTICK_Y PB1_PIO}
+/* ADC  */
+#define ADC_BATTERY PB3_PIO
+#define ADC_JOYSTICK_X PB2_PIO
+#define ADC_JOYSTICK_Y PB1_PIO
 
-\CommentTok{/* IMU  */}
-\PreprocessorTok{#define IMU_INT_PIO PA0_PIO}
+/* IMU  */
+#define IMU_INT_PIO PA0_PIO
 
-\CommentTok{/* LEDs  */}
-\PreprocessorTok{#define LED1_PIO PA20_PIO}
-\PreprocessorTok{#define LED2_PIO PA23_PIO}
-\end{Highlighting}
-\end{Shaded}
+/* LEDs  */
+#define LED1_PIO PA20_PIO
+#define LED2_PIO PA23_PIO
+\end{minted}
 
 \section{First program}
 \label{first-program}
@@ -196,12 +185,10 @@ SAM4S using serial wire debug (SWD). This connects to your board with a
   Open a \textbf{new terminal window} and start \url{OpenOCD}.
 \end{enumerate}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{$ cd}\NormalTok{ wacky-racers}
-\ExtensionTok{$ openocd}\NormalTok{ -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ cd wacky-racers
+$ openocd -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg
+\end{minted}
 
 All going well, the last line output from \url{OpenOCD} should be:
 
@@ -224,37 +211,35 @@ For your first program, use
 \protect\hyperref[configuration]{configuration}). If your LEDs are
 active high, replace \texttt{ActiveLow} with \texttt{ActiveHigh}.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{/* File:   led_test1.c}
-\CommentTok{   Author: M. P. Hayes, UCECE}
-\CommentTok{   Date:   25 Feb 2018}
-\CommentTok{   Descr: }
-\CommentTok{*/}
-\PreprocessorTok{#include }\ImportTok{"led.h"}
-\PreprocessorTok{#include }\ImportTok{"pacer.h"}
+\begin{minted}{C}
+/* File:   led_test1.c
+   Author: M. P. Hayes, UCECE
+   Date:   25 Feb 2018
+   Descr: 
+*/
+#include "led.h"
+#include "pacer.h"
 
-\PreprocessorTok{#define PACER_RATE 10}
+#define PACER_RATE 10
 
-\DataTypeTok{int}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
-\NormalTok{\{}
-\NormalTok{    led_cfg_t led1 = \{LED1_PIO, }\DecValTok{0}\NormalTok{\};}
-\NormalTok{    led_cfg_t led2 = \{LED2_PIO, }\DecValTok{0}\NormalTok{\};}
+int main (void)
+{
+    led_cfg_t led1 = {LED1_PIO, 0;}
+    led_cfg_t led2 = {LED2_PIO, 0;}
 
-\NormalTok{    pacer_init(PACER_RATE);}
-\NormalTok{    led_init(&led1);}
-\NormalTok{    led_init(&led2);}
+    pacer_init(PACER_RATE);
+    led_init(&led1);
+    led_init(&led2);
 
-\NormalTok{    led_set (&led1, }\DecValTok{1}\NormalTok{);}
+    led_set (&led1, 1);
 
-    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
-\NormalTok{    \{}
-\NormalTok{        pacer_wait ();}
-\NormalTok{        led_toggle (&led2);}
-\NormalTok{    \}}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+    while (1)
+    {
+        pacer_wait ();
+        led_toggle (&led2);
+    }
+}
+\end{minted}
 
 \subsection{Compilation}
 \label{compilation}
@@ -265,17 +250,15 @@ makefiles.
 The demo test programs are generic and you need to specify which board
 you are compiling them for. The board configuration file can be chosen
 dynamically by defining the environment variable \texttt{BOARD}. For
-example,
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/test-apps/ledflash1}
-\NormalTok{$ }\VariableTok{BOARD=}\NormalTok{racer }\FunctionTok{make}
-\end{Highlighting}
-\end{Shaded}
+example:
+%
+\begin{minted}{bash}
+$ cd src/test-apps/ledflash1
+$ BOARD=racer make
+\end{minted}
 
 If all goes well, you should see at the end:
-
+%
 \begin{verbatim}
    text    data     bss     dec     hex filename
   19432    2420    2732   24584    6008 led_test1.bin
@@ -284,28 +267,22 @@ If all goes well, you should see at the end:
 To avoid having to specify the environment variable \texttt{BOARD}, you
 can define it for the rest of your session using:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{export} \VariableTok{BOARD=}\NormalTok{racer}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ export BOARD=racer
+\end{minted}
 %
 and then just use:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make
+\end{minted}
 
 Note, if you compile with the \texttt{BOARD} environment variable set incorrectly, use:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make clean}
-\NormalTok{$ }\FunctionTok{make}  
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make clean
+$ make  
+\end{minted}
 %
 to delete all the object files and rebuild.
 
@@ -318,11 +295,9 @@ needs to be configured to run your application in flash memory.
 
 If \url{OpenOCD} is running you can do this with:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ bootflash}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make bootflash
+\end{minted}
 
 Unless you force a complete erasure of the SAM4S flash memory by
 connecting the \texttt{ERASE} pin to 3.3 V, you will not need to repeat
@@ -334,22 +309,18 @@ this command.
 If \url{OpenOCD} is running you can store your program in the flash
 memory of the \url{SAM4S} using:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ program}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make program
+\end{minted}
 
 When this finishes, one of your LEDs should flash. If so, congrats! If
 not, see \protect\hyperref[troubleshooting]{troubleshooting}.
 
 To reset your SAM4S, you can use:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ reset}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make reset
+\end{minted}
 
 \section{USB interfacing}
 \label{usb-interfacing}
@@ -358,63 +329,57 @@ To help debug your programs, it is is wise to set up \href{USB_CDC}{USB
 CDC}. For example, here's the code for
 \texttt{wacky-racers/src/demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{/* File:   usbserial_hello1.c}
-\CommentTok{   Author: M. P. Hayes, UCECE}
-\CommentTok{   Date:   22 Feb 2018}
-\CommentTok{*/}
-\PreprocessorTok{#include }\ImportTok{<stdio.h>}
-\PreprocessorTok{#include }\ImportTok{"usb_serial.h"}
-\PreprocessorTok{#include }\ImportTok{"delay.h"}
+\begin{minted}{C}
+/* File:   usbserial_hello1.c
+   Author: M. P. Hayes, UCECE
+   Date:   22 Feb 2018
+*/
+#include <stdio.h>
+#include "usb_serial.h"
+#include "delay.h"
 
-\DataTypeTok{static}\NormalTok{ usb_serial_cfg_t usb_serial_cfg =}
-\NormalTok{\{}
-\NormalTok{    .read_timeout_us = }\DecValTok{1}\NormalTok{,}
-\NormalTok{    .write_timeout_us = }\DecValTok{1}\NormalTok{,}
-\NormalTok{\};}
+static usb_serial_cfg_t usb_serial_cfg =
+{
+    .read_timeout_us = 1,
+    .write_timeout_us = 1,
+;}
 
-\DataTypeTok{int}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
-\NormalTok{\{}
-    \DataTypeTok{int}\NormalTok{ i;}
+int main (void)
+{
+    int i;
 
-    \CommentTok{// Create non-blocking tty device for USB CDC connection.}
-\NormalTok{    usb_serial_init (&usb_serial_cfg, }\StringTok{"/dev/usb_tty"}\NormalTok{);}
+    // Create non-blocking tty device for USB CDC connection.
+    usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
     
-    \CommentTok{// Redirect printf to USB serial}
-\NormalTok{    freopen (}\StringTok{"/dev/usb_tty"}\NormalTok{, }\StringTok{"a"}\NormalTok{, stdout);}
-\NormalTok{    freopen (}\StringTok{"/dev/usb_tty"}\NormalTok{, }\StringTok{"r"}\NormalTok{, stdin);    }
+    // Redirect printf to USB serial
+    freopen ("/dev/usb_tty", "a", stdout);
+    freopen ("/dev/usb_tty", "r", stdin);    
 
-    \ControlFlowTok{for}\NormalTok{ (i = }\DecValTok{0}\NormalTok{; i < }\DecValTok{100}\NormalTok{; i++)}
-\NormalTok{    \{}
-\NormalTok{        printf (}\StringTok{"Hello world %d}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, i);}
-\NormalTok{        fflush (stdout);}
-\NormalTok{        delay_ms (}\DecValTok{100}\NormalTok{);}
-\NormalTok{    \}}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+    for (i = 0; i < 100; i++)
+    {
+        printf ("Hello world %d\textbackslash{n}", i);
+        fflush (stdout);
+        delay_ms (100);
+    }
+}
+\end{minted}
 
 To get this to work you need to compile it and program the SAM4S using:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers/src/demo-apps/usbserial_hello1}
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ program}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ cd wacky-racers/src/demo-apps/usbserial_hello1
+$ make program
+\end{minted}
 
 You then need to connect your computer to the USB connector on your PCB.
-If you are running Linux, run
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{dmesg}
-\end{Highlighting}
-\end{Shaded}
+If you are running Linux, run:
+%
+\begin{minted}{bash}
+$ dmesg
+\end{minted}
 
 This should say something like:
-
+%
 \begin{verbatim}
 Apr 30 11:03:50 thing4 kernel: [52704.481352] usb 2-3.3: New USB device found, idVendor=03eb, idProduct=6202
 Apr 30 11:03:50 thing4 kernel: [52704.481357] usb 2-3.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
@@ -429,11 +394,9 @@ Ignore the errors for now\footnote{They have popped up with new Linux
 You can now run a \href{Serial_terminal_applications}{serial terminal
 program}. For example, on Linux:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{$ gtkterm}\NormalTok{ -p /dev/ttyACM0}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ gtkterm -p /dev/ttyACM0
+\end{minted}
 
 All going well, this will repeatedly print 'Hello world'.
 
@@ -559,51 +522,47 @@ build your programs incrementally and that you poll your devices with a
 paced loop and not use interrupts. It is a good idea to disable the
 watchdog timer until you have robust code.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\PreprocessorTok{#include }\ImportTok{<stdio.h>}
-\PreprocessorTok{#include }\ImportTok{<math.h>}
-\PreprocessorTok{#include }\ImportTok{"mcu.h"}
-\PreprocessorTok{#include }\ImportTok{"pacer.h"}
+\begin{minted}{C}
+#include <stdio.h>
+#include <math.h>
+#include "mcu.h"
+#include "pacer.h"
 
-\CommentTok{// Set to the desired polling rate.}
-\PreprocessorTok{#define PACER_RATE 1000}
+// Set to the desired polling rate.
+#define PACER_RATE 1000
 
-\DataTypeTok{int}
-\NormalTok{main (}\DataTypeTok{void}\NormalTok{)}
-\NormalTok{\{}
-    \CommentTok{// If you are using PB4 or PB5 (say for TWI1) uncomment the next line.}
-    \CommentTok{// mcu_jtag_disable ();    }
+int
+main (void)
+{
+    // If you are using PB4 or PB5 (say for TWI1) uncomment the next line.
+    // mcu_jtag_disable ();    
 
-\NormalTok{    pacer_init (PACER_RATE);    }
+    pacer_init (PACER_RATE);    
     
-\NormalTok{    mcu_watchdog_enable ();}
+    mcu_watchdog_enable ();
 
-    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
-\NormalTok{    \{}
-\NormalTok{        pacer_wait ();}
+    while (1)
+    {
+        pacer_wait ();
 
-\NormalTok{        mcu_watchdog_reset ();}
+        mcu_watchdog_reset ();
 
-        \CommentTok{/* Do your stuff here...  */}
+        /* Do your stuff here...  */
         
-\NormalTok{    \}}
+    }
     
-    \ControlFlowTok{return} \DecValTok{0}\NormalTok{;}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+    return 0;
+}
+\end{minted}
 
 \section{Debugging}
 \label{debugging}
 
 If \url{OpenOCD} is running, a running program can be debugged using:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{make}\NormalTok{ debug}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ make debug
+\end{minted}
 
 This starts \url{GDB} and attaches to the target MCU. \url{GDB} is a
 command line debugger but there are many GUI programs that will control
@@ -627,16 +586,14 @@ this does not reset the peripherals as with a power-on reset.
 By default PB4 and PB5 are configured as \url{JTAG} pins. You can turn
 them into PIO pins or use them for TWI1 using:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\PreprocessorTok{#include }\ImportTok{"mcu.h"}
+\begin{minted}{C}
+#include "mcu.h"
 
-\DataTypeTok{void}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
-\NormalTok{\{}
-\NormalTok{    mcu_jtag_disable ();}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+void main (void)
+{
+    mcu_jtag_disable ();
+}
+\end{minted}
 
 \subsection{Watchdog timer}
 \label{watchdog-timer}
@@ -644,23 +601,21 @@ them into PIO pins or use them for TWI1 using:
 The watchdog timer is useful for resetting the SAM4S if it hangs in a
 loop.  It is disabled by default but can be enabled using:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\PreprocessorTok{#include }\ImportTok{"mcu.h"}
+\begin{minted}{C}
+#include "mcu.h"
 
-\DataTypeTok{void}\NormalTok{ main (}\DataTypeTok{void}\NormalTok{)}
-\NormalTok{\{}
-\NormalTok{    mcu_watchdog_enable ();}
+void main (void)
+{
+    mcu_watchdog_enable ();
    
-    \ControlFlowTok{while}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
-\NormalTok{    \{}
-         \CommentTok{/* Do your stuff here.  */}
+    while (1)
+    {
+         /* Do your stuff here.  */
 
-\NormalTok{         mcu_watchdog_reset ();}
-\NormalTok{    \}}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
+         mcu_watchdog_reset ();
+    }
+}
+\end{minted}
 
 \section{Under the bonnet}
 \label{under-the-bonnet}
@@ -696,41 +651,33 @@ of the dreaded merge conflict.
 To be able to get updates if the template project is modified you will
 need to:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers }
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote add upstream https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021.git  }
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ cd wacky-racers 
+$ git remote add upstream https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021.git  
+\end{minted}
 
 Again if you do not want to manually enter your password (and have
 ssh-keys uploaded) you can use:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers }
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote add upstream git@eng-git.canterbury.ac.nz:mph/wacky-racers-2021.git    }
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ cd wacky-racers 
+$ git remote add upstream git@eng-git.canterbury.ac.nz:mph/wacky-racers-2021.git
+\end{minted}
 
 Once you have defined the upstream source, to get the updates from the
 main repository use:
 %
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull upstream master}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ git pull upstream master
+\end{minted}
 
 If you enter the wrong URL make a mistake, you can list the remote
 servers and delete the dodgy entry using:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote -v}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ remote rm upstream}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ git remote -v
+$ git remote rm upstream
+\end{minted}
 
 Note, \textbf{origin} refers to your group project and \textbf{upstream}
 refers to the template project that origin was forked from.
@@ -741,20 +688,20 @@ refers to the template project that origin was forked from.
 %%   and mmculib submodules}. We are not sure why. As a hack use:
 %% \end{itemize}
 %% %
-%% \begin{Shaded}
-%% \begin{Highlighting}[]
-%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ wacky-racers}
-%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ src/mat91lib}
-%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
-%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
-%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ../mmculib}
-%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ checkout master}
-%% \NormalTok{$ }\FunctionTok{git}\NormalTok{ pull origin master}
-%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ ..}
-%% \NormalTok{$ }\BuiltInTok{cd}\NormalTok{ demo-apps}
-%% \NormalTok{$ }\FunctionTok{make}\NormalTok{ clean}
-%% \end{Highlighting}
-%% \end{Shaded}
+%% \begin{minted}{bash}
+%% 
+%% $ cd wacky-racers
+%% $ cd src/mat91lib
+%% $ git checkout master
+%% $ git pull origin master
+%% $ cd ../mmculib
+%% $ git checkout master
+%% $ git pull origin master
+%% $ cd ..
+%% $ cd demo-apps
+%% $ make clean
+%% 
+%% \end{minted}
 
 \subsection{Git merging}
 \label{git-merging}
@@ -775,17 +722,15 @@ Please, commit your changes or stash them before you can merge.
 
 what you should so is:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ stash}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ pull}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ stash pop}
-\CommentTok{# You may now have a merge error.  You will now have to edit the offending file, in this case imu_test1.c}
-\CommentTok{# Once the file has been fixed}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ add src/demo-apps/imu_test1/imu_test1.c}
-\NormalTok{$ }\FunctionTok{git}\NormalTok{ commit -m }\StringTok{"Fix merge"}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ git stash
+$ git pull
+$ git stash pop
+# You may now have a merge error.  You will now have to edit the offending file, in this case imu_test1.c
+# Once the file has been fixed
+$ git add src/demo-apps/imu_test1/imu_test1.c
+$ git commit -m "Fix merge"
+\end{minted}
 
 Sometimes when you do a git pull you will be thrown into a text editor
 to type a merge comment. The choice of editor is controlled by an
@@ -793,11 +738,9 @@ environment variable \texttt{EDITOR}. On the ECE computers this defaults
 to emacs. You can changed this by adding a line such as the following to
 the \texttt{.bash\_profile} file in your home directory.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{export} \VariableTok{EDITOR=}\NormalTok{geany}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ export EDITOR=geany
+\end{minted}
 
 By the way, to exit emacs type ctrl-x ctrl-c, to exit vi or vim type \code{:q!}
 
