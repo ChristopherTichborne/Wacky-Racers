@@ -30,12 +30,10 @@ file supplied when it starts. By default, OpenOCD uses port 3333 for
 If OpenOCD is running, commands can be sent to it using telnet. For
 example,
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\ExtensionTok{telnet}\NormalTok{ localhost:4444}
-\OperatorTok{>} \ExtensionTok{monitor}\NormalTok{ flash info 0}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ telnet localhost:4444
+> monitor flash info 0
+\end{minted}
 
 \subsection{Communicating with OpenOCD using GDB}
 \label{communicating-with-openocd-using-gdb}
@@ -44,13 +42,11 @@ If OpenOCD is running, commands can be set to it with \url{gdb}. There
 are two steps: connecting to OpenOCD with the target remote command, and
 then sending a command with the GDB monitor command. For example,
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{$ }\FunctionTok{gdb}
-\KeywordTok{(}\FunctionTok{gdb}\KeywordTok{)} \ExtensionTok{target}\NormalTok{ remote localhost:3333}
-\KeywordTok{(}\FunctionTok{gdb}\KeywordTok{)} \ExtensionTok{monitor}\NormalTok{ flash info 0}
-\end{Highlighting}
-\end{Shaded}
+\begin{minted}{bash}
+$ gdb
+(gdb) target remote localhost:3333
+(gdb) monitor flash info 0
+\end{minted}
 
 \section{OpenOCD commands}
 \label{openocd-commands}
@@ -123,9 +119,9 @@ The easiest way to install OpenOCD on Mac OSX is to use
 Blaster), make sure you include libftdi support by installing with the
 command:
 
-\begin{verbatim}
+\begin{minted}{bash}
 $ brew install openocd --enable-ft2232_libftdi
-\end{verbatim}
+\end{minted}
 
 \section{Errors}
 \label{errors}
