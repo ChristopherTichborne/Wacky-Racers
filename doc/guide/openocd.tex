@@ -10,7 +10,7 @@ the GNU debugger (GDB).
 \section{Configuration files}
 \label{configuration-files}
 
-OpenOCD needs a \href{OpenOCD_configuration}{configuration file} to
+OpenOCD needs a \wikiref{OpenOCD_configuration}{configuration file} to
 specify the interface (USB or parallel port) and the target system.
 Unfortunately, these change with every new release of OpenOCD.
 
@@ -20,7 +20,7 @@ Unfortunately, these change with every new release of OpenOCD.
 OpenOCD runs as a daemon program in the background and can be controlled
 from other programs using TCP/IP sockets. This means that you can
 remotely debug from another computer. The socket ports it uses are
-specified in the \href{OpenOCD_configuration}{OpenOCD configuration}
+specified in the \wikiref{OpenOCD_configuration}{OpenOCD configuration}
 file supplied when it starts. By default, OpenOCD uses port 3333 for
 \url{gdb} and port 4444 for general interaction using Telnet.
 
@@ -52,8 +52,8 @@ $ gdb
 \label{openocd-commands}
 
 All the gory OpenOCD details can be found in the
-\href{Media:openocd.pdf}{OpenOCD manual}. If you are getting strange
-errors see \href{OpenOCD_errors}{OpenOCD errors}.
+\wikiref{Media:openocd.pdf}{OpenOCD manual}. If you are getting strange
+errors see \wikiref{OpenOCD_errors}{OpenOCD errors}.
 
 \section{Flash programming}
 \label{flash-programming}
@@ -63,7 +63,7 @@ OpenOCD can program the flash program memory from a binary file.
 \section{FTDI support}
 \label{ftdi-support}
 
-Many \href{JTAG_interface}{JTAG interfaces} use chips made by Future
+Many \wikiref{JTAG_interface}{JTAG interfaces} use chips made by Future
 Technology Devices International (FTDI) to translate between the USB and
 JTAG protocols. FTDI provide a library to communicate with these
 devices; however, this is not open-source and hence cannot be
@@ -108,7 +108,7 @@ Linux and use that instead.
 Many recent distributions of Linux have OpenOCD in their software
 repositories. However, this is often out of date and (in some cases)
 buggy. In this case it is straightforward to
-\href{Building_OpenOCD_under_Linux}{build the latest version}.
+\wikiref{Building_OpenOCD_under_Linux}{build the latest version}.
 
 \subsection{Mac OSX}
 \label{mac-osx}
