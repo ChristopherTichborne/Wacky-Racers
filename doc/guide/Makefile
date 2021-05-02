@@ -1,6 +1,6 @@
 all: guide.pdf
 
-%.pdf: %.tex hardware.tex software.tex troubleshooting.tex openocd.tex
+%.pdf: %.tex hardware.tex software.tex troubleshooting.tex debugging.tex openocd.tex
 	pdflatex -shell-escape $<
 	pdflatex -shell-escape $<
 
