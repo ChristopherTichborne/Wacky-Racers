@@ -41,7 +41,7 @@ grief!
 
 \section{SAM4S MCU}\label{sam4s-mcu}
 
-The \url{SAM4S} MCU is overkill for this assignment but is typical of
+The SAM4S MCU is overkill for this assignment but is typical of
 ARM processors used for bare-metal applications.
 
 \subsection{Power pins}\label{power-pins}
@@ -69,39 +69,39 @@ rest can only sink/source 2\,mA of current
 
 \subsection{USART/UART}\label{usartuart}
 
-The \url{SAM4S} has two USARTs and two UARTs. The USARTs can emulate a
+The SAM4S has two USARTs and two UARTs. The USARTs can emulate a
 UART, have hardware flow control, and have a better driver so they are
 recommended if you need a UART interface.
 
 
 \subsection{PWM}\label{pwm}
 
-The \url{SAM4S} can generate four independent PWM signals. There are
+The SAM4S can generate four independent PWM signals. There are
 restrictions on which SAM4S pins they come out on. Note, the PWMLx and
 PWMHx signals are complementary.
 
 \subsection{TWI}\label{twi}
 
-The \url{SAM4S} has two TWI peripherals (that can act as a master and
+The SAM4S has two TWI peripherals (that can act as a master and
 a slave) with dedicated TWD and TWCK pins. External pull-up resistors
 are required.  TWI1 shares pins with JTAG; you will need to disable
 JTAG in software.
 
 \subsection{SPI}\label{spi}
 
-The \url{SAM4S} has a single SPI peripheral with dedicated SCK, MISO,
+The SAM4S has a single SPI peripheral with dedicated SCK, MISO,
 and MOSI pins. Any PIO pin can be used for the chip
 select\footnote{For high speed operation, you should use on of the
   dedicated chip select pins.}.
 
 \subsection{ADC}\label{adc}
 
-The \url{SAM4S} has a single ADC with a multiplexer to select one of a
+The SAM4S has a single ADC with a multiplexer to select one of a
 number of analogue inputs.  It can sample at 1\,MHz.
 
 \subsection{USB}\label{usb}
 
-The \url{SAM4S} has a single USB peripheral connected to the DDP and DDM
+The SAM4S has a single USB peripheral connected to the DDP and DDM
 pins. 27 ohm series termination resistors are required, placed close to
 the SAM4S.
 
@@ -113,7 +113,7 @@ The capacitor connected to the bootstrap pin must be rated for 16 V. The
 datasheet recommends an X7R dielectric.
 
 If you want control over fast decay and slow decay in both forward and
-reverse you will need four PWM signals. The \url{SAM4S} can provide four
+reverse you will need four PWM signals. The SAM4S can provide four
 independent PWM signals but be careful that PWMxH and PWMxL are driven
 with the same PWM signal but are complementary.
 
@@ -127,7 +127,7 @@ This operates around 2.4 GHz and has 128 programmable channels, each of
 1 MHz. A 5 byte address is appended to the start of each transmission
 and the receiver will only respond when the address matches.
 
-The radio interfaces to the \url{SAM4S} using the \url{SPI} bus. The IRQ
+The radio interfaces to the SAM4S using the SPI bus. The IRQ
 pin is driven low to indicate a packet has been received.
 
 A well filtered power supply is critical otherwise the range will be
@@ -143,7 +143,7 @@ three axis magnetometer. It appears that the magnetometer has been
 bolted on to the accelerometers/gyroscopes and requires more hoop
 jumping in software to make it work.
 
-It has two different \url{I2C} addresses (0X68 and OX69) depending on
+It has two different I2C addresses (0X68 and OX69) depending on
 the state of the AD0 pin.
 
 

@@ -48,9 +48,9 @@ If a program has not been loaded:
 
 \begin{enumerate}
 \item
-  Check orientation of the \url{SAM4S}.
+  Check orientation of the SAM4S.
 \item
-  Check soldering of the \url{SAM4S} pins under a microscope. Giving
+  Check soldering of the SAM4S pins under a microscope. Giving
   each pin a push with a sharp spike can reveal a poorly soldered joint.
 \item
   Check 3.3 V and 1.2 V power rails.
@@ -68,14 +68,14 @@ If a program has been loaded:
   crystal oscillator}.
 \item
   Erase the flash memory by connecting the ERASE pin to 3.3 V, re-enable
-  booting from flash, and reprogram the \url{SAM4S} with an LED flash
+  booting from flash, and reprogram the SAM4S with an LED flash
   program.
 \end{enumerate}
 
 \subsubsection{Debugging serial wire debug (SWD)}
 \label{debugging-serial-wire-debug-swd}
 
-\url{OpenOCD} periodically polls to see if the \url{SAM4S} is alive.
+\program{OpenOCD} periodically polls to see if the SAM4S is alive.
 These occur every 100\,ms.
 
 \begin{figure}
@@ -100,7 +100,7 @@ When the SAM4S is first powered up it uses an internal oscillator.
 However, when a program is loaded it switches to the main oscillator
 that uses the external crystal. If there is a problem with the crystal
 oscillator the SAM4S will not run since it has no clock. Moreover,
-\url{OpenOCD} will then fail to communicate with the SAM4S.
+\program{OpenOCD} will then fail to communicate with the SAM4S.
 
 \begin{figure}
 \centering
@@ -328,7 +328,7 @@ bit-shifted or unreliable.
 
 \begin{itemize}
 \item
-  \emph{\url{OpenOCD} does not run}. The most common problem is that the
+  \emph{\program{OpenOCD} does not run}. The most common problem is that the
   USB permissions are not correct.
 \item
   \emph{A program does not correctly build after a file has been

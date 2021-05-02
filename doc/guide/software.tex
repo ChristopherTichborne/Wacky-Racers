@@ -8,23 +8,21 @@ require:
 
 \begin{itemize}
 \item
-  A computer with \url{git} installed and a useful shell program such as
-  \url{bash}. UC has a \href{http://ucmirror.canterbury.ac.nz/}{mirror}
+  A computer with \program{git} installed and a useful shell program such as
+  \program{bash}. UC has a \href{http://ucmirror.canterbury.ac.nz/}{mirror}
   for a variety of Linux distributions; we recommend Ubuntu or Mint.
 \item
-  A working \href{ARM_toolchain}{ARM toolchain} (arm-none-eabi-gcc/g++
-  version 4.9.3 or newer).
+  A working ARM toolchain (arm-none-eabi-gcc/g++ version 4.9.3 or newer).
 \item
-  \url{OpenOCD} V0.8.0 or later.
+  \program{OpenOCD} V0.8.0 or later.
 \item
-  An \href{ST-link_programmer}{ST-link programmer} and 10-wire ribbon
-  cable for programming. You can get the adaptor from Scott Lloyd in the
-  SMT lab. You will need to make your own cable (For a grey ribbon
-  cable, align the red stripe with the small arrow denoting pin 1 on the
-  connector. For a rainbow ribbon cable, connect the brown wire to pin
-  1.). There are two variants of the \href{ST-link_programmer}{ST-link
-  programmer} with \textbf{different pinouts} so you may need to
-  customise your programming cable.
+  An ST-link programmer and 10-wire ribbon cable for programming. You
+  can get the adaptor from Scott Lloyd in the SMT lab. You will need
+  to make your own cable (For a grey ribbon cable, align the red
+  stripe with the small arrow denoting pin 1 on the connector. For a
+  rainbow ribbon cable, connect the brown wire to pin 1.). There are
+  two variants of the ST-link programmer with \textbf{different
+    pinouts} so you may need to customise your programming cable.
 \item
   Plenty of gumption.
 \end{itemize}
@@ -32,8 +30,8 @@ require:
 \subsection{Toolchain}
 \label{toolchain}
 
-The required software is installed on computers in the \url{ESL} and
-\url{CAE}. It should run under both Linux and Windows. If there is a
+The required software is installed on computers in the ESL and
+CAE. It should run under both Linux and Windows. If there is a
 problem ask the technical staff.
 
 If you are working from a personal Linux computer make sure to update
@@ -57,7 +55,7 @@ $ brew cask install gcc-arm-embedded}
 \subsection{Project forking}
 \label{project-forking}
 
-The example software is hosted on the eng-git \url{Git} server at
+The example software is hosted on the eng-git \program{Git} server at
 \href{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}}.
 Your group leader should have forked this template project. This creates
 your own group copy of the project on the eng-git server that you can
@@ -96,14 +94,14 @@ operation use:
 $ git clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-2021.git wacky-racers
 \end{minted}
 
-Otherwise, set up \url{ssh-keys} and use:
+Otherwise, set up \program{ssh-keys} and use:
 %
 \begin{minted}[breaklines]{bash}
 $ git clone git@eng-git.canterbury.ac.nz:groupleader-userid/wacky-racers-2021.git wacky-racers
 \end{minted}
 
 You can several different cloned copies of your project in different
-directories. Sometimes if you feel that the world, and \url{git} in
+directories. Sometimes if you feel that the world, and \program{git} in
 particular, is against you, clone a new copy, using:
 
 
@@ -162,22 +160,21 @@ hardware is to have many programs that only do one simple task each.
 \subsection{OpenOCD}
 \label{openocd}
 
-\url{OpenOCD} is used to program the SAM4S. For this assignment, we are
-using a \href{ST-link_programmer}{ST-link programmer} to connect to the
-SAM4S using serial wire debug (SWD). This connects to your board with a
-10-wire ribbon cable and an \href{IDC_connector}{IDC connector}.
+\program{OpenOCD} is used to program the SAM4S. For this assignment,
+we are using a ST-link programmer to connect to the SAM4S using serial
+wire debug (SWD). This connects to your board with a 10-wire ribbon
+cable and an IDC connector.
 
 \begin{enumerate}
 \item
   Before you start, disconnect the battery and other cables from your
   PCB.
 \item
-  Connect a 10-wire ribbon cable from the
-  \href{ST-link_programmer}{ST-link programmer} to the programming
-  header on your PCB. This will provide 3.3 V to your board so your
-  green power LED should light.
+  Connect a 10-wire ribbon cable from the ST-link programmer to the
+  programming header on your PCB. This will provide 3.3 V to your
+  board so your green power LED should light.
 \item
-  Open a \textbf{new terminal window} and start \url{OpenOCD}.
+  Open a \textbf{new terminal window} and start \program{OpenOCD}.
 \end{enumerate}
 
 \begin{minted}{bash}
@@ -185,7 +182,7 @@ $ cd wacky-racers
 $ openocd -f src/mat91lib/sam4s/scripts/sam4s_stlink.cfg
 \end{minted}
 
-All going well, the last line output from \url{OpenOCD} should be:
+All going well, the last line output from \program{OpenOCD} should be:
 
 \begin{verbatim}
 Info : sam4.cpu: hardware has 6 breakpoints, 4 watchpoints
@@ -260,7 +257,7 @@ to delete all the object files and rebuild.
 By default the SAM4S runs a bootloader program stored in ROM. The SAM4S
 needs to be configured to run your application in flash memory.
 
-If \url{OpenOCD} is running you can do this with:
+If \program{OpenOCD} is running you can do this with:
 
 \begin{minted}{bash}
 $ make bootflash
@@ -273,8 +270,8 @@ this command.
 \subsection{Programming}
 \label{programming}
 
-If \url{OpenOCD} is running you can store your program in the flash
-memory of the \url{SAM4S} using:
+If \program{OpenOCD} is running you can store your program in the flash
+memory of the SAM4S using:
 
 \begin{minted}{bash}
 $ make program
@@ -292,8 +289,8 @@ $ make reset
 \section{USB interfacing}
 \label{usb-interfacing}
 
-To help debug your programs, it is wise to set up \href{USB_CDC}{USB
-CDC}. For example, here's the code for
+To help debug your programs, it is wise to set up USB CDC. For
+example, here's the code for
 \wfile{test-apps/usb_serial_test1/usb_serial_test1.c}.
 
 \inputminted{C}{../../src/test-apps/usb_serial_test1/usb_serial_test1.c}
@@ -329,8 +326,7 @@ Ignore the errors for now\footnote{They have popped up with new Linux
 \texttt{ttyACM0:\ USB\ ACM\ device} congrats. If not, see
 \href{USB_debugging}{USB debugging}.
 
-You can now run a \href{Serial_terminal_applications}{serial terminal
-program}. For example, on Linux:
+You can now run a serial terminal program. For example, on Linux:
 
 \begin{minted}{bash}
 $ gtkterm -p /dev/ttyACM0
@@ -373,10 +369,9 @@ hardware PWM signals. See \wfile{mat91lib/pwm/pwm.c} for a list of
 supported PIO pins. Note, \pin{PA16}, \pin{PA30}, and \pin{PB13} are
 different options for PWM2.
 
-To drive the motors you will need to use a
-\href{bench_power_supply}{bench power supply}. Start with the current
-limit set at 100\,mA maximum in case there are any board shorts.
-When all is well, you can increase the current limit.
+To drive the motors you will need to use a bench power supply. Start
+with the current limit set at 100\,mA maximum in case there are any
+board shorts.  When all is well, you can increase the current limit.
 
 \subsection{IMU test}
 \label{imu-test}
@@ -402,14 +397,14 @@ If you get 'Cannot detect IMU' the main reasons are:
   wrong resistor values. Use a scope to look at the signals \pin{TWCK/SCL}
   and \pin{TWD/SDA}.
 \item
-  Check that the auxiliary \url{I2C} bus signals are not connected
+  Check that the auxiliary I2C bus signals are not connected
   (otherwise the magnetometer will not respond).  
 \item
   You have a soldering problem. Try pressing on a side of the IMU with a
   fingernail to see if it starts working.
 \end{enumerate}
 
-If you reset the \url{SAM4S} in the middle of a transaction with the
+If you reset the SAM4S in the middle of a transaction with the
 IMU, the IMU gets confused and holds the \pin{TWD/SDA} line low. This
 requires recycling of the power or sending out some dummy clocks on
 the \pin{TWCK/SCL} signal.
@@ -430,8 +425,8 @@ Notes:
 \begin{enumerate}
 \item
   Both programs must use the same RF channel and the same address. Some
-  RF channels are better than others since some overlap with \url{WiFi}
-  and \url{Bluetooth}. The address is used to distinguish devices
+  RF channels are better than others since some overlap with WiFi
+  and Bluetooth. The address is used to distinguish devices
   operating on the same channel. Note, the transmitter expects an
   acknowledge from a receiver on the same address and channel.
 \item
@@ -492,17 +487,17 @@ main (void)
 \section{Debugging}
 \label{debugging}
 
-If \url{OpenOCD} is running, a running program can be debugged using:
+If \program{OpenOCD} is running, a running program can be debugged using:
 
 \begin{minted}{bash}
 $ make debug
 \end{minted}
 
-This starts \url{GDB} and attaches to the target MCU. \url{GDB} is a
+This starts \program{GDB} and attaches to the target MCU. \program{GDB} is a
 command line debugger but there are many GUI programs that will control
-it, for example, \url{vscode} and \url{geany} have plugins.
+it, for example, \program{vscode} and \program{geany} have plugins.
 
-\url{GDB} allows you to inspect the CPU registers, memory, set
+\program{GDB} allows you to inspect the CPU registers, memory, set
 breakpoints, set watchpoints, and much more. The only gnarly thing is
 that when compiling with optimisation, the compiler may reorder
 statements or even remove them. Debugging embedded systems is also made
@@ -517,7 +512,7 @@ this does not reset the peripherals as with a power-on reset.
 \subsection{Disabling JTAG pins}
 \label{disabling-jtag-pins}
 
-By default \pin{PB4} and \pin{PB5} are configured as \url{JTAG} pins. You can turn
+By default \pin{PB4} and \pin{PB5} are configured as JTAG pins. You can turn
 them into PIO pins or use them for TWI1 using:
 %
 \begin{minted}{C}
@@ -560,10 +555,9 @@ complexity of the underlying software.
 \file{mmculib} is a library of C drivers, mostly for performing high-level I/O.
 It is written to be microcontroller neutral.
 
-\file{mat91lib} is a library of C drivers specifically for interfacing with the
-peripherals of Atmel AT91 microcontrollers such as the
-\href{Atmel_SAM4S}{Atmel SAM4S}. It provides the hardware abstraction
-layer.
+\file{mat91lib} is a library of C drivers specifically for interfacing
+with the peripherals of Atmel AT91 microcontrollers such as the Atmel
+SAM4S. It provides the hardware abstraction layer.
 
 The building is controlled by \wfile{mat91lib/mat91lib.mk}. This is a
 makefile fragment loaded by \wfile{mmculib/mmculib.mk}.
