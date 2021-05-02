@@ -1,21 +1,10 @@
 \documentclass[a4paper,11pt]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\fi
+
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
 % use microtype if available
 \IfFileExists{microtype.sty}{%
 \usepackage[]{microtype}
@@ -38,6 +27,7 @@
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
+
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
@@ -63,6 +53,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %\setcounter{secnumdepth}{0}
+
 % Redefines (sub)paragraphs to behave more like sections
 \ifx\paragraph\undefined\else
 \let\oldparagraph\paragraph
@@ -80,10 +71,11 @@
 
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\file}[1]{\texttt{#1}}
-\newcommand{\wfile}[1]{\file{wacky-racers/src/#1}}
+\newcommand{\wfile}[1]{\href{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers/-/blob/master/src/#1}{\mintinline{bash}{wacky-racers/src/#1}}}
 \newcommand{\pin}[1]{\texttt{#1}}
 
-\title{Mutley's Guide To The Wacky Racers, V1E-3}
+
+\title{Mutley's Guide To The Wacky Racers, V.011E-3}
 \author{Michael Hayes and Ben Mitchell}
 \date{2021}
 

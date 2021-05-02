@@ -58,7 +58,7 @@ $ brew cask install gcc-arm-embedded}
 \label{project-forking}
 
 The example software is hosted on the eng-git \url{Git} server at
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}}.
+\href{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}}.
 Your group leader should have forked this template project. This creates
 your own group copy of the project on the eng-git server that you can
 modify, add members, etc. To fork the project:
@@ -66,7 +66,7 @@ modify, add members, etc. To fork the project:
 \begin{enumerate}
 \item
   Go to
-  \href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021}}.
+  \href{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}{\url{https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021}}.
 \item
   Click the `Fork' button. This will create a copy of the main repository
   for the project.
@@ -205,14 +205,14 @@ see \protect\hyperref[troubleshooting]{troubleshooting}.
 \label{led-flash-program}
 
 For your first program, use
-\wfile{demo-apps/led\_test1/led\_test1.c}. The macros
+\wfile{test-apps/ledflash1/ledflash1.c}. The macros
 \code{LED1\_PIO} and \code{LED2\_PIO} need to be defined in
 \file{target.h} (see
 \protect\hyperref[configuration]{configuration}). If your LEDs are
-active high, replace \code{ActiveLow} with \code{ActiveHigh}.
+active high, replace 1 with 0 in the LED config structures.
 
 \begin{minted}{C}
-/* File:   led_test1.c
+/* File:   ledflash1.c
    Author: M. P. Hayes, UCECE
    Date:   25 Feb 2018
    Descr: 
@@ -224,8 +224,8 @@ active high, replace \code{ActiveLow} with \code{ActiveHigh}.
 
 int main (void)
 {
-    led_cfg_t led1 = {LED1_PIO, 0;}
-    led_cfg_t led2 = {LED2_PIO, 0;}
+    led_cfg_t led1 = {LED1_PIO, 1};
+    led_cfg_t led2 = {LED2_PIO, 1};
 
     pacer_init(PACER_RATE);
     led_init(&led1);
@@ -261,7 +261,7 @@ If all goes well, you should see at the end:
 %
 \begin{verbatim}
    text    data     bss     dec     hex filename
-  19432    2420    2732   24584    6008 led_test1.bin
+  19432    2420    2732   24584    6008 ledflash1.bin
 \end{verbatim}
 
 To avoid having to specify the environment variable \code{BOARD}, you
@@ -325,12 +325,12 @@ $ make reset
 \section{USB interfacing}
 \label{usb-interfacing}
 
-To help debug your programs, it is is wise to set up \href{USB_CDC}{USB
+To help debug your programs, it is wise to set up \href{USB_CDC}{USB
 CDC}. For example, here's the code for
-\wfile{demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
+\wfile{test-apps/usb_serial_test1/usb_serial_test1.c}.
 
 \begin{minted}{C}
-/* File:   usbserial_hello1.c
+/* File:   usb_serial_test1.c
    Author: M. P. Hayes, UCECE
    Date:   22 Feb 2018
 */
@@ -357,7 +357,7 @@ int main (void)
 
     for (i = 0; i < 100; i++)
     {
-        printf ("Hello world %d\textbackslash{n}", i);
+        printf ("Hello world %d\n", i);
         fflush (stdout);
         delay_ms (100);
     }
@@ -371,7 +371,7 @@ device on the SAM4S so that it can be used by the C stdio function
 To get this programme to work you need to compile it and program the SAM4S using:
 
 \begin{minted}{bash}
-$ cd wacky-racers/src/demo-apps/usbserial_hello1
+$ cd wacky-racers/src/test-apps/usb_serial_test1
 $ make program
 \end{minted}
 
@@ -413,16 +413,15 @@ using other operating systems, search for USB CDC on ecewiki.
 \label{test-programs}
 
 There are a number of test programs in the directory
-\wfile{demo-apps}. Where possible these are written to be
+\wfile{test-apps}. Where possible these are written to be
 independent of the target board using configuration files (see
 \protect\hyperref[configuration]{configuration}).
 
 \subsection{PWM test}
 \label{pwm-test}
 
-The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\wfile{test-apps/pwm\_test2/pwm\_test2.c}}
-provides an example of driving PWM signals. Notes:
+The program \wfile{test-apps/pwm_test2/pwm_test2.c} provides an
+example of driving PWM signals. Notes:
 %
 \begin{enumerate}
 \item
@@ -434,11 +433,10 @@ provides an example of driving PWM signals. Notes:
   cycle and alignment of the output PWM.
 \end{enumerate}
 
-The most likely problem is that you have not used a PIO pin that can be
-driven as a PWM output. The SAM4S can generate four independent hardware
-PWM signals. See
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\wfile{mat91lib/pwm/pwm.c}}
-for a list of supported PIO pins. Note, \pin{PA16}, \pin{PA30}, and \pin{PB13} are
+The most likely problem is that you have not used a PIO pin that can
+be driven as a PWM output. The SAM4S can generate four independent
+hardware PWM signals. See \wfile{mat91lib/pwm/pwm.c} for a list of
+supported PIO pins. Note, \pin{PA16}, \pin{PA30}, and \pin{PB13} are
 different options for PWM2.
 
 To drive the motors you will need to use a
@@ -449,13 +447,12 @@ When all is well, you can increase the current limit.
 \subsection{IMU test}
 \label{imu-test}
 
-The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\wfile{demo-apps/imu\_test1/imu\_test1.c}}
-provides an example of using the MPU9250 IMU.  All going well, this
-prints three 16-bit acceleration values per line to USB CDC. Tip your
-board over, and the the third (z-axis) value should go negative since
-this measures the effect of gravity on a little mass inside the IMU
-pulling on a spring.
+The program \wfile{test-apps/imu_test1/imu_test1.c} provides an
+example of using the MPU9250 IMU.  All going well, this prints three
+16-bit acceleration values per line to USB CDC. Tip your board over,
+and the the third (z-axis) value should go negative since this
+measures the effect of gravity on a little mass inside the IMU pulling
+on a spring.
 
 If you get 'Cannot detect IMU' the main reasons are:
 
@@ -487,13 +484,12 @@ the \pin{TWCK/SCL} signal.
 \subsection{Radio test}
 \label{radio-test}
 
-The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\wfile{demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
-provides an example of using the radio as a transmitter.
+The program \wfile{test-apps/radio_tx_test1/radio_tx_test1.c} provides
+an example of using the radio as a transmitter.
 
 The companion program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\wfile{demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
-provides an example of using the radio as a receiver.
+\wfile{test-apps/radio_rx_test1/radio_rx_test1.c} provides an example
+of using the radio as a receiver.
 
 Notes:
 %
@@ -657,7 +653,7 @@ need to:
 
 \begin{minted}{bash}
 $ cd wacky-racers 
-$ git remote add upstream https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021.git  
+$ git remote add upstream https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021.git  
 \end{minted}
 
 Again if you do not want to manually enter your password (and have
@@ -665,7 +661,7 @@ ssh-keys uploaded) you can use:
 %
 \begin{minted}[breaklines]{bash}
 $ cd wacky-racers 
-$ git remote add upstream git@eng-git.canterbury.ac.nz:mph/wacky-racers-2021.git
+$ git remote add upstream git@eng-git.canterbury.ac.nz:wacky-racers/wacky-racers-2021.git
 \end{minted}
 
 Once you have defined the upstream source, to get the updates from the
@@ -702,7 +698,7 @@ refers to the template project that origin was forked from.
 %% $ git checkout master
 %% $ git pull origin master
 %% $ cd ..
-%% $ cd demo-apps
+%% $ cd test-apps
 %% $ make clean
 %% 
 %% \end{minted}
@@ -717,10 +713,10 @@ pushing faster than other people in your group.
 If you get a message such as:
 
 \begin{verbatim}
-From https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021
+From https://eng-git.canterbury.ac.nz/wacky-racers/wacky-racers-2021
  * branch            master     -> FETCH_HEAD
 error: Your local changes to the following files would be overwritten by merge:
-    src/demo-apps/imu_test1/imu_test1.c
+    src/test-apps/imu_test1/imu_test1.c
 Please, commit your changes or stash them before you can merge.
 \end{verbatim}
 
@@ -732,7 +728,7 @@ $ git pull
 $ git stash pop
 # You may now have a merge error.  You will now have to edit the offending file, in this case imu_test1.c
 # Once the file has been fixed
-$ git add src/demo-apps/imu_test1/imu_test1.c
+$ git add src/test-apps/imu_test1/imu_test1.c
 $ git commit -m "Fix merge"
 \end{minted}
 
