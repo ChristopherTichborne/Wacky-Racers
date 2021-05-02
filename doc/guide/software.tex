@@ -384,6 +384,7 @@ board shorts.  When all is well, you can increase the current limit.
 \subsection{IMU test}
 \label{imu-test}
 
+The MPU9250 IMU connects to the SAM4S using the I2C bus (aka TWI bus).
 The program \wfile{test-apps/imu_test1/imu_test1.c} provides an
 example of using the MPU9250 IMU.  All going well, this prints three
 16-bit acceleration values per line to USB CDC. Tip your board over,
@@ -391,7 +392,7 @@ and the the third (z-axis) value should go negative since this
 measures the effect of gravity on a little mass inside the IMU pulling
 on a spring.
 
-If you get 'Cannot detect IMU' the main reasons are:
+If you get `ERROR: can't find MPU9250!', the main reasons are:
 
 \begin{enumerate}
 \item
@@ -409,13 +410,17 @@ If you get 'Cannot detect IMU' the main reasons are:
   (otherwise the magnetometer will not respond).  
 \item
   You have a soldering problem. Try pressing on a side of the IMU with a
-  fingernail to see if it starts working.
+  fingernail to see if it starts working; you might have a dry joint.
 \end{enumerate}
 
-If you reset the SAM4S in the middle of a transaction with the
+Other problems:
+%
+\begin{enumerate}
+\item If you reset the SAM4S in the middle of a transaction with the
 IMU, the IMU gets confused and holds the \pin{TWD/SDA} line low. This
 requires recycling of the power or sending out some dummy clocks on
 the \pin{TWCK/SCL} signal.
+\end{enumerate}
 
 
 \subsection{Radio test}
@@ -452,45 +457,12 @@ lab.
 \section{Your hat/racer program}
 \label{your-hatracer-program}
 
-There is skeleton code, see
-\wfile{wacky-apps/hat/hat.c} and
-\wfile{wacky-apps/racer/racer.c}. We recommend that
-build your programs incrementally and that you poll your devices with a
-paced loop and not use interrupts. It is a good idea to disable the
-watchdog timer until you have robust code.
+We recommend that build your programs incrementally and that you poll
+your devices with a paced loop and not use interrupts. It is a good
+idea to disable the \hyperref[watchdog-timer]{watchdog timer} until
+you have robust code.
 
-\begin{minted}{C}
-#include <stdio.h>
-#include <math.h>
-#include "mcu.h"
-#include "pacer.h"
 
-// Set to the desired polling rate.
-#define PACER_RATE 1000
-
-int
-main (void)
-{
-    // If you are using PB4 or PB5 (say for TWI1) uncomment the next line.
-    // mcu_jtag_disable ();    
-
-    pacer_init (PACER_RATE);    
-    
-    mcu_watchdog_enable ();
-
-    while (1)
-    {
-        pacer_wait ();
-
-        mcu_watchdog_reset ();
-
-        /* Do your stuff here...  */
-        
-    }
-    
-    return 0;
-}
-\end{minted}
 
 \section{Debugging}
 \label{debugging}
