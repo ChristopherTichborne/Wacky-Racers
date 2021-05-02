@@ -14,11 +14,10 @@ enum {LOOP_POLL_RATE = 200};
 /* Define LED flash rate in Hz.  */
 enum {LED_FLASH_RATE = 2};
 
-
 /*
     This test app is the faithful blinky program. It works as follows:
 
-    1. set the LED pin as an output low (turns on the LED)
+    1. set the LED pin as an output low (turns on the LED if LED active low)
 
     2. initialize a pacer for 200 Hz
 
@@ -33,7 +32,6 @@ enum {LED_FLASH_RATE = 2};
     * Blink interesting patterns (S-O-S for example)
     * Make two LEDs blink at two separate frequencies.
 */
-
 
 int
 main (void)
