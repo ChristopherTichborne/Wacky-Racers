@@ -82,9 +82,7 @@ modify, add members, etc. To fork the project:
 
 Once your project has been forked from the template project, each group
 member needs to clone it. This makes a local copy of your project on
-your computer. \textbf{If inside the university, you will need to
-\href{UC_internet_enabler}{enable the internet}} since two
-\href{git_submodules}{git submodules} are required.
+your computer. 
 
 If you are using an ECE computer, it is advised that you clone the
 project on to a removable USB flash drive. This will make git operations
@@ -103,9 +101,6 @@ Otherwise, set up \url{ssh-keys} and use:
 \begin{minted}[breaklines]{bash}
 $ git clone git@eng-git.canterbury.ac.nz:groupleader-userid/wacky-racers-2021.git wacky-racers
 \end{minted}
-
-Note, the recursive option should clone the submodules \url{mmculib} and
-\url{mat91lib} from github.com.
 
 You can several different cloned copies of your project in different
 directories. Sometimes if you feel that the world, and \url{git} in
@@ -620,27 +615,6 @@ $ git remote rm upstream
 
 Note, \textbf{origin} refers to your group project and \textbf{upstream}
 refers to the template project that origin was forked from.
-
-%% \begin{itemize}
-%% \item
-%%   \emph{\url{git} does not update to the latest version of the mat91lib
-%%   and mmculib submodules}. We are not sure why. As a hack use:
-%% \end{itemize}
-%% %
-%% \begin{minted}{bash}
-%% 
-%% $ cd wacky-racers
-%% $ cd src/mat91lib
-%% $ git checkout master
-%% $ git pull origin master
-%% $ cd ../mmculib
-%% $ git checkout master
-%% $ git pull origin master
-%% $ cd ..
-%% $ cd test-apps
-%% $ make clean
-%% 
-%% \end{minted}
 
 \subsection{Git merging}
 \label{git-merging}
