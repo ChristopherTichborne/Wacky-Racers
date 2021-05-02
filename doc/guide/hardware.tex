@@ -57,14 +57,14 @@ parts of the chip. Note, some pins require 3.3 V while others require
 reassigned in software}, e.g., SPI, TWI, and USB pins. Note, there are
 restrictions on the PWM pins.
 
-By default the PB4 and PB5 pins are configured for the JTAG debugger.
+By default the \pin{PB4} and \pin{PB5} pins are configured for the JTAG debugger.
 These can be used for general PIO after setting an internal bit.  See
 \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.
 
 The logic levels are set by the voltage on the VDDIO pin (usually
-3.3\,V).  PA12--PA14 and PA26--PA31 can sink/source 4\,mA.  The USB
-pins (PB10--PB11) can sink/source 30\,mA.  The rest can only
-sink/source 2\,mA of current
+3.3\,V).  \pin{PA12}--\pin{PA14} and \pin{PA26}--\pin{PA31} can sink/source
+4\,mA.  The USB pins (\pin{PB10}--\pin{PB11}) can sink/source 30\,mA.  The
+rest can only sink/source 2\,mA of current
 
 
 \subsection{USART/UART}\label{usartuart}
@@ -198,6 +198,6 @@ multiple pins for the same purpose; these must all be connected.
 \item
   All the MCU GND pins need to be powered.
 \item
-  Avoid connecting to PB4 and PB5 (say for TWI1).  If you do you will need to disable JTAG.
+  Avoid connecting to \pin{PB4} and \pin{PB5} (say for TWI1).  If you do you will need to disable JTAG.
 \end{enumerate}
 

@@ -120,7 +120,7 @@ $ git clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-202
 \label{configuration}
 
 Each board has different PIO definitions and requires its own
-configuration information. The \file{wacky-racers/src/boards}
+configuration information. The \wfile{boards}
 directory contains a number of configurations; one for the hat and racer
 boards. Each configuration directory contains three files:
 
@@ -205,7 +205,7 @@ see \protect\hyperref[troubleshooting]{troubleshooting}.
 \label{led-flash-program}
 
 For your first program, use
-\file{wacky-racers/src/demo-apps/led\_test1/led\_test1.c}. The macros
+\wfile{demo-apps/led\_test1/led\_test1.c}. The macros
 \code{LED1\_PIO} and \code{LED2\_PIO} need to be defined in
 \file{target.h} (see
 \protect\hyperref[configuration]{configuration}). If your LEDs are
@@ -327,7 +327,7 @@ $ make reset
 
 To help debug your programs, it is is wise to set up \href{USB_CDC}{USB
 CDC}. For example, here's the code for
-\file{wacky-racers/src/demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
+\wfile{demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
 
 \begin{minted}{C}
 /* File:   usbserial_hello1.c
@@ -413,7 +413,7 @@ using other operating systems, search for USB CDC on ecewiki.
 \label{test-programs}
 
 There are a number of test programs in the directory
-\file{wacky-racers/demo-apps}. Where possible these are written to be
+\wfile{demo-apps}. Where possible these are written to be
 independent of the target board using configuration files (see
 \protect\hyperref[configuration]{configuration}).
 
@@ -421,7 +421,7 @@ independent of the target board using configuration files (see
 \label{pwm-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\file{src/test-apps/pwm\_test2/pwm\_test2.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\wfile{test-apps/pwm\_test2/pwm\_test2.c}}
 provides an example of driving PWM signals. Notes:
 %
 \begin{enumerate}
@@ -437,8 +437,8 @@ provides an example of driving PWM signals. Notes:
 The most likely problem is that you have not used a PIO pin that can be
 driven as a PWM output. The SAM4S can generate four independent hardware
 PWM signals. See
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\file{src/mat91lib/pwm/pwm.c}}
-for a list of supported PIO pins. Note, PA16, PA30, and PB13 are
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\wfile{mat91lib/pwm/pwm.c}}
+for a list of supported PIO pins. Note, \pin{PA16}, \pin{PA30}, and \pin{PB13} are
 different options for PWM2.
 
 To drive the motors you will need to use a
@@ -450,8 +450,8 @@ When all is well, you can increase the current limit.
 \label{imu-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\file{wacky-racers/src/demo-apps/imu\_test1/imu\_test1.c}}
-provides an example of using the MPU9250 IMU. All going well, this
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\wfile{demo-apps/imu\_test1/imu\_test1.c}}
+provides an example of using the MPU9250 IMU.  All going well, this
 prints three 16-bit acceleration values per line to USB CDC. Tip your
 board over, and the the third (z-axis) value should go negative since
 this measures the effect of gravity on a little mass inside the IMU
@@ -464,12 +464,12 @@ If you get 'Cannot detect IMU' the main reasons are:
   You have specified the incorrect address. Use \code{MPU\_0} if the
   AD0 pin is connected to ground otherwise use \code{MPU\_1}.
 \item
-  You are using TWI1. The PB4 and PB5 pins used by TWI1 default to JTAG
+  You are using TWI1. The \pin{PB4} and \pin{PB5} pins used by TWI1 default to JTAG
   pins. See \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.
 \item
   You do not have TWI/I2C pull-up resistors connected to 3V3 or the
-  wrong resistor values. Use a scope to look at the signals TWCK/SCLK
-  and TWD/SDA.
+  wrong resistor values. Use a scope to look at the signals \pin{TWCK/SCL}
+  and \pin{TWD/SDA}.
 \item
   Check that the auxiliary \url{I2C} bus signals are not connected
   (otherwise the magnetometer will not respond).  
@@ -479,20 +479,20 @@ If you get 'Cannot detect IMU' the main reasons are:
 \end{enumerate}
 
 If you reset the \url{SAM4S} in the middle of a transaction with the
-IMU, the IMU gets confused and holds the SDA/TWD line low. This requires
-recycling of the power or sending out some dummy clocks on the SCL/TWCK
-signal.
+IMU, the IMU gets confused and holds the \pin{TWD/SDA} line low. This
+requires recycling of the power or sending out some dummy clocks on
+the \pin{TWCK/SCL} signal.
 
 
 \subsection{Radio test}
 \label{radio-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\file{wacky-racers/src/demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\wfile{demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
 provides an example of using the radio as a transmitter.
 
 The companion program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\file{wacky-racers/src/demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\wfile{demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
 provides an example of using the radio as a receiver.
 
 Notes:
@@ -520,8 +520,8 @@ lab.
 \label{your-hatracer-program}
 
 There is skeleton code, see
-\file{wacky-racers/src/wacky-apps/hat/hat.c} and
-\file{wacky-racers/src/wacky-apps/racer/racer.c}. We recommend that
+\wfile{wacky-apps/hat/hat.c} and
+\wfile{wacky-apps/racer/racer.c}. We recommend that
 build your programs incrementally and that you poll your devices with a
 paced loop and not use interrupts. It is a good idea to disable the
 watchdog timer until you have robust code.
@@ -587,7 +587,7 @@ this does not reset the peripherals as with a power-on reset.
 \subsection{Disabling JTAG pins}
 \label{disabling-jtag-pins}
 
-By default PB4 and PB5 are configured as \url{JTAG} pins. You can turn
+By default \pin{PB4} and \pin{PB5} are configured as \url{JTAG} pins. You can turn
 them into PIO pins or use them for TWI1 using:
 %
 \begin{minted}{C}
@@ -624,20 +624,20 @@ void main (void)
 \section{Under the bonnet}
 \label{under-the-bonnet}
 
-wackylib is a library of C files that tries to hide some of the
+\file{wackylib} is a library of C files that tries to hide some of the
 complexity of the underlying software.
 
-mmculib is a library of C drivers, mostly for performing high-level I/O.
+\file{mmculib} is a library of C drivers, mostly for performing high-level I/O.
 It is written to be microcontroller neutral.
 
-mat91lib is a library of C drivers specifically for interfacing with the
+\file{mat91lib} is a library of C drivers specifically for interfacing with the
 peripherals of Atmel AT91 microcontrollers such as the
 \href{Atmel_SAM4S}{Atmel SAM4S}. It provides the hardware abstraction
 layer.
 
-The building is controlled by \file{mat91lib/mat91lib.mk}. This is a
-makefile fragment loaded by \file{mmculib/mmculib.mk}.
-\file{mat91lib/mat91lib.mk} loads other makefile fragments for each
+The building is controlled by \wfile{mat91lib/mat91lib.mk}. This is a
+makefile fragment loaded by \wfile{mmculib/mmculib.mk}.
+\file{wacky-reacers/src/mat91lib/mat91lib.mk} loads other makefile fragments for each
 peripheral or driver required. It also automatically generates
 dependency files for the gazillions of other files that are required to
 make things work.

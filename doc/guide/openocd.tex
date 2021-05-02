@@ -114,11 +114,11 @@ buggy. In this case it is straightforward to
 \label{mac-osx}
 
 The easiest way to install OpenOCD on Mac OSX is to use
-\href{http://brew.sh/}{Homebrew}. If you wish to use a
-\href{USB_to_JTAG}{UCECE USB to JTAG adaptor} (or presumably a Bus
-Blaster), make sure you include libftdi support by installing with the
-command:
-
+\href{http://brew.sh/}{Homebrew}. If you wish to use JTAG with an
+adaptor based on a FTDI chip (for example, the UCECE USB to JTAG
+adaptor or a Bus Blaster), make sure you include libftdi support by
+installing with the command:
+%
 \begin{minted}{bash}
 $ brew install openocd --enable-ft2232_libftdi
 \end{minted}
