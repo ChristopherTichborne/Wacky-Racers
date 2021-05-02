@@ -20,7 +20,7 @@ static twi_cfg_t mpu_twi_cfg =
 {
     .channel = TWI_CHANNEL_0,
     .period = TWI_PERIOD_DIVISOR(100000), // 100 kHz
-    .slave_addr = 0 // only needed in slave mode.
+    .slave_addr = 0
 };
 
 
@@ -34,10 +34,9 @@ main (void)
     freopen ("/dev/usb_tty", "r", stdin);
 
     // Initialise the TWI (I2C) bus for the MPU
-    twi_t twi_mpu = twi_init(&mpu_twi_cfg);
+    twi_t twi_mpu = twi_init (&mpu_twi_cfg);
     // Initialise the MPU9250 IMU
-    mpu_t* mpu = mpu9250_create(twi_mpu, MPU_ADDRESS);
-
+    mpu_t* mpu = mpu9250_create (twi_mpu, MPU_ADDRESS);
 
     pacer_init (10);
 
@@ -46,19 +45,28 @@ main (void)
         /* Wait until next clock tick.  */
         pacer_wait ();
 
-        if (mpu) {
+        if (mpu)
+        {
             /* read in the accelerometer data */
-            if (!mpu9250_is_imu_ready(mpu)) {
-                printf("waiting for IMU to be ready...\n");
-            } else {
+            if (! mpu9250_is_imu_ready (mpu))
+            {
+                printf("Waiting for IMU to be ready...\n");
+            }
+            else
+            {
                 int16_t accel[3];
-                if (mpu9250_read_accel(mpu, accel)) {
+                if (mpu9250_read_accel (mpu, accel))
+                {
                     printf("x: %5d  y: %5d  z: %5d\n", accel[0], accel[1], accel[2]);
-                } else {
+                }
+                else
+                {
                     printf("ERROR: failed to read acceleration\n");
                 }
             }
-        } else {
+        }
+        else
+        {
             printf("ERROR: can't find MPU9250!\n");
         }
 
