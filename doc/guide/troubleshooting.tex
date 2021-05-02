@@ -193,7 +193,7 @@ If PWM does not work:
 \item
   Check the SAM4S pin since not every pin can be a PWM signal
 \item
-  Check the definition in the configuration file \texttt{target.h}
+  Check the definition in the configuration file \file{target.h}
 \end{enumerate}
 
 If the PWM frequency is wrong:
@@ -305,6 +305,22 @@ software.
 \subsubsection{Debugging SPI}
 \label{debugging-spi}
 
+Check:
+%
+\begin{enumerate}
+\item The device chip select signal is driven low.
+\item The \code{SCK} signal toggles while the chip select is low.
+\item The \code{MOSI} signal does something while the chip select is low.
+\end{enumerate}
+%
+The \code{MISO} signal is usually tri-state and is driven by the
+device when the chip select is low.
+
+The SPI standard is rather loose and there are four modes to confuse
+the unwary; these are due to two clock polarity modes and two clock
+phase modes.  When using the wrong mode, the read data can be
+bit-shifted or unreliable.
+
 \mtodo{Add scope picture of SPI signals}
 
 \section{Other problems}
@@ -333,7 +349,7 @@ software.
   \item
     The program has crashed trying to access invalid memory. Usually
     this is due to buffer overflow or dereferencing uninitialised
-    pointers (say by not calling \texttt{radio.begin}). Try running
+    pointers (say by not calling \code{radio\_init}). Try running
     'make debug'. This will start the
     \protect\hyperref[debugging]{debugger} and attach to your MCU. If
     the debugger says that your program has stopped in

@@ -120,25 +120,25 @@ $ git clone https://eng-git.canterbury.ac.nz/groupleader-userid/wacky-racers-202
 \label{configuration}
 
 Each board has different PIO definitions and requires its own
-configuration information. The \texttt{wacky-racers/src/boards}
+configuration information. The \file{wacky-racers/src/boards}
 directory contains a number of configurations; one for the hat and racer
 boards. Each configuration directory contains three files:
 
 \begin{itemize}
 \item
-  \texttt{board.mk} is a makefile fragment that specifies the MCU model,
+  \file{board.mk} is a makefile fragment that specifies the MCU model,
   optimisation level, etc.
 \item
-  \texttt{target.h} is a C header file that defines the PIO pins and
+  \file{target.h} is a C header file that defines the PIO pins and
   clock speeds.
 \item
-  \texttt{config.h} is a C header file that wraps target.h. It's purpose
+  \file{config.h} is a C header file that wraps target.h. It's purpose
   is for porting to different compilers.
 \end{itemize}
 
 \textbf{You will need to edit the target.h file for your board} and set
 the definitions appropriate for your hardware. Here's an excerpt from
-\texttt{target.h} for a hat board:
+\file{target.h} for a hat board:
 
 \begin{minted}{C}
 /* USB  */
@@ -205,11 +205,11 @@ see \protect\hyperref[troubleshooting]{troubleshooting}.
 \label{led-flash-program}
 
 For your first program, use
-\texttt{wacky-racers/src/demo-apps/led\_test1/led\_test1.c}. The macros
-\texttt{LED1\_PIO} and \texttt{LED2\_PIO} need to be defined in
-\texttt{target.h} (see
+\file{wacky-racers/src/demo-apps/led\_test1/led\_test1.c}. The macros
+\code{LED1\_PIO} and \code{LED2\_PIO} need to be defined in
+\file{target.h} (see
 \protect\hyperref[configuration]{configuration}). If your LEDs are
-active high, replace \texttt{ActiveLow} with \texttt{ActiveHigh}.
+active high, replace \code{ActiveLow} with \code{ActiveHigh}.
 
 \begin{minted}{C}
 /* File:   led_test1.c
@@ -249,7 +249,7 @@ makefiles.
 
 The demo test programs are generic and you need to specify which board
 you are compiling them for. The board configuration file can be chosen
-dynamically by defining the environment variable \texttt{BOARD}. For
+dynamically by defining the environment variable \code{BOARD}. For
 example:
 %
 \begin{minted}{bash}
@@ -264,7 +264,7 @@ If all goes well, you should see at the end:
   19432    2420    2732   24584    6008 led_test1.bin
 \end{verbatim}
 
-To avoid having to specify the environment variable \texttt{BOARD}, you
+To avoid having to specify the environment variable \code{BOARD}, you
 can define it for the rest of your session using:
 %
 \begin{minted}{bash}
@@ -277,7 +277,7 @@ and then just use:
 $ make
 \end{minted}
 
-Note, if you compile with the \texttt{BOARD} environment variable set incorrectly, use:
+Note, if you compile with the \code{BOARD} environment variable set incorrectly, use:
 %
 \begin{minted}{bash}
 $ make clean
@@ -300,7 +300,7 @@ $ make bootflash
 \end{minted}
 
 Unless you force a complete erasure of the SAM4S flash memory by
-connecting the \texttt{ERASE} pin to 3.3 V, you will not need to repeat
+connecting the \pin{ERASE} pin to 3.3 V, you will not need to repeat
 this command.
 
 \subsection{Programming}
@@ -327,7 +327,7 @@ $ make reset
 
 To help debug your programs, it is is wise to set up \href{USB_CDC}{USB
 CDC}. For example, here's the code for
-\texttt{wacky-racers/src/demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
+\file{wacky-racers/src/demo-apps/usbserial\_hello1/usbserial\_hello1.c}.
 
 \begin{minted}{C}
 /* File:   usbserial_hello1.c
@@ -364,7 +364,11 @@ int main (void)
 }
 \end{minted}
 
-To get this to work you need to compile it and program the SAM4S using:
+Note, the string \code{"/dev/usb\_tty"} is used to name the USB serial
+device on the SAM4S so that it can be used by the C stdio function
+\code{freopen}.   
+
+To get this programme to work you need to compile it and program the SAM4S using:
 
 \begin{minted}{bash}
 $ cd wacky-racers/src/demo-apps/usbserial_hello1
@@ -409,7 +413,7 @@ using other operating systems, search for USB CDC on ecewiki.
 \label{test-programs}
 
 There are a number of test programs in the directory
-\texttt{wacky-racers/demo-apps}. Where possible these are written to be
+\file{wacky-racers/demo-apps}. Where possible these are written to be
 independent of the target board using configuration files (see
 \protect\hyperref[configuration]{configuration}).
 
@@ -417,7 +421,7 @@ independent of the target board using configuration files (see
 \label{pwm-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\texttt{src/test-apps/pwm\_test2/pwm\_test2.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/test-apps/pwm_test2/pwm_test2.c}{\file{src/test-apps/pwm\_test2/pwm\_test2.c}}
 provides an example of driving PWM signals. Notes:
 %
 \begin{enumerate}
@@ -426,14 +430,14 @@ provides an example of driving PWM signals. Notes:
   and forward/reverse signals. You will need to generate four PWM
   signals or be clever with two PWM signals.
 \item
-  The \texttt{pwm\_cfg\_t} structure configures the frequency, duty
+  The \code{pwm\_cfg\_t} structure configures the frequency, duty
   cycle and alignment of the output PWM.
 \end{enumerate}
 
 The most likely problem is that you have not used a PIO pin that can be
 driven as a PWM output. The SAM4S can generate four independent hardware
 PWM signals. See
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\texttt{src/mat91lib/pwm/pwm.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/mat91lib/pwm/pwm.c}{\file{src/mat91lib/pwm/pwm.c}}
 for a list of supported PIO pins. Note, PA16, PA30, and PB13 are
 different options for PWM2.
 
@@ -446,7 +450,7 @@ When all is well, you can increase the current limit.
 \label{imu-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\texttt{wacky-racers/src/demo-apps/imu\_test1/imu\_test1.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/imu_test1/imu_test1.c}{\file{wacky-racers/src/demo-apps/imu\_test1/imu\_test1.c}}
 provides an example of using the MPU9250 IMU. All going well, this
 prints three 16-bit acceleration values per line to USB CDC. Tip your
 board over, and the the third (z-axis) value should go negative since
@@ -457,8 +461,8 @@ If you get 'Cannot detect IMU' the main reasons are:
 
 \begin{enumerate}
 \item
-  You have specified the incorrect address. Use \texttt{MPU\_0} if the
-  AD0 pin is connected to ground otherwise use \texttt{MPU\_1}.
+  You have specified the incorrect address. Use \code{MPU\_0} if the
+  AD0 pin is connected to ground otherwise use \code{MPU\_1}.
 \item
   You are using TWI1. The PB4 and PB5 pins used by TWI1 default to JTAG
   pins. See \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.
@@ -484,11 +488,11 @@ signal.
 \label{radio-test}
 
 The program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\texttt{wacky-racers/src/demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_tx_test1/radio_tx_test1.c}{\file{wacky-racers/src/demo-apps/radio\_tx\_test1/radio\_tx\_test1.c}}
 provides an example of using the radio as a transmitter.
 
 The companion program
-\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\texttt{wacky-racers/src/demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
+\href{https://eng-git.canterbury.ac.nz/mph/wacky-racers-2021/blob/master/src/demo-apps/radio_rx_test1/radio_rx_test1.c}{\file{wacky-racers/src/demo-apps/radio\_rx\_test1/radio\_rx\_test1.c}}
 provides an example of using the radio as a receiver.
 
 Notes:
@@ -516,8 +520,8 @@ lab.
 \label{your-hatracer-program}
 
 There is skeleton code, see
-\texttt{wacky-racers/src/wacky-apps/hat/hat.c} and
-\texttt{wacky-racers/src/wacky-apps/racer/racer.c}. We recommend that
+\file{wacky-racers/src/wacky-apps/hat/hat.c} and
+\file{wacky-racers/src/wacky-apps/racer/racer.c}. We recommend that
 build your programs incrementally and that you poll your devices with a
 paced loop and not use interrupts. It is a good idea to disable the
 watchdog timer until you have robust code.
@@ -631,9 +635,9 @@ peripherals of Atmel AT91 microcontrollers such as the
 \href{Atmel_SAM4S}{Atmel SAM4S}. It provides the hardware abstraction
 layer.
 
-The building is controlled by \texttt{mat91lib/mat91lib.mk}. This is a
-makefile fragment loaded by \texttt{mmculib/mmculib.mk}.
-\texttt{mat91lib/mat91lib.mk} loads other makefile fragments for each
+The building is controlled by \file{mat91lib/mat91lib.mk}. This is a
+makefile fragment loaded by \file{mmculib/mmculib.mk}.
+\file{mat91lib/mat91lib.mk} loads other makefile fragments for each
 peripheral or driver required. It also automatically generates
 dependency files for the gazillions of other files that are required to
 make things work.
@@ -734,9 +738,9 @@ $ git commit -m "Fix merge"
 
 Sometimes when you do a git pull you will be thrown into a text editor
 to type a merge comment. The choice of editor is controlled by an
-environment variable \texttt{EDITOR}. On the ECE computers this defaults
+environment variable \code{EDITOR}. On the ECE computers this defaults
 to emacs. You can changed this by adding a line such as the following to
-the \texttt{.bash\_profile} file in your home directory.
+the \file{.bash\_profile} file in your home directory.
 
 \begin{minted}{bash}
 $ export EDITOR=geany
