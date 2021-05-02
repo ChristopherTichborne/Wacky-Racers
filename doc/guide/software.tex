@@ -198,7 +198,7 @@ see \protect\hyperref[troubleshooting]{troubleshooting}.
 
 For your first program, use
 \wfile{test-apps/ledflash1/ledflash1.c}. The macros
-\code{LED1\_PIO} and \code{LED2\_PIO} need to be defined in
+\code{LED1_PIO} and \code{LED2_PIO} need to be defined in
 \file{target.h} (see
 \protect\hyperref[configuration]{configuration}). If your LEDs are
 active high, replace 1 with 0 in the LED config structures.
@@ -289,15 +289,18 @@ $ make reset
 \section{USB interfacing}
 \label{usb-interfacing}
 
-To help debug your programs, it is wise to set up USB CDC. For
-example, here's the code for
+To help debug your programs, it is wise to use \wikiref{USB CDC}{USB
+  CDC}.  This is a serial protocol for USB.  With some magic, the
+stdin, stdout, and stderr streams can sent over USB.  For example,
+here's an example program
 \wfile{test-apps/usb_serial_test1/usb_serial_test1.c}.
 
 \inputminted{C}{../../src/test-apps/usb_serial_test1/usb_serial_test1.c}
 
-Note, the string \code{"/dev/usb\_tty"} is used to name the USB serial
+Note, the string \code{"/dev/usb_tty"} is used to name the USB serial
 device on the SAM4S so that it can be used by the C stdio function
-\code{freopen}.   
+\code{freopen}\footnote{When running a program with an operating
+  system, this is all set up before \code{main} is called.}.
 
 To get this programme to work you need to compile it and program the SAM4S using:
 
@@ -321,9 +324,8 @@ Apr 30 11:03:50 thing4 kernel: [52704.481357] usb 2-3.3: New USB device strings:
 Apr 30 11:03:50 thing4 kernel: [52704.482060] cdc_acm 2-3.3:1.0: ttyACM0: USB ACM device
 \end{verbatim}
 
-Ignore the errors for now\footnote{They have popped up with new Linux
-  kernels and we have yet to determine why.}. If you see
-\texttt{ttyACM0:\ USB\ ACM\ device} congrats. If not, see \wikiref{USB_debugging}{USB debugging}.
+Congrats if you see \texttt{ttyACM0:\ USB\ ACM\ device}!  If not, see
+\wikiref{USB_debugging}{USB debugging}.
 
 You can now run a \wikiref{Serial_terminal_applications}{serial
   terminal program}. For example, on Linux:
@@ -337,7 +339,7 @@ All going well, this will repeatedly print 'Hello world'.
 If you get an error 'device is busy', it is likely that the ModemManager
 program has automatically connected to your device on the sly. This
 program should be disabled on the ECE computers. For more about this and
-using other operating systems, search for USB CDC on ecewiki.
+using other operating systems, see \wikiref{USB CDC}{USB CDC}.
 
 \section{Test programs}
 \label{test-programs}
@@ -351,7 +353,11 @@ independent of the target board using configuration files (see
 \label{pwm-test}
 
 The program \wfile{test-apps/pwm_test2/pwm_test2.c} provides an
-example of driving PWM signals. Notes:
+example of driving PWM signals.
+
+\inputminted{C}{../../src/test-apps/pwm_test2/pwm_test2.c}
+
+Notes:
 %
 \begin{enumerate}
 \item
@@ -359,8 +365,10 @@ example of driving PWM signals. Notes:
   and forward/reverse signals. You will need to generate four PWM
   signals or be clever with two PWM signals.
 \item
-  The \code{pwm\_cfg\_t} structure configures the frequency, duty
+  The \code{pwm_cfg_t} structure configures the frequency, duty
   cycle and alignment of the output PWM.
+\item The frequency is likely to be too high for your motor.
+\item \code{pwm_channels_start} is used to start the PWM channels simultaneously.  
 \end{enumerate}
 
 The most likely problem is that you have not used a PIO pin that can
@@ -387,8 +395,8 @@ If you get 'Cannot detect IMU' the main reasons are:
 
 \begin{enumerate}
 \item
-  You have specified the incorrect address. Use \code{MPU\_0} if the
-  AD0 pin is connected to ground otherwise use \code{MPU\_1}.
+  You have specified the incorrect address. Use \code{MPU_0} if the
+  AD0 pin is connected to ground otherwise use \code{MPU_1}.
 \item
   You are using TWI1. The \pin{PB4} and \pin{PB5} pins used by TWI1 default to JTAG
   pins. See \protect\hyperref[disabling-jtag-pins]{disabling JTAG pins}.

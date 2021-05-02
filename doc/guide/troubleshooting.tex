@@ -309,11 +309,11 @@ Check:
 %
 \begin{enumerate}
 \item The device chip select signal is driven low.
-\item The \code{SCK} signal toggles while the chip select is low.
-\item The \code{MOSI} signal does something while the chip select is low.
+\item The \pin{SCK} signal toggles while the chip select is low.
+\item The \pin{MOSI} signal does something while the chip select is low.
 \end{enumerate}
 %
-The \code{MISO} signal is usually tri-state and is driven by the
+The \pin{MISO} signal is usually tri-state and is driven by the
 device when the chip select is low.
 
 The SPI standard is rather loose and there are four modes to confuse
@@ -349,7 +349,7 @@ bit-shifted or unreliable.
   \item
     The program has crashed trying to access invalid memory. Usually
     this is due to buffer overflow or dereferencing uninitialised
-    pointers (say by not calling \code{radio\_init}). Try running
+    pointers (say by not calling \code{radio_init}). Try running
     'make debug'. This will start the
     \protect\hyperref[debugging]{debugger} and attach to your MCU. If
     the debugger says that your program has stopped in
