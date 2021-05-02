@@ -465,6 +465,36 @@ you have robust code.
 \section{Howtos}
 \label{howtos}
 
+\subsection{Delaying}
+
+mat91lib provides a macro \code{DELAY_US} in
+\wfile{mat91lib/sam4s/delay.h} for a busy-wait delay in microseconds
+(this can be a floating point value).  The CPU just spins for a
+precomputed number of clock cycles.  The argument should be a constant
+so the compiler can compute the number of clock cycles.  This function
+needs to be compiled with optimisation.
+
+mat91lib also provides a function \code{delay_ms} for a busy-wait
+delay in milliseconds (this must be an integer).  All this function
+does is call \code{DELAY_US (1000)} the required number of times.
+
+
+\subsection{Reading from ADC}
+\label{ADC}
+
+The ADC can be also set up to stream data continuously; this is a lot
+more complicated.
+
+
+\subsection{Reading from pushbutton}
+\label{pushbutton}
+
+\wfile{test-apps/button_test2/button_test2.c} shows the use of a
+simple button driver to read a pushbutton.  This driver does button
+debouncing and state-transition detection.  For more details see
+\wfile{mmculib/button/button.h}.
+
+
 \subsection{Disabling JTAG pins}
 \label{disabling-jtag-pins}
 
