@@ -1,11 +1,11 @@
 \chapter{OpenOCD}
 
-The Open On-Chip Debugger (OpenOCD) is an open-source on-chip debugging,
-in-system programming, and boundary-scan testing tool. It is able to
-communicate with various ARM and MIPS microprocessors via \url{JTAG} or
-\url{SWD}. It works with a number of different \url{JTAG} or \url{SWD}
-interfaces/programmers. User interaction can be achieved via telnet or
-the GNU debugger (GDB).
+The Open On-Chip Debugger (OpenOCD) is an open-source on-chip
+debugging, in-system programming, and boundary-scan testing tool. It
+is able to communicate with various ARM and MIPS microprocessors via
+\wikiref{JTAG}{JTAG} or \wikiref{SWD}{SWD}. It works with a number of different
+\wikiref{JTAG}{JTAG} or \wikiref{SWD}{SWD} interfaces/programmers. User
+interaction can be achieved via telnet or the GNU debugger (GDB).
 
 \section{Configuration files}
 \label{configuration-files}
@@ -22,7 +22,7 @@ from other programs using TCP/IP sockets. This means that you can
 remotely debug from another computer. The socket ports it uses are
 specified in the \wikiref{OpenOCD_configuration}{OpenOCD configuration}
 file supplied when it starts. By default, OpenOCD uses port 3333 for
-\url{gdb} and port 4444 for general interaction using Telnet.
+\wikiref{GDB}{GDB} and port 4444 for general interaction using Telnet.
 
 \subsection{Communicating with OpenOCD using telnet}
 \label{communicating-with-openocd-using-telnet}
@@ -38,9 +38,10 @@ $ telnet localhost:4444
 \subsection{Communicating with OpenOCD using GDB}
 \label{communicating-with-openocd-using-gdb}
 
-If OpenOCD is running, commands can be set to it with \url{gdb}. There
-are two steps: connecting to OpenOCD with the target remote command, and
-then sending a command with the GDB monitor command. For example,
+If OpenOCD is running, commands can be set to it with
+\wikiref{GDB}{GDB}. There are two steps: connecting to OpenOCD with
+the target remote command, and then sending a command with the GDB
+monitor command. For example,
 
 \begin{minted}{bash}
 $ gdb
@@ -76,7 +77,7 @@ a Windows system.
 \label{getting-openocd}
 
 The developers of OpenOCD release source packages (and provide
-\url{subversion} access) but do not provide official builds for any
+subversion access) but do not provide official builds for any
 operating system. However, there are various sites which provide
 prebuilt versions of OpenOCD.
 
@@ -126,4 +127,4 @@ $ brew install openocd --enable-ft2232_libftdi
 \section{Errors}
 \label{errors}
 
-See \url{http://ecewiki.elec.canterbury.ac.nz/mediawiki/index.php/OpenOCD_errors}.
+See \wikiref{OpenOCD_errors}{OpenOCD errors}.
