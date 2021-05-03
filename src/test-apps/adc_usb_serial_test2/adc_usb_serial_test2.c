@@ -5,12 +5,8 @@
            It triggers ADC conversions as each sample is read.
 */
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "usb_serial.h"
-#include "pio.h"
 #include "adc.h"
-#include "sys.h"
 #include "pacer.h"
 
 #define PACER_RATE 2
@@ -40,7 +36,7 @@ int main (void)
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
-g
+
     freopen ("/dev/usb_tty", "a", stdout);
     freopen ("/dev/usb_tty", "r", stdin);
     

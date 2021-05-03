@@ -5,12 +5,8 @@
            It triggers ADC conversions as each sample is read.
 */
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "usb_serial.h"
-#include "pio.h"
 #include "adc.h"
-#include "sys.h"
 #include "pacer.h"
 
 #define PACER_RATE 2

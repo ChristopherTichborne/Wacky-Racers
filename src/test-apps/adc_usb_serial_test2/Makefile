@@ -1,9 +1,9 @@
 PERIPHERALS = adc
 DRIVERS = usb_serial pacer
 
-TARGET = adc_usb_serial_test1.bin
+TARGET = adc_usb_serial_test2.bin
 
-SRC = adc_usb_serial_test1.c
+SRC = adc_usb_serial_test2.c
 
 include ../../boards/board.mk
 
