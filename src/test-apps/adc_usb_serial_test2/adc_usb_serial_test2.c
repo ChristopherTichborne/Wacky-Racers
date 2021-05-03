@@ -1,7 +1,7 @@
 /* File:   adc_usb_cdc_test1.c
    Author: M. P. Hayes, UCECE
    Date:   3 May 2021
-   Descr:  This reads from ADC channel 0.
+   Descr:  This reads from ADC channels 2 and 4.
            It triggers ADC conversions as each sample is read.
 */
 #include <stdio.h>
@@ -20,7 +20,7 @@
 static const adc_cfg_t adc_cfg =
 {
     .bits = 12,
-    .channel = ADC_CHANNEL_0,
+    .channels = BIT (ADC_CHANNEL_0) | BIT (ADC_CHANNEL_1),
     .trigger = ADC_TRIGGER_SW,
     .clock_speed_kHz = ADC_CLOCK_FREQ / 1000
 };
@@ -49,12 +49,13 @@ g
     pacer_init (PACER_RATE);
     while (1)
     {
-        int16_t data[1];
+        int16_t data[2];
 
         pacer_wait ();
 
+        // The lowest numbered channel is read first.
         adc_read (adc, data, sizeof (data));
 
-        printf ("%3d: %d\n", count, data[0]);
+        printf ("%3d: %d, %d\n", count, data[0], data[1]);
     }
 }
