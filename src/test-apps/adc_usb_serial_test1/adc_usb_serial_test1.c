@@ -45,7 +45,7 @@ g
     pacer_init (PACER_RATE);
     while (1)
     {
-        int16_t data[1];
+        uint16_t data[1];
 
         pacer_wait ();
 

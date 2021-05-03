@@ -45,7 +45,7 @@ int main (void)
     pacer_init (PACER_RATE);
     while (1)
     {
-        int16_t data[2];
+        uint16_t data[2];
 
         pacer_wait ();
 
