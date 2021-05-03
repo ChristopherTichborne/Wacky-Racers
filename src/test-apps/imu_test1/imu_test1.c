@@ -10,6 +10,15 @@
 #include "usb_serial.h"
 #include "mpu9250.h"
 
+
+/* Define how fast ticks occur.  This must be faster than
+   TICK_RATE_MIN.  */
+enum {LOOP_POLL_RATE = 200};
+
+/* Define LED flash rate in Hz.  */
+enum {LED_FLASH_RATE = 20};
+
+
 static usb_serial_cfg_t usb_serial_cfg =
 {
     .read_timeout_us = 1,
@@ -18,7 +27,7 @@ static usb_serial_cfg_t usb_serial_cfg =
 
 static twi_cfg_t mpu_twi_cfg =
 {
-    .channel = TWI_CHANNEL_0,
+    .channel = TWI_CHANNEL_1,
     .period = TWI_PERIOD_DIVISOR(100000), // 100 kHz
     .slave_addr = 0 // only needed in slave mode.
 };
@@ -27,6 +36,15 @@ static twi_cfg_t mpu_twi_cfg =
 int
 main (void)
 {
+
+    uint8_t flash_ticks;
+    flash_ticks = 0;
+
+
+    /* Configure LED PIO as output.  */
+    pio_config_set (LED1_PIO, PIO_OUTPUT_LOW);
+
+    mcu_jtag_disable();
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
 
@@ -40,6 +58,9 @@ main (void)
 
 
     pacer_init (10);
+
+
+    // use tan o/a to get position
 
     while (1)
     {
@@ -63,5 +84,14 @@ main (void)
         }
 
         fflush(stdout);
+
+        flash_ticks++;
+        if (flash_ticks >= LOOP_POLL_RATE / (LED_FLASH_RATE * 2))
+        {
+            flash_ticks = 0;
+
+            /* Toggle LED.  */
+            pio_output_toggle (LED1_PIO);
+        }
     }
 }

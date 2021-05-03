@@ -30,7 +30,7 @@
 #define USB_CURRENT_MA 500
 
 /* ADC  */
-#define ADC_BATTERY PB3_PIO
+#define ADC_BATTERY PA17_PIO
 #define ADC_JOYSTICK_X PB2_PIO
 #define ADC_JOYSTICK_Y PB1_PIO
 
@@ -40,13 +40,24 @@
 /* LEDs  */
 #define LED1_PIO PA20_PIO
 #define LED2_PIO PA23_PIO
+#define LED_STRIP PA7_PIO
 
 /* General  */
 #define APPENDAGE_PIO PA1_PIO
 #define SERVO_PWM_PIO PA2_PIO
+#define PIEZO_P1 PA19_PIO
+#define PIEZO_P2 PB0_PIO
+#define EN_RADIO PA9_PIO
+#define EN_3V3_REG PA8_PIO
 
-/* Button  */
-#define BUTTON_PIO PA16_PIO
+
+/* Buttons and dipswitches  */
+#define BUTTON_PIO PA4_PIO
+#define JOY_BUT PA6_PIO
+#define RF_CHANNEL_1 PA28_PIO
+#define RF_CHANNEL_2 PA29_PIO
+#define SELECT_1 PA24_PIO
+#define SELECT_2 PA25_PIO
 
 /* Radio  */
 #define RADIO_CS_PIO PA10_PIO
