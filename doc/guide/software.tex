@@ -468,7 +468,7 @@ you have robust code.
 \subsection{Delaying}
 
 mat91lib provides a macro \code{DELAY_US} in
-\wfile{mat91lib/sam4s/delay.h} for a busy-wait delay in microseconds
+\wfile{mat91lib/delay.h} for a busy-wait delay in microseconds
 (this can be a floating point value).  The CPU just spins for a
 precomputed number of clock cycles.  The argument should be a constant
 so the compiler can compute the number of clock cycles.  This function
@@ -478,9 +478,19 @@ mat91lib also provides a function \code{delay_ms} for a busy-wait
 delay in milliseconds (this must be an integer).  All this function
 does is call \code{DELAY_US (1000)} the required number of times.
 
+An example program is \wfile{test-apps/delay_test1/delay_test1.c}.
+
 
 \subsection{Reading from ADC}
 \label{ADC}
+
+\wfile{test-apps/adc_usb_serial_test1/adc_usb_serial_test1.c} shows
+how to read a single ADC channel.  \textbf{Note, this is not tested!}
+For more details see \wfile{mat91lib/adc/adc.h}.
+
+\wfile{test-apps/adc_usb_serial_test2/adc_usb_serial_test2.c} shows
+how to read from two multiplexed ADC channels.  \textbf{Note, this is
+  not tested!}
 
 The ADC can be also set up to stream data continuously; this is a lot
 more complicated.
