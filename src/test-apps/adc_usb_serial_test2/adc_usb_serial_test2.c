@@ -39,7 +39,7 @@ int main (void)
 
     freopen ("/dev/usb_tty", "a", stdout);
     freopen ("/dev/usb_tty", "r", stdin);
-    
+
     adc = adc_init (&adc_cfg);
 
     pacer_init (PACER_RATE);

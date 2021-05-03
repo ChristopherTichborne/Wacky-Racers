@@ -36,7 +36,7 @@ int main (void)
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init (&usb_serial_cfg, "/dev/usb_tty");
-g
+
     freopen ("/dev/usb_tty", "a", stdout);
     freopen ("/dev/usb_tty", "r", stdin);
     
