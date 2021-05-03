@@ -20,7 +20,7 @@
 static const adc_cfg_t adc_cfg =
 {
     .bits = 12,
-    .channels = BIT (ADC_CHANNEL_0) | BIT (ADC_CHANNEL_1),
+    .channels = BIT (ADC_CHANNEL_2) | BIT (ADC_CHANNEL_4),
     .trigger = ADC_TRIGGER_SW,
     .clock_speed_kHz = ADC_CLOCK_FREQ / 1000
 };
