@@ -465,6 +465,56 @@ you have robust code.
 \section{Howtos}
 \label{howtos}
 
+\subsection{PIO pins}
+
+mat91lib provides efficient PIO abstraction routines in
+\wfile{mat91lib/sam4s/pio.h}.  Each pin can be configured as follows:
+%
+\begin{minted}{C}
+    PIO_INPUT,              /* Configure as input pin.  */
+    PIO_PULLUP,             /* Configure as input pin with pullup.  */
+    PIO_PULLDOWN,           /* Configure as input pin with pulldown.  */
+    PIO_OUTPUT_LOW,         /* Configure as output, initially low.  */
+    PIO_OUTPUT_HIGH,        /* Configure as output, initially high.  */
+    PIO_PERIPH_A,           /* Configure as peripheral A.  */
+    PIO_PERIPH_A_PULLUP,    /* Configure as peripheral A with pullup.  */
+    PIO_PERIPH_B,           /* Configure as peripheral B.  */
+    PIO_PERIPH_B_PULLUP,    /* Configure as peripheral B with pullup.  */
+    PIO_PERIPH_C,           /* Configure as peripheral C.  */
+    PIO_PERIPH_C_PULLUP     /* Configure as peripheral C with pullup.  */
+\end{minted}
+
+Here's an example:
+%
+\begin{minted}{C}
+  #include "pio.h"
+
+  // Configure PA0 as an output and set default state to low.
+  pio_config_set (PIO_PA0, PIO_OUTPUT_LOW);
+
+  // Set PA0 high.
+  pio_output_high (PIO_PA0);
+
+  // Set PA0 low.  
+  pio_output_low (PIO_PA0);
+
+  // Set PA0 to value.
+  pio_output_set (PIO_PA0, value);  
+
+  // Toggle PA0.  
+  pio_output_toggle (PIO_PA0);    
+
+  // Reonfigure PA0 as an output connected to peripheral A.
+  pio_config_set (PIO_PA0, PIO_PERIPH_A);
+
+  // Reonfigure PA0 as an input with pullup enabled.
+  pio_config_set (PIO_PA0, PIO_INPUT_PULLUP);
+
+  // Read state of PIO pin.
+  result = pio_input_get (PIO_PA0);
+\end{minted}
+
+
 \subsection{Delaying}
 
 mat91lib provides a macro \code{DELAY_US} in
