@@ -29,8 +29,8 @@
 #define USB_CURRENT_MA 500
 
 /* LEDs  */
-#define LED1_PIO PA9_PIO
-#define LED2_PIO PA10_PIO
+#define LED_RED PA9_PIO
+#define LED_GREEN PA10_PIO
 
 /* General  */
 #define APPENDAGE_PIO PA1_PIO

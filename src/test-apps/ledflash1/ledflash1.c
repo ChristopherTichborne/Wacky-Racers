@@ -12,7 +12,7 @@
 enum {LOOP_POLL_RATE = 200};
 
 /* Define LED flash rate in Hz.  */
-enum {LED_FLASH_RATE = 1};
+enum {LED_FLASH_RATE = 2};
 
 
 /*
@@ -41,8 +41,8 @@ main (void)
     uint8_t flash_ticks;
 
     /* Configure LED PIO as output.  */
-    pio_config_set (LED1_PIO, PIO_OUTPUT_LOW);
-    pio_config_set (LED2_PIO, PIO_OUTPUT_HIGH);
+    // pio_config_set (LED_GREEN, PIO_OUTPUT_LOW);
+    pio_config_set (LED_RED, PIO_OUTPUT_HIGH);
     pacer_init (LOOP_POLL_RATE);
     flash_ticks = 0;
 
@@ -57,8 +57,8 @@ main (void)
             flash_ticks = 0;
 
             /* Toggle LED.  */
-            pio_output_toggle (LED1_PIO);
-            pio_output_toggle (LED2_PIO);
+            // pio_output_toggle (LED_GREEN);
+            pio_output_toggle (LED_RED);
         }
     }
 }

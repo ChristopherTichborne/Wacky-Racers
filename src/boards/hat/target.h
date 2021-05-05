@@ -38,8 +38,8 @@
 #define IMU_INT_PIO PA0_PIO
 
 /* LEDs  */
-#define LED1_PIO PA20_PIO
-#define LED2_PIO PA23_PIO
+#define LED_RED PA20_PIO
+#define LED_GREEN PA23_PIO
 #define LED_STRIP PA7_PIO
 
 /* General  */
@@ -54,15 +54,15 @@
 /* Buttons and dipswitches  */
 #define BUTTON_PIO PA4_PIO
 #define JOY_BUT PA6_PIO
-#define RF_CHANNEL_1 PA28_PIO
-#define RF_CHANNEL_2 PA29_PIO
-#define SELECT_1 PA24_PIO
-#define SELECT_2 PA25_PIO
+#define RF_CHANNEL_1 PA24_PIO
+#define RF_CHANNEL_2 PA25_PIO
+#define SELECT_1 PA28_PIO
+#define SELECT_2 PA29_PIO
 
 /* Radio  */
-#define RADIO_CS_PIO PA10_PIO
-#define RADIO_CE_PIO PA9_PIO
-#define RADIO_IRQ_PIO PA15_PIO
+#define RADIO_CS_PIO PA11_PIO
+#define RADIO_CE_PIO PA10_PIO
+#define RADIO_IRQ_PIO PA26_PIO
 
 
 #endif /* TARGET_H  */

@@ -13,10 +13,10 @@
 
 /* Define how fast ticks occur.  This must be faster than
    TICK_RATE_MIN.  */
-enum {LOOP_POLL_RATE = 200};
+enum {LOOP_POLL_RATE = 10};
 
 /* Define LED flash rate in Hz.  */
-enum {LED_FLASH_RATE = 20};
+enum {LED_FLASH_RATE = 2};
 
 
 static usb_serial_cfg_t usb_serial_cfg =
@@ -42,7 +42,7 @@ main (void)
 
 
     /* Configure LED PIO as output.  */
-    pio_config_set (LED1_PIO, PIO_OUTPUT_LOW);
+    pio_config_set (LED_GREEN, PIO_OUTPUT_LOW);
 
     mcu_jtag_disable();
     // Create non-blocking tty device for USB CDC connection.
@@ -57,7 +57,7 @@ main (void)
     mpu_t* mpu = mpu9250_create(twi_mpu, MPU_ADDRESS);
 
 
-    pacer_init (10);
+    pacer_init (LOOP_POLL_RATE);
 
 
     // use tan o/a to get position
@@ -91,7 +91,8 @@ main (void)
             flash_ticks = 0;
 
             /* Toggle LED.  */
-            pio_output_toggle (LED1_PIO);
+            pio_output_toggle (LED_GREEN);
         }
+        
     }
 }

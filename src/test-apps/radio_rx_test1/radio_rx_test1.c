@@ -11,8 +11,8 @@
 static void panic(void)
 {
     while (1) {
-        pio_output_toggle(LED1_PIO);
-        pio_output_toggle(LED2_PIO);
+        pio_output_toggle(LED_GREEN);
+        pio_output_toggle(LED_RED);
         delay_ms(400);
     }
 }
@@ -32,8 +32,8 @@ int main (void)
     usb_cdc_t usb_cdc;
 
     /* Configure LED PIO as output.  */
-    pio_config_set(LED1_PIO, PIO_OUTPUT_LOW);
-    pio_config_set(LED2_PIO, PIO_OUTPUT_LOW);
+    pio_config_set(LED_GREEN, PIO_OUTPUT_LOW);
+    pio_config_set(LED_RED, PIO_OUTPUT_LOW);
 
     // Create non-blocking tty device for USB CDC connection.
     usb_serial_init(NULL, "/dev/usb_tty");
@@ -58,8 +58,8 @@ int main (void)
 
         if (nrf24_read(nrf, buffer, sizeof(buffer))) {
             printf("%s\n", buffer);
-            pio_output_toggle(LED2_PIO);
-            pio_output_toggle(LED1_PIO);
+            pio_output_toggle(LED_RED);
+            pio_output_toggle(LED_GREEN);
         }
     }
 }
