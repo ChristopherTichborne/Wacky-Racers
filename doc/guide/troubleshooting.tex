@@ -229,7 +229,10 @@ If the PWM duty is wrong:
   work.  Without this resistor, this pin will always read low, fault
   or no fault.
 
-\item The \sign{nSLEEP} pin needs to be high to enable the chip.
+\item The \sig{nSLEEP} pin needs to be high to enable the chip.
+
+\item Check that the capacitor connected to the \sig{INT} pin is
+  2.2\,$\mu$F and not 2.2\,nF.
 \end{enumerate}
 
 
