@@ -223,7 +223,14 @@ If the PWM duty is wrong:
 \subsubsection{Testing the H-bridge}
 \label{testing-the-h-bridge}
 
-\mtodo{TODO}
+\begin{enumerate}
+\item The \sig{nFAULT} pin should be high.  Note, this is an
+  open-drain pin and requires a pullup resistor to 3V3 to make it
+  work.  Without this resistor, this pin will always read low, fault
+  or no fault.
+
+\item The \sign{nSLEEP} pin needs to be high to enable the chip.
+\end{enumerate}
 
 
 \subsection{IMU}
