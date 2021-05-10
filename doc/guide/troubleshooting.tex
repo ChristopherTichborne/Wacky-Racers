@@ -227,12 +227,22 @@ If the PWM duty is wrong:
 \item The \sig{nFAULT} pin should be high.  Note, this is an
   open-drain pin and requires a pullup resistor to 3V3 to make it
   work.  Without this resistor, this pin will always read low, fault
-  or no fault.
+  or no fault.  If this is connected to the SAM4S, it will be pulled
+  up by default.
 
 \item The \sig{nSLEEP} pin needs to be high to enable the chip.
 
 \item Check that the capacitor connected to the \sig{INT} pin is
   2.2\,$\mu$F and not 2.2\,nF.
+
+\item Check the \sig{AIN1}, \sig{AIN2}, \sig{BIN1}, \sig{BIN2} pins.
+  If you see DC 2\,V, this is due to the signal not being configured
+  as an output on the SAM4S; the internal pullup of the SAM4S forms a
+  voltage divider with the internal pulldown of the H-bridge chip.
+
+\item Check that \sig{AINSENSE} and \sig{BINSENSE} are connected
+  directly to ground or to ground via a small resistor if you want
+  current limiting.
 \end{enumerate}
 
 
