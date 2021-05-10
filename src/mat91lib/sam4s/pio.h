@@ -55,7 +55,9 @@ typedef enum pio_config_enum
 {
     PIO_INPUT = 1,          /* Configure as input pin.  */
     PIO_PULLUP,             /* Configure as input pin with pullup.  */
+    PIO_INPUT_PULLUP = PIO_PULLUP, /* Configure as input pin with pullup.  */ 
     PIO_PULLDOWN,           /* Configure as input pin with pulldown.  */
+    PIO_INPUT_PULLDOWN = PIO_PULLDOWN, /* Configure as input pin with pulldown.  */    
     PIO_OUTPUT_LOW,         /* Configure as output, initially low.  */
     PIO_OUTPUT_HIGH,        /* Configure as output, initially high.  */
     PIO_PERIPH_A,
