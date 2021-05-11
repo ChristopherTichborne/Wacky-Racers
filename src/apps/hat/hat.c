@@ -11,8 +11,8 @@
 
 #include "pacer.h"
 
-#include "led.h"
-#include "button.h"
+#include "led-mine.h"
+#include "button-mine.h"
 
 
 
@@ -32,9 +32,9 @@ void setup (void)
 {
     pacer_init (PACER_RATE);    
     mcu_watchdog_enable();
-    button_setup();
-    led_setup();
     mcu_jtag_disable();
+    led_setup();
+    button_setup();
 }
 
 

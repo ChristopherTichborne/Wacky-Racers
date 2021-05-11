@@ -4,7 +4,7 @@
     Descr:  Button module for wacky-racers hat
 */
 
-#include "button.h"
+#include "button-mine.h"
 
 
 void button_setup ()

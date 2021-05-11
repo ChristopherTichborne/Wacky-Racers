@@ -4,8 +4,8 @@
     Descr:  LED module for surface mount LEDs
 */
 
-#ifndef LED_H
-#define LED_H
+#ifndef LED-MINE_H
+#define LED-MINE_H
 
 #include <pio.h>
 #include "target.h"

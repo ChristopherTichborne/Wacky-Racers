@@ -4,8 +4,8 @@
     Descr:  Button module for wacky-racers hat
 */
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef BUTTON-MINE_H
+#define BUTTON-MINE_H
 
 #include <pio.h>
 #include "target.h"

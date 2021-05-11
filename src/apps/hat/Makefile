@@ -1,5 +1,6 @@
 PERIPHERALS = pit
-DRIVERS =
+LED_DIR = $(DRIVER_DIR)/led
+DRIVERS = pacer usb_serial mpu
 TARGET = hat.bin
 
 SRC = hat.c

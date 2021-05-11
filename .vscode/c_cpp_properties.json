@@ -13,7 +13,8 @@
                 "${workspaceFolder}/src/mat91lib/**",
                 "${workspaceFolder}/src/mmculib/**",
                 "${workspaceFolder}/src/mmculib/pacer",
-                "${workspaceFolder}/src/mmculib/rf"
+                "${workspaceFolder}/src/mmculib/rf",
+                "${workspaceFolder}/src/mmculib/led"
             ]
         },
         {
