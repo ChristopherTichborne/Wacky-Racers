@@ -55,7 +55,9 @@ typedef enum pio_config_enum
 {
     PIO_INPUT = 1,          /* Configure as input pin.  */
     PIO_PULLUP,             /* Configure as input pin with pullup.  */
+    PIO_INPUT_PULLUP = PIO_PULLUP, /* Configure as input pin with pullup.  */ 
     PIO_PULLDOWN,           /* Configure as input pin with pulldown.  */
+    PIO_INPUT_PULLDOWN = PIO_PULLDOWN, /* Configure as input pin with pulldown.  */    
     PIO_OUTPUT_LOW,         /* Configure as output, initially low.  */
     PIO_OUTPUT_HIGH,        /* Configure as output, initially high.  */
     PIO_PERIPH_A,
@@ -261,7 +263,16 @@ pio_config_set (pio_t pio, pio_config_t config)
     case PIO_PULLUP:
         PIO_BASE (pio)->PIO_ODR = PIO_BITMASK_ (pio);
         PIO_BASE (pio)->PIO_PER = PIO_BITMASK_ (pio);
+        PIO_BASE (pio)->PIO_PPDDR = PIO_BITMASK_ (pio);
         PIO_BASE (pio)->PIO_PUER = PIO_BITMASK_ (pio);
+        pio_init (pio);
+        return 1;
+
+    case PIO_PULLDOWN:
+        PIO_BASE (pio)->PIO_ODR = PIO_BITMASK_ (pio);
+        PIO_BASE (pio)->PIO_PER = PIO_BITMASK_ (pio);
+        PIO_BASE (pio)->PIO_PUDR = PIO_BITMASK_ (pio);
+        PIO_BASE (pio)->PIO_PPDER = PIO_BITMASK_ (pio);
         pio_init (pio);
         return 1;
 
